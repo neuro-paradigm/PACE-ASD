@@ -1,0 +1,45 @@
+# ============================================================
+# ASDMotion - Configuration (Lapa 2 Training)
+# ============================================================
+
+data:
+  raw_dir: "data/raw"                  # Raw video directory (asd/ and non_asd/ subfolders)
+  processed_dir: "processed_fullbody"      # Output for preprocessed skeleton .npy files (shares existing preprocessed files)
+  fps: 30                              # Target FPS for video resampling
+  max_frames: 300                      # Max sequence length (pad/truncate) — 10s @ 30fps
+  num_landmarks: 33                    # MediaPipe Pose landmark count
+  smoothing_window: 7                  # Savitzky-Golay filter window length
+  smoothing_polyorder: 3              # Savitzky-Golay polynomial order
+
+model:
+  spatial_dim: 256                     # Spatial encoder output (increased for velocity)
+  conv1d_channels: 128                 # Conv1D channels
+  top_k: 128                           # Saliency gate (increased to 128 for more context)
+  transformer_heads: 4                 # Attention heads
+  transformer_layers: 2               # Transformer layers
+  dropout: 0.4                        # Dropout
+
+training:
+  epochs: 100                          # Maximum training epochs
+  batch_size: 8                       # Batch size reduced for smaller dataset
+  lr: 0.0001                          # Reduced to stop wild oscillations
+  weight_decay: 0.005                  # Reduced from 0.05 to prevent weight collapse
+  early_stopping_patience: 15         # Stop if no improvement for N epochs
+  n_folds: 3                          # Stratified K-Fold CV (Folds 1, 2, 3)
+  clips_per_subject: 5                # Reduced to 5 for faster, more balanced subject representation
+  combined_score_weights:             # Weights for combined model selection score
+    loss: 0.4                         # Slightly reduced loss weight
+    sensitivity: 0.3                  # Increased sensitivity importance (clinical)
+    specificity: 0.3                  # Specificity importance
+  num_workers: 0                      # DataLoader workers (0 = main process, avoids Windows hangs)
+  seed: 42                            # Random seed for reproducibility
+  test_split_ratio: 0.25              # Increased to 25% for statistically meaningful test sets
+
+calibration:
+  n_bins: 10                          # ECE histogram bins
+  lr: 0.01                            # Temperature scaling learning rate
+  max_iter: 50                        # Temperature scaling optimization iterations
+
+output:
+  models_dir: "models_lapa_2"          # Saved model checkpoints
+  reports_dir: "reports_lapa_2"        # Generated PDF reports
