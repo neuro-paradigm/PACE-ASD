@@ -57,13 +57,20 @@ The PACE-ASD pipeline runs in five stages:
 
 ## Datasets
 
-| Dataset | Role | Subjects | Clips |
-|---|---|---|---|
-| [Dryad Digital Repository](https://datadryad.org/dataset/doi:10.5061/dryad.s7h44j150) | Primary training source | 110 | — |
-| [Move4AS (Paulo et al., *Scientific Data* 2025)](https://doi.org/10.1038/s41597-025-05313-0) | Supplementary training source | 34 | — |
-| In-house external cohort | External validation (ASD only) | 10 | 45 |
-| **Combined corpus** | **Total** | **144** | **2,573** |
+## Dataset Summary
 
+| Dataset | Role | Subjects | Clips |
+|---|---|---:|---:|
+| [Dryad Digital Repository](https://datadryad.org/dataset/doi:10.5061/dryad.s7h44j150) | Primary training dataset | 110 | — |
+| [Move4AS (Paulo et al., *Scientific Data*, 2025)](https://doi.org/10.1038/s41597-025-05313-0) | Supplementary training dataset | 34 | — |
+| In-house external ASD cohort | External validation dataset | 10 | 45 |
+| **Combined training corpus** | **Training + internal evaluation** | **144** | **2,573** |
+| **Overall study population** | **All datasets combined** | **154** | **2,618** |
+
+### Notes
+- Subject-level splitting was used to prevent data leakage between training and evaluation sets.
+- The in-house cohort consisted exclusively of ASD participants and was used only for exploratory external validation.
+- External validation data were collected using a privacy-preserving skeletal motion capture pipeline without storing identifiable RGB video data.
 All partitioning was performed strictly at the **subject level** to prevent data leakage. A 25% subject-level holdout (35 subjects, 451 clips) was reserved before any model development.
 
 ---
