@@ -61,7 +61,7 @@ The PACE-ASD pipeline runs in five stages:
 |---|---|---|---|
 | [Dryad Digital Repository](https://datadryad.org/dataset/doi:10.5061/dryad.s7h44j150) | Primary training source | 110 | — |
 | [Move4AS (Paulo et al., *Scientific Data* 2025)](https://doi.org/10.1038/s41597-025-05313-0) | Supplementary training source | 34 | — |
-| In-house external cohort | External validation (ASD only) | 45 | — |
+| In-house external cohort | External validation (ASD only) | 10 | 45 |
 | **Combined corpus** | **Total** | **138** | **2,573** |
 
 All partitioning was performed strictly at the **subject level** to prevent data leakage. A 25% subject-level holdout (35 subjects, 451 clips) was reserved before any model development.
