@@ -68,37 +68,7 @@ All partitioning was performed strictly at the **subject level** to prevent data
 
 ---
 
-## Repository Structure
 
-```
-PACE-ASD/
-├── data/
-│   └── README.md               # Instructions for downloading Dryad and Move4AS datasets
-├── preprocessing/
-│   ├── pose_extraction.py      # MediaPipe Pose landmark extraction
-│   ├── normalization.py        # Hip-centering, scaling, rotation alignment
-│   └── quality_masking.py      # Per-frame quality scoring and masking
-├── model/
-│   ├── encoder.py              # Residual MLP spatial encoder
-│   ├── multiscale_conv.py      # Multi-scale 1D convolutional front-end
-│   ├── saliency_gate.py        # Learned saliency scoring and top-K selection
-│   ├── transformer.py          # Bidirectional multi-head self-attention module
-│   └── pace_asd.py             # Full PACE-ASD model definition
-├── training/
-│   ├── train.py                # Training loop with subject-independent CV
-│   ├── loss.py                 # Composite loss (WBCE + ranking + sensitivity@specificity)
-│   └── calibration.py          # Platt scaling via L-BFGS
-├── evaluation/
-│   ├── evaluate.py             # Held-out test set evaluation
-│   └── external_eval.py        # External cohort evaluation
-├── collection_app/
-│   └── README.md               # Documentation for the anonymized data collection app
-├── MDPI_template_Chicago/      # LaTeX manuscript source
-├── requirements.txt
-└── README.md
-```
-
----
 
 ## Installation
 
