@@ -87,27 +87,19 @@ pip install -r requirements.txt
 ### 1. Pose Extraction
 
 ```bash
-python preprocessing/pose_extraction.py \
-  --input_dir /path/to/videos \
-  --output_dir /path/to/landmarks
+python src/preprocess.py --config configs/config.yaml
 ```
 
 ### 2. Training (Subject-Independent 3-Fold CV)
 
 ```bash
-python training/train.py \
-  --data_dir /path/to/landmarks \
-  --labels /path/to/labels.csv \
-  --output_dir ./checkpoints
+python train_reconstruct.py
 ```
 
 ### 3. Evaluation on Held-Out Test Set
 
 ```bash
-python evaluation/evaluate.py \
-  --checkpoint ./checkpoints/best_ensemble.pt \
-  --test_dir /path/to/test_landmarks \
-  --test_labels /path/to/test_labels.csv
+python predict_batch.py --models-dir reconstruct --output_csv sample_csv_name
 ```
 
 ---
