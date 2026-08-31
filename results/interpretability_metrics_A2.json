@@ -1,0 +1,96 @@
+{
+  "model_id": "A2",
+  "n_fold_files": 60,
+  "stability": {
+    "mean_spearman_rho": 0.30004942147669633,
+    "std_spearman_rho": 0.3766989849331825,
+    "median_spearman": 0.3765232947032745,
+    "n_pairs": 44250,
+    "n_unique_subjects": 25,
+    "mean_jaccard_overlap": 1.0,
+    "mean_intersection_spearman": 0.30004942147669633
+  },
+  "gate_cross_check": {
+    "overall_pearson_r": NaN,
+    "overall_spearman_rho": NaN,
+    "mean_subject_r": NaN
+  },
+  "class_counts": {
+    "TP_observations": 526,
+    "TP_unique_subjs": 12,
+    "TN_observations": 603,
+    "TN_unique_subjs": 12,
+    "FP_observations": 177,
+    "FP_unique_subjs": 8,
+    "FN_observations": 194,
+    "FN_unique_subjs": 8
+  },
+  "kinematics": {
+    "asd_regions": {
+      "head": {
+        "mean": 0.6636955865969261,
+        "std": 0.03546271555283355
+      },
+      "arms": {
+        "mean": 0.5556536417454481,
+        "std": 0.03492954494943571
+      },
+      "torso": {
+        "mean": 0.12874886093195528,
+        "std": 0.018065757181899896
+      },
+      "legs": {
+        "mean": 0.592740666307509,
+        "std": 0.020121943379247477
+      }
+    },
+    "td_regions": {
+      "head": {
+        "mean": 0.5885521135651147,
+        "std": 0.03669505726018356
+      },
+      "arms": {
+        "mean": 0.5128882777805511,
+        "std": 0.029796149067783956
+      },
+      "torso": {
+        "mean": 0.14306956056792003,
+        "std": 0.020217886955303885
+      },
+      "legs": {
+        "mean": 0.6657070888922765,
+        "std": 0.026525657805519864
+      }
+    },
+    "asd_streams": {
+      "position": {
+        "mean": 0.25638977536407903,
+        "std": 0.008948614838310836
+      },
+      "velocity": {
+        "mean": 0.0927828214825751,
+        "std": 0.0015732352209944201
+      },
+      "acceleration": {
+        "mean": 0.650827403152502,
+        "std": 0.009300675430401013
+      }
+    },
+    "td_streams": {
+      "position": {
+        "mean": 0.15191360800301862,
+        "std": 0.007243332590586566
+      },
+      "velocity": {
+        "mean": 0.08595531990725389,
+        "std": 0.0012523214178712322
+      },
+      "acceleration": {
+        "mean": 0.7621310720889085,
+        "std": 0.007324967455747319
+      }
+    },
+    "n_checkpoints_attempted": 20,
+    "n_checkpoints_evaluated": 20
+  }
+}

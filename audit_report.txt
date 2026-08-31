@@ -1,0 +1,18 @@
+======================================================================
+PACE-ASD Dataset Audit Report
+Raw directory : D:/dryad
+======================================================================
+
+── Subject Counts ───────────────────────────────────────────────────
+  ASD       : 50 subjects
+  TD        : 50 subjects
+  SEVERE    : 9 subjects
+  TOTAL     : 109 subjects
+
+── Video Inventory ──────────────────────────────────────────────────
+  Regular (train/val/test) : 100 clips
+  Severe ASD (supplement)  : 10 clips
+  TOTAL                    : 110 clips
+
+  ✓  Audit PASSED — all expected files present.
+======================================================================

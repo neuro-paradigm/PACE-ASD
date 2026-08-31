@@ -1,0 +1,96 @@
+{
+  "model_id": "A3",
+  "n_fold_files": 60,
+  "stability": {
+    "mean_spearman_rho": -0.20372060148326235,
+    "std_spearman_rho": 0.4513348764252166,
+    "median_spearman": -0.23726923352539014,
+    "n_pairs": 44250,
+    "n_unique_subjects": 25,
+    "mean_jaccard_overlap": 0.5351070732074539,
+    "mean_intersection_spearman": 0.11479201767297147
+  },
+  "gate_cross_check": {
+    "overall_pearson_r": 0.004709248703281776,
+    "overall_spearman_rho": 0.01360188863428515,
+    "mean_subject_r": 0.014937767726606684
+  },
+  "class_counts": {
+    "TP_observations": 521,
+    "TP_unique_subjs": 12,
+    "TN_observations": 626,
+    "TN_unique_subjs": 13,
+    "FP_observations": 154,
+    "FP_unique_subjs": 8,
+    "FN_observations": 199,
+    "FN_unique_subjs": 10
+  },
+  "kinematics": {
+    "asd_regions": {
+      "head": {
+        "mean": 0.6575824281821648,
+        "std": 0.04162761272513445
+      },
+      "arms": {
+        "mean": 0.5485479195291798,
+        "std": 0.045374523452402164
+      },
+      "torso": {
+        "mean": 0.12845001833047717,
+        "std": 0.013266037683167763
+      },
+      "legs": {
+        "mean": 0.5816070526217421,
+        "std": 0.040062185350447255
+      }
+    },
+    "td_regions": {
+      "head": {
+        "mean": 0.591959375830797,
+        "std": 0.03594741905645312
+      },
+      "arms": {
+        "mean": 0.49914294074361143,
+        "std": 0.02831013931372063
+      },
+      "torso": {
+        "mean": 0.137925823405385,
+        "std": 0.013037161476847562
+      },
+      "legs": {
+        "mean": 0.6600869474502711,
+        "std": 0.03195580102359522
+      }
+    },
+    "asd_streams": {
+      "position": {
+        "mean": 0.2648429199981833,
+        "std": 0.01921567319411273
+      },
+      "velocity": {
+        "mean": 0.09250350538917516,
+        "std": 0.0014642651718204157
+      },
+      "acceleration": {
+        "mean": 0.6426535746115046,
+        "std": 0.019824646154443036
+      }
+    },
+    "td_streams": {
+      "position": {
+        "mean": 0.1589995195178277,
+        "std": 0.007160529052697646
+      },
+      "velocity": {
+        "mean": 0.08685775585325803,
+        "std": 0.001929000074448871
+      },
+      "acceleration": {
+        "mean": 0.7541427246269439,
+        "std": 0.006840777263176131
+      }
+    },
+    "n_checkpoints_attempted": 20,
+    "n_checkpoints_evaluated": 20
+  }
+}

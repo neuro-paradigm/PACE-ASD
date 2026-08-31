@@ -1,0 +1,20 @@
+OK  syntax
+Device: cuda
+OK  StackedLSTM            params=0.86M  dev=cuda:0
+OK  Conv1DBiLSTMAttn       params=0.29M  dev=cuda:0
+OK  KinematicCNNLSTM       params=1.84M  dev=cuda:0
+OK  STTS                   params=0.23M  dev=cuda:0
+OK  MSG3D                  params=0.19M  dev=cuda:0
+OK  MSG3DConvNeXt          params=1.69M  dev=cuda:0
+OK  SkelFormer             params=0.15M  dev=cuda:0
+OK  MTCFormer              params=0.33M  dev=cuda:0
+OK  MTT                    params=0.16M  dev=cuda:0
+OK  STAR                   params=0.17M  dev=cuda:0
+OK  sklearn/lr        
+OK  sklearn/svm       
+OK  sklearn/rf        
+OK  sklearn/xgboost   
+
+ALL_BASELINE_IDS: ['lstm', 'conv1d_bilstm', 'kinematic_cnn', 'stts', 'msg3d', 'msg3d_convnext', 'skelformer', 'mtcformer', 'mtt', 'star', 'lr', 'svm', 'rf', 'xgboost']
+
+RESULT: ALL PASSED

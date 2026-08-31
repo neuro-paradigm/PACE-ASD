@@ -1,429 +1,334 @@
 """
-ASDMotion — Preprocessing & Pose Extraction
+PACE-ASD — Preprocessing Pipeline (Protocol Section 2)
 
-Pipeline: Raw Video → MediaPipe Pose → Spatial Reconstruction → 
-          Savitzky-Golay Smoothing → Normalized .npy sequences
+Runs MediaPipe Pose on every raw video, applies:
+  1. Mid-hip centering   (landmarks 23 + 24 mean)
+  2. Inter-shoulder scale normalisation  (‖L11 – L12‖)
+  3. Pad / truncate to T=300 frames
+  4. Save (300, 33, 2) float32 .npy
 
-Spatial reconstruction aligns every skeleton to a canonical front-facing
-pose (facing the camera along the Z-axis) regardless of original camera angle.
+Writes processed/labels.csv with columns:
+    clip_id, subject_id, label, group
+
+Usage:
+    python src/preprocess.py --raw_dir "D:/dryad" --out_dir processed
+    python src/preprocess.py --raw_dir "D:/dryad" --out_dir processed --dry_run
+    python src/preprocess.py --raw_dir "D:/dryad" --out_dir processed --subjects asd_1 td_1
 """
 
 import argparse
 import os
 import sys
 import csv
+import warnings
 import numpy as np
 import cv2
-import mediapipe as mp
-from scipy.signal import savgol_filter
 from tqdm import tqdm
-import yaml
+
+# Suppress mediapipe/protobuf warnings
+os.environ["GLOG_minloglevel"] = "2"
+warnings.filterwarnings("ignore")
+import mediapipe as mp
+
+# ── Constants ─────────────────────────────────────────────────────────────────
+
+T_MAX          = 300          # target sequence length (frames)
+N_LANDMARKS    = 33           # MediaPipe Pose landmarks
+LEFT_HIP       = 23
+RIGHT_HIP      = 24
+LEFT_SHOULDER  = 11
+RIGHT_SHOULDER = 12
+
+ASD_DIR    = "Autism/children with ASD"
+TD_DIR     = "Typical"
+SEVERE_DIR = "Autism/Severe level of ASD"
 
 
-# ────────────────────────────────────────────────────────────
-# Spatial Reconstruction Utilities
-# ────────────────────────────────────────────────────────────
+# ── Video catalogue builder ───────────────────────────────────────────────────
 
-def compute_hip_center(landmarks):
+def _find_regular_video(video_dir: str):
     """
-    Compute hip center as midpoint of left hip (23) and right hip (24).
-    
-    Args:
-        landmarks: (33, 3) or (33, 4) array of pose landmarks
+    Find the primary RGB video in a subject's video/ folder.
+    Priority: video.avi -> video1.avi -> first non-Svideo/Tvideo .avi found.
+    Returns absolute path string or None.
+    """
+    for name in ("video.avi", "video1.avi"):
+        p = os.path.join(video_dir, name)
+        if os.path.isfile(p):
+            return p
+    if os.path.isdir(video_dir):
+        avis = sorted([
+            f for f in os.listdir(video_dir)
+            if f.lower().endswith(".avi")
+            and not f.lower().startswith("s")
+            and not f.lower().startswith("t")
+        ])
+        if avis:
+            return os.path.join(video_dir, avis[0])
+    return None
+
+
+def build_video_catalogue(raw_dir: str) -> list:
+    """
+    Return a list of dicts describing every raw video to process.
+    Each dict: {clip_id, subject_id, label, group, video_path}
+
+    Rules (per protocol):
+      - Regular ASD/TD: one primary video per subject (video.avi or video1.avi)
+      - Severe ASD (supplement): all .avi files in the case folder
+    """
+    catalogue = []
+
+    def _sort_key(name):
+        # Numeric names sort numerically before non-numeric names
+        return (0, int(name)) if name.isdigit() else (1, name)
+
+    # Regular ASD
+    asd_base = os.path.join(raw_dir, ASD_DIR)
+    for subj in sorted(os.listdir(asd_base), key=_sort_key):
+        video_dir = os.path.join(asd_base, subj, "video")
+        path = _find_regular_video(video_dir)
+        if path:
+            catalogue.append({
+                "clip_id":    f"asd_{subj}",
+                "subject_id": f"asd_{subj}",
+                "label":      1,
+                "group":      "regular",
+                "video_path": path,
+            })
+
+    # Regular TD
+    td_base = os.path.join(raw_dir, TD_DIR)
+    for subj in sorted(os.listdir(td_base), key=_sort_key):
+        if not os.path.isdir(os.path.join(td_base, subj)):
+            continue
+        video_dir = os.path.join(td_base, subj, "video")
+        path = _find_regular_video(video_dir)
+        if path:
+            catalogue.append({
+                "clip_id":    f"td_{subj}",
+                "subject_id": f"td_{subj}",
+                "label":      0,
+                "group":      "regular",
+                "video_path": path,
+            })
+
+    # Severe ASD (supplement)
+    severe_base = os.path.join(raw_dir, SEVERE_DIR)
+    for case in sorted(os.listdir(severe_base)):
+        case_path = os.path.join(severe_base, case)
+        if not os.path.isdir(case_path):
+            continue
+        avis = sorted(f for f in os.listdir(case_path) if f.lower().endswith(".avi"))
+        for i, avi in enumerate(avis, start=1):
+            catalogue.append({
+                "clip_id":    f"severe_{case}_v{i}",
+                "subject_id": f"severe_{case}",
+                "label":      1,
+                "group":      "supplement",
+                "video_path": os.path.join(case_path, avi),
+            })
+
+    return catalogue
+
+
+# ── MediaPipe extraction ──────────────────────────────────────────────────────
+
+def extract_keypoints_from_video(video_path: str) -> np.ndarray:
+    """
+    Run MediaPipe Pose on every frame of a video.
+
     Returns:
-        (3,) hip center coordinates
+        keypoints: (actual_frame_count, 33, 2) float32
+                   Zero rows where MediaPipe failed to detect a pose.
     """
-    left_hip = landmarks[23, :3]
-    right_hip = landmarks[24, :3]
-    return (left_hip + right_hip) / 2.0
+    pose = mp.solutions.pose.Pose(
+        static_image_mode=False,
+        model_complexity=2,
+        smooth_landmarks=True,
+        enable_segmentation=False,
+        min_detection_confidence=0.5,
+        min_tracking_confidence=0.5,
+    )
 
-
-def compute_rotation_matrix_y(angle_rad):
-    """
-    Compute 3D rotation matrix around the Y-axis.
-    
-    Args:
-        angle_rad: Rotation angle in radians
-    Returns:
-        (3, 3) rotation matrix
-    """
-    cos_a = np.cos(angle_rad)
-    sin_a = np.sin(angle_rad)
-    return np.array([
-        [cos_a,  0, sin_a],
-        [0,      1, 0    ],
-        [-sin_a, 0, cos_a]
-    ])
-
-
-def spatial_reconstruct_frame(landmarks):
-    """
-    Align a single frame's skeleton to canonical front-facing pose.
-    Supports a robust upper-body fallback (using shoulder width scaling)
-    if the hips are occluded or out-of-frame.
-    
-    Args:
-        landmarks: (33, 3) or (33, 4) array of pose landmarks
-    Returns:
-        Spatially reconstructed landmarks
-    """
-    landmarks = landmarks.copy()
-    has_vis = (landmarks.shape[1] > 3)
-    
-    # Step 1: Translation — hip center to origin
-    hip_center = compute_hip_center(landmarks)
-    landmarks[:, :3] -= hip_center
-    
-    # Step 2: Rotation — align shoulders to X-axis (face camera)
-    left_shoulder = landmarks[11, :3]
-    right_shoulder = landmarks[12, :3]
-    shoulder_vec = right_shoulder - left_shoulder  # Vector from left to right shoulder
-    
-    # Project onto XZ plane and compute angle to X-axis
-    angle = np.arctan2(shoulder_vec[2], shoulder_vec[0])  # atan2(z, x)
-    
-    # Rotate around Y-axis to zero out the Z-component of shoulder vector
-    rot_matrix = compute_rotation_matrix_y(-angle)
-    landmarks[:, :3] = landmarks[:, :3] @ rot_matrix.T  # Apply rotation to all landmarks
-    
-    # Step 3: Scale normalization by torso length with upper-body fallback
-    hip_center_new = compute_hip_center(landmarks)  # Should be ~origin
-    shoulder_center = (landmarks[11, :3] + landmarks[12, :3]) / 2.0
-    torso_length = np.linalg.norm(shoulder_center - hip_center_new)
-    
-    # Evaluate hip visibility (if visibility scores are provided)
-    hip_visible = True
-    if has_vis:
-        left_hip_vis = landmarks[23, 3]
-        right_hip_vis = landmarks[24, 3]
-        if left_hip_vis < 0.4 or right_hip_vis < 0.4:
-            hip_visible = False
-            
-    shoulder_width = np.linalg.norm(landmarks[12, :3] - landmarks[11, :3])
-    min_torso_length = 0.05
-    
-    # If hips are occluded/invisible, or torso length is implausible, use shoulder width fallback
-    if not hip_visible or torso_length < min_torso_length or torso_length > 2.5:
-        # Est Torso Length = 1.6811 * Shoulder Width
-        estimated_torso_length = 1.6811 * shoulder_width
-        if estimated_torso_length > min_torso_length:
-            landmarks[:, :3] /= estimated_torso_length
-    else:
-        # Standard torso scale
-        landmarks[:, :3] /= torso_length
-    
-    return landmarks
-
-
-def spatial_reconstruct_sequence(sequence):
-    """
-    Apply spatial reconstruction to every frame in a sequence.
-    
-    Args:
-        sequence: (T, 33, 3) pose landmark sequence
-    Returns:
-        (T, 33, 3) spatially reconstructed sequence
-    """
-    reconstructed = np.zeros_like(sequence)
-    for t in range(sequence.shape[0]):
-        reconstructed[t] = spatial_reconstruct_frame(sequence[t])
-    return reconstructed
-
-
-# ────────────────────────────────────────────────────────────
-# Pose Extraction
-# ────────────────────────────────────────────────────────────
-
-def extract_poses_from_video(video_path, target_fps=30):
-    """
-    Extract MediaPipe Pose landmarks from a video file.
-    
-    Args:
-        video_path: Path to the video file
-        target_fps: Target FPS for resampling
-    Returns:
-        (T, 33, 3) numpy array of pose landmarks, or None if extraction fails
-    """
-    mp_pose = mp.solutions.pose
-    
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
-        print(f"  [ERROR] Cannot open video: {video_path}")
-        return None
-    
-    source_fps = cap.get(cv2.CAP_PROP_FPS)
-    if source_fps <= 0:
-        source_fps = 30.0  # Fallback
-    
-    # Frame sampling interval for FPS resampling
-    frame_interval = max(1, round(source_fps / target_fps))
-    
-    landmarks_sequence = []
-    frame_idx = 0
-    
-    with mp_pose.Pose(
-        static_image_mode=False,
-        model_complexity=2,         # Highest accuracy
-        smooth_landmarks=True,
-        min_detection_confidence=0.5,
-        min_tracking_confidence=0.5
-    ) as pose:
-        while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                break
-            
-            # Resample to target FPS
-            if frame_idx % frame_interval != 0:
-                frame_idx += 1
-                continue
-            
-            # Convert BGR → RGB for MediaPipe
-            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            results = pose.process(rgb_frame)
-            
-            if results.pose_landmarks:
-                # Extract (33, 4) landmarks: x, y, z, visibility
-                frame_landmarks = np.array([
-                    [lm.x, lm.y, lm.z, lm.visibility]
-                    for lm in results.pose_landmarks.landmark
-                ])
-                landmarks_sequence.append(frame_landmarks)
-            else:
-                # If pose not detected, use zeros (will be smoothed)
-                landmarks_sequence.append(np.zeros((33, 4)))
-            
-            frame_idx += 1
-    
+        raise RuntimeError(f"Cannot open video: {video_path}")
+
+    frames = []
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = pose.process(frame_rgb)
+        if results.pose_landmarks:
+            kp = np.array(
+                [[lm.x, lm.y] for lm in results.pose_landmarks.landmark],
+                dtype=np.float32,
+            )  # (33, 2)
+        else:
+            kp = np.zeros((N_LANDMARKS, 2), dtype=np.float32)
+        frames.append(kp)
+
     cap.release()
-    
-    if len(landmarks_sequence) == 0:
-        print(f"  [ERROR] No frames extracted from: {video_path}")
-        return None
-    
-    return np.array(landmarks_sequence, dtype=np.float32)
+    pose.close()
+
+    if not frames:
+        return np.zeros((1, N_LANDMARKS, 2), dtype=np.float32)
+    return np.stack(frames, axis=0)  # (T_actual, 33, 2)
 
 
-# ────────────────────────────────────────────────────────────
-# Smoothing & Padding
-# ────────────────────────────────────────────────────────────
+# ── Normalisation ─────────────────────────────────────────────────────────────
 
-def apply_savgol_smoothing(sequence, window_length=7, polyorder=3):
+def normalise(keypoints: np.ndarray) -> np.ndarray:
     """
-    Apply Savitzky-Golay smoothing per landmark per axis.
-    
-    Args:
-        sequence: (T, 33, 3) pose sequence
-        window_length: Filter window length (must be odd)
-        polyorder: Polynomial order
-    Returns:
-        (T, 33, 3) smoothed sequence
-    """
-    T, num_landmarks, num_coords = sequence.shape
-    
-    # Need enough frames for the filter
-    if T < window_length:
-        return sequence
-    
-    smoothed = np.copy(sequence)
-    for lm in range(num_landmarks):
-        for c in range(num_coords):
-            signal = sequence[:, lm, c]
-            # Only smooth if there's enough variance (not all zeros)
-            if np.std(signal) > 1e-8:
-                smoothed[:, lm, c] = savgol_filter(
-                    signal, window_length=window_length, polyorder=polyorder
-                )
-    
-    return smoothed
+    Apply centering and scale normalisation per frame.
 
+    1. Centering: subtract mid-hip = mean(L23, L24) per frame
+    2. Scale:     divide by inter-shoulder distance ‖L11 – L12‖, clamped ≥ 1e-5
 
-def pad_or_truncate(sequence, max_frames):
+    Input / output: (T, 33, 2) float32
     """
-    Pad with zeros or truncate a sequence to fixed length.
-    
-    Args:
-        sequence: (T, 33, 3) pose sequence
-        max_frames: Target sequence length
-    Returns:
-        (max_frames, 33, 3) fixed-length sequence
-    """
-    T = sequence.shape[0]
-    
-    if T >= max_frames:
-        return sequence[:max_frames]
-    else:
-        # Pad with zeros
-        pad_length = max_frames - T
-        padding = np.zeros((pad_length, sequence.shape[1], sequence.shape[2]), dtype=sequence.dtype)
-        return np.concatenate([sequence, padding], axis=0)
+    kp = keypoints.copy()
+    T  = kp.shape[0]
 
-
-# ────────────────────────────────────────────────────────────
-# Main Preprocessing Pipeline
-# ────────────────────────────────────────────────────────────
-
-def preprocess_video(video_path, config):
-    """
-    Full preprocessing pipeline for a single video.
-    Splits long videos into multiple sliding window chunks.
-    
-    Returns:
-        List of (max_frames, 33, 3) preprocessed skeleton chunks
-    """
-    target_fps = config['data']['fps']
-    max_frames = config['data']['max_frames']
-    window_length = config['data']['smoothing_window']
-    polyorder = config['data']['smoothing_polyorder']
-    
-    # Step 1: Extract poses via MediaPipe
-    full_sequence = extract_poses_from_video(video_path, target_fps=target_fps)
-    if full_sequence is None:
-        return []
-    
-    # Step 2: Spatial reconstruction (camera alignment)
-    full_sequence = spatial_reconstruct_sequence(full_sequence)
-    
-    # Strip visibility column to restore shape (T, 33, 3) for downstream processing
-    if full_sequence.shape[2] > 3:
-        full_sequence = full_sequence[:, :, :3]
-    
-    # Step 3: Savitzky-Golay smoothing
-    full_sequence = apply_savgol_smoothing(
-        full_sequence, window_length=window_length, polyorder=polyorder
-    )
-    
-    # Step 4: Chunking (Sliding Window)
-    chunks = []
-    T = full_sequence.shape[0]
-    
-    if T <= max_frames:
-        chunks.append(pad_or_truncate(full_sequence, max_frames))
-    else:
-        stride = max_frames // 2
-        for start in range(0, T - max_frames + 1, stride):
-            end = start + max_frames
-            chunks.append(full_sequence[start:end, :, :])
-            
-        # Add final window if gap exists
-        if (T - max_frames) % stride != 0:
-            chunks.append(full_sequence[T-max_frames:, :, :])
-    
-    return chunks
-
-
-def run_preprocessing(config):
-    """
-    Run the full preprocessing pipeline on all videos.
-    
-    Expects:
-        data/raw/asd/       — ASD-positive video files
-        data/raw/non_asd/   — ASD-negative video files
-    
-    Outputs:
-        data/processed/features/  — .npy files per video
-        data/processed/labels.csv — video_id, label mapping
-    """
-    raw_dir = config['data']['raw_dir']
-    processed_dir = config['data']['processed_dir']
-    features_dir = os.path.join(processed_dir, 'features')
-    
-    os.makedirs(features_dir, exist_ok=True)
-    
-    video_extensions = {'.mp4', '.avi', '.mov', '.mkv', '.wmv', '.flv'}
-    
-    # Collect all videos with labels
-    video_entries = []
-    
-    for label_name, label_value in [('asd', 1), ('non_asd', 0)]:
-        class_dir = os.path.join(raw_dir, label_name)
-        if not os.path.isdir(class_dir):
-            print(f"[WARNING] Directory not found: {class_dir}")
+    for t in range(T):
+        # Only normalise frames where at least one landmark is non-zero
+        if not np.any(kp[t] != 0):
             continue
-        
-        for filename in sorted(os.listdir(class_dir)):
-            ext = os.path.splitext(filename)[1].lower()
-            if ext in video_extensions:
-                video_entries.append({
-                    'filename': filename,
-                    'path': os.path.join(class_dir, filename),
-                    'label': label_value,
-                    'label_name': label_name
-                })
-    
-    if len(video_entries) == 0:
-        print("[ERROR] No video files found. Please check your data directory structure:")
-        print(f"  Expected: {raw_dir}/asd/     (ASD-positive videos)")
-        print(f"  Expected: {raw_dir}/non_asd/ (ASD-negative videos)")
-        sys.exit(1)
-    
-    print(f"\n{'='*60}")
-    print(f"ASDMotion — Preprocessing Pipeline")
-    print(f"{'='*60}")
-    print(f"Total videos found: {len(video_entries)}")
-    print(f"  ASD:     {sum(1 for e in video_entries if e['label'] == 1)}")
-    print(f"  Non-ASD: {sum(1 for e in video_entries if e['label'] == 0)}")
-    print(f"{'='*60}\n")
-    
-    # Process each video
-    labels_data = []
-    success_count = 0
-    fail_count = 0
-    
-    for entry in tqdm(video_entries, desc="Processing videos"):
-        base_id = os.path.splitext(entry['filename'])[0]
-        
-        tqdm.write(f"  Processing: {entry['filename']} ({entry['label_name']})")
-        
-        chunks = preprocess_video(entry['path'], config)
-        
-        if not chunks:
-            tqdm.write(f"  [ERROR] Failed to extract poses from {entry['filename']}")
-            fail_count += 1
-            continue
-        
-        for idx, sequence in enumerate(chunks):
-            video_id = f"{base_id}_c{idx}"
-            # Save features as .npy
-            npy_path = os.path.join(features_dir, f"{video_id}.npy")
-            np.save(npy_path, sequence)
-            
-            labels_data.append({
-                'video_id': video_id,
-                'label': entry['label']
-            })
-            tqdm.write(f"    ✓ Saved: {npy_path} — shape: {sequence.shape}")
-        
-        success_count += 1
-    
-    # Save labels CSV
-    labels_path = os.path.join(processed_dir, 'labels.csv')
-    with open(labels_path, 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=['video_id', 'label'])
-        writer.writeheader()
-        writer.writerows(labels_data)
-    
-    print(f"\n{'='*60}")
-    print(f"Preprocessing Complete")
-    print(f"{'='*60}")
-    print(f"  Successful: {success_count}")
-    print(f"  Failed:     {fail_count}")
-    print(f"  Features:   {features_dir}")
-    print(f"  Labels:     {labels_path}")
-    print(f"{'='*60}")
+
+        # 1. Mid-hip centering
+        mid_hip = (kp[t, LEFT_HIP] + kp[t, RIGHT_HIP]) / 2.0
+        kp[t]   = kp[t] - mid_hip
+
+        # 2. Inter-shoulder scale
+        shoulder_dist = float(np.linalg.norm(kp[t, LEFT_SHOULDER] - kp[t, RIGHT_SHOULDER]))
+        shoulder_dist = max(shoulder_dist, 1e-5)
+        kp[t]         = kp[t] / shoulder_dist
+
+    return kp
 
 
-# ────────────────────────────────────────────────────────────
-# CLI Entry Point
-# ────────────────────────────────────────────────────────────
+# ── Padding / truncation ──────────────────────────────────────────────────────
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='ASDMotion — Preprocess videos to skeleton sequences')
-    parser.add_argument('--config', type=str, default='configs/config.yaml',
-                        help='Path to configuration YAML file')
+def pad_or_truncate(keypoints: np.ndarray, target_len: int = T_MAX) -> np.ndarray:
+    """
+    Pad (with zeros at end) or truncate to exactly target_len frames.
+
+    Input / output: (*, 33, 2) → (target_len, 33, 2)
+    """
+    T = keypoints.shape[0]
+    if T >= target_len:
+        return keypoints[:target_len]
+    pad = np.zeros((target_len - T, N_LANDMARKS, 2), dtype=np.float32)
+    return np.concatenate([keypoints, pad], axis=0)
+
+
+# ── Single-clip processor ─────────────────────────────────────────────────────
+
+def process_video(video_path: str) -> np.ndarray:
+    """
+    Full preprocessing pipeline for one video.
+
+    Returns (300, 33, 2) float32 — ready to save as .npy.
+    """
+    raw   = extract_keypoints_from_video(video_path)   # (T_actual, 33, 2)
+    normd = normalise(raw)                             # (T_actual, 33, 2)
+    final = pad_or_truncate(normd)                     # (300, 33, 2)
+    return final
+
+
+# ── Main ──────────────────────────────────────────────────────────────────────
+
+def main():
+    parser = argparse.ArgumentParser(description="PACE-ASD preprocessing")
+    parser.add_argument("--raw_dir",  default="D:/dryad")
+    parser.add_argument("--out_dir",  default="processed")
+    parser.add_argument("--dry_run",  action="store_true",
+                        help="Scan and report what would be processed; write nothing.")
+    parser.add_argument("--subjects", nargs="*", default=None,
+                        help="Limit to specific clip_ids (e.g. asd_1 td_3).")
     args = parser.parse_args()
-    
-    with open(args.config, 'r') as f:
-        config = yaml.safe_load(f)
-    
-    run_preprocessing(config)
+
+    raw_dir     = os.path.abspath(args.raw_dir)
+    out_dir     = os.path.abspath(args.out_dir)
+    features_dir = os.path.join(out_dir, "features")
+
+    catalogue = build_video_catalogue(raw_dir)
+
+    # Filter to requested subjects
+    if args.subjects:
+        subject_set = set(args.subjects)
+        catalogue   = [c for c in catalogue if c["clip_id"] in subject_set]
+
+    print(f"\nPACE-ASD Preprocessor")
+    print(f"  Raw dir    : {raw_dir}")
+    print(f"  Output dir : {out_dir}")
+    print(f"  Videos     : {len(catalogue)} to process")
+    print(f"  Dry run    : {args.dry_run}\n")
+
+    if args.dry_run:
+        for entry in catalogue:
+            status = "EXISTS" if os.path.isfile(
+                os.path.join(features_dir, f"{entry['clip_id']}.npy")
+            ) else "PENDING"
+            print(f"  [{status}] {entry['clip_id']:30s}  {entry['video_path']}")
+        print(f"\nTotal: {len(catalogue)} clips")
+        return
+
+    os.makedirs(features_dir, exist_ok=True)
+
+    # Labels list (built from catalogue; clip_ids already processed are included)
+    # We collect all metadata upfront so labels.csv is always complete.
+    labels_rows = []
+    skipped     = 0
+    processed   = 0
+    failed      = 0
+
+    for entry in tqdm(catalogue, desc="Preprocessing", unit="clip"):
+        npy_path = os.path.join(features_dir, f"{entry['clip_id']}.npy")
+        labels_rows.append({
+            "clip_id":    entry["clip_id"],
+            "subject_id": entry["subject_id"],
+            "label":      entry["label"],
+            "group":      entry["group"],
+        })
+
+        if os.path.isfile(npy_path):
+            skipped += 1
+            continue
+
+        try:
+            arr = process_video(entry["video_path"])  # (300, 33, 2)
+            np.save(npy_path, arr)
+            processed += 1
+        except Exception as exc:
+            print(f"\n  [ERROR] {entry['clip_id']}: {exc}")
+            # Save a zero array so the rest of the pipeline doesn't break
+            np.save(npy_path, np.zeros((T_MAX, N_LANDMARKS, 2), dtype=np.float32))
+            failed += 1
+
+    # Write labels.csv
+    labels_path = os.path.join(out_dir, "labels.csv")
+    with open(labels_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(
+            f, fieldnames=["clip_id", "subject_id", "label", "group"]
+        )
+        writer.writeheader()
+        writer.writerows(labels_rows)
+
+    print(f"\nDone.")
+    print(f"  Processed : {processed}")
+    print(f"  Skipped   : {skipped} (already existed)")
+    print(f"  Failed    : {failed}")
+    print(f"  Labels CSV: {labels_path}")
+    print(f"  Features  : {features_dir}/")
+
+    if failed > 0:
+        print(f"\n  [WARN] {failed} clip(s) failed — zero arrays saved. "
+              "Check video files and MediaPipe installation.")
+
+
+if __name__ == "__main__":
+    main()
