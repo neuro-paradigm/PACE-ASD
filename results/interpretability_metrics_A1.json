@@ -2,92 +2,92 @@
   "model_id": "A1",
   "n_fold_files": 60,
   "stability": {
-    "mean_spearman_rho": -0.1919029707616007,
-    "std_spearman_rho": 0.46225764536290204,
-    "median_spearman": -0.20373401255577755,
-    "n_pairs": 44250,
-    "n_unique_subjects": 25,
-    "mean_jaccard_overlap": 0.6046206820172921,
-    "mean_intersection_spearman": 0.09626036841950548
+    "mean_spearman_rho": -0.1651768262347026,
+    "std_spearman_rho": 0.38622707156763136,
+    "median_spearman": -0.12168649316497976,
+    "n_pairs": 40710,
+    "n_unique_subjects": 23,
+    "mean_jaccard_overlap": 0.7057171295638504,
+    "mean_intersection_spearman": 0.033877192882273616
   },
   "gate_cross_check": {
-    "overall_pearson_r": 0.6248040616984805,
-    "overall_spearman_rho": 0.642097095053892,
-    "mean_subject_r": 0.7830195702102926
+    "overall_pearson_r": 0.6648900882965042,
+    "overall_spearman_rho": 0.6487573148370936,
+    "mean_subject_r": 0.8223545800924348
   },
   "class_counts": {
-    "TP_observations": 549,
-    "TP_unique_subjs": 12,
-    "TN_observations": 611,
-    "TN_unique_subjs": 13,
-    "FP_observations": 169,
-    "FP_unique_subjs": 11,
-    "FN_observations": 171,
-    "FN_unique_subjs": 7
+    "TP_observations": 537,
+    "TP_unique_subjs": 11,
+    "TN_observations": 475,
+    "TN_unique_subjs": 12,
+    "FP_observations": 245,
+    "FP_unique_subjs": 8,
+    "FN_observations": 123,
+    "FN_unique_subjs": 11
   },
   "kinematics": {
     "asd_regions": {
       "head": {
-        "mean": 0.6738194110492866,
-        "std": 0.03848911867627903
+        "mean": 0.6843150010163134,
+        "std": 0.034232256774025464
       },
       "arms": {
-        "mean": 0.5581685231377681,
-        "std": 0.043512887498547884
+        "mean": 0.6049462877891281,
+        "std": 0.030161250274734274
       },
       "torso": {
-        "mean": 0.1303797479563703,
-        "std": 0.013389376807124351
+        "mean": 0.1308156589215452,
+        "std": 0.011035663900630302
       },
       "legs": {
-        "mean": 0.578101984038949,
-        "std": 0.03938112510563115
+        "mean": 0.5524287563833323,
+        "std": 0.03303032864080753
       }
     },
     "td_regions": {
       "head": {
-        "mean": 0.6047244154489958,
-        "std": 0.035328063835369
+        "mean": 0.6175909544030825,
+        "std": 0.04293835203039127
       },
       "arms": {
-        "mean": 0.5091661938681054,
-        "std": 0.029223055195631627
+        "mean": 0.5096485398088892,
+        "std": 0.03458357355759986
       },
       "torso": {
-        "mean": 0.14193018226382823,
-        "std": 0.013570563379194916
+        "mean": 0.13702321980769433,
+        "std": 0.013675529513109685
       },
       "legs": {
-        "mean": 0.6567063325872787,
-        "std": 0.03666695198406246
+        "mean": 0.6670824624598027,
+        "std": 0.034620598047815705
       }
     },
     "asd_streams": {
       "position": {
-        "mean": 0.26385711235981246,
-        "std": 0.025939648157192092
+        "mean": 0.17550294974729896,
+        "std": 0.01988784046676588
       },
       "velocity": {
-        "mean": 0.09186431659284257,
-        "std": 0.0016591117634778098
+        "mean": 0.09589065706237002,
+        "std": 0.0010024950676376316
       },
       "acceleration": {
-        "mean": 0.6442785710459927,
-        "std": 0.026647885898920164
+        "mean": 0.7286063931897941,
+        "std": 0.020009342387884974
       }
     },
     "td_streams": {
       "position": {
-        "mean": 0.16087538475634577,
-        "std": 0.012894600792228044
+        "mean": 0.17808766852301208,
+        "std": 0.013657435165419637
       },
       "velocity": {
-        "mean": 0.08631749881776811,
-        "std": 0.0015277274526155392
+        "mean": 0.08558902163369031,
+        "std": 0.0012292201007344278
       },
       "acceleration": {
-        "mean": 0.7528071164242672,
-        "std": 0.013691048722638615
+        "mean": 0.7363233098424274,
+        "std": 0.013609729993008414
       }
     },
     "n_checkpoints_attempted": 20,

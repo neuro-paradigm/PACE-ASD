@@ -19,11 +19,11 @@ training:
   n_folds: 3
   n_seeds: 20
   test_split_ratio: 0.25
-  batch_size: 16
-  epochs: 60
-  lr: 0.0002
-  weight_decay: 0.015
-  early_stopping_patience: 10
+  batch_size: 8          # was 16 — ~3 steps/epoch → now ~6 steps/epoch with n≈44 train
+  epochs: 80             # was 60 — more room since early stopping will still cut short
+  lr: 0.00005            # was 0.0002 — smaller cohort needs smaller LR
+  weight_decay: 0.03     # was 0.015 — more regularization for n=44
+  early_stopping_patience: 15  # was 10 — val is noisy at n=23, give more time
   clips_per_subject: 4
   num_workers: 0
   seed: 42
@@ -36,4 +36,4 @@ output:
   models_dir: models
   reports_dir: reports
   results_dir: results
-  splits_file: splits/splits_dryad_only_v1.json
+  splits_file: splits/splits_dryad_v2_dedup.json

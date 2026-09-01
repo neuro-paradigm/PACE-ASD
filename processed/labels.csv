@@ -1,6 +1,6 @@
 clip_id,subject_id,label,group
 asd_1,asd_1,1,regular
-asd_2,asd_2,1,regular
+asd_2,asd_2,1,supplement
 asd_3,asd_3,1,regular
 asd_4,asd_4,1,regular
 asd_5,asd_5,1,regular
@@ -11,7 +11,7 @@ asd_9,asd_9,1,regular
 asd_10,asd_10,1,regular
 asd_11,asd_11,1,regular
 asd_12,asd_12,1,regular
-asd_13,asd_13,1,regular
+asd_13,asd_13,1,supplement
 asd_14,asd_14,1,regular
 asd_15,asd_15,1,regular
 asd_16,asd_16,1,regular
@@ -25,12 +25,12 @@ asd_23,asd_23,1,regular
 asd_24,asd_24,1,regular
 asd_25,asd_25,1,regular
 asd_26,asd_26,1,regular
-asd_27,asd_27,1,regular
+asd_27,asd_27,1,supplement
 asd_28,asd_28,1,regular
 asd_29,asd_29,1,regular
-asd_30,asd_30,1,regular
+asd_30,asd_30,1,supplement
 asd_31,asd_31,1,regular
-asd_32,asd_32,1,regular
+asd_32,asd_32,1,supplement
 asd_33,asd_33,1,regular
 asd_34,asd_34,1,regular
 asd_35,asd_35,1,regular
@@ -52,10 +52,7 @@ asd_50,asd_50,1,regular
 td_1,td_1,0,regular
 td_2,td_2,0,regular
 td_3,td_3,0,regular
-td_4,td_4,0,regular
-td_5,td_5,0,regular
 td_6,td_6,0,regular
-td_7,td_7,0,regular
 td_8,td_8,0,regular
 td_9,td_9,0,regular
 td_10,td_10,0,regular
@@ -87,7 +84,6 @@ td_35,td_35,0,regular
 td_36,td_36,0,regular
 td_37,td_37,0,regular
 td_38,td_38,0,regular
-td_39,td_39,0,regular
 td_40,td_40,0,regular
 td_41,td_41,0,regular
 td_42,td_42,0,regular
@@ -98,7 +94,6 @@ td_46,td_46,0,regular
 td_47,td_47,0,regular
 td_48,td_48,0,regular
 td_49,td_49,0,regular
-td_50,td_50,0,regular
 severe_case1_v1,severe_case1,1,supplement
 severe_case2_v1,severe_case2,1,supplement
 severe_case2_v2,severe_case2,1,supplement

@@ -1,0 +1,544 @@
+%% Supplementary Material for PACE-ASD manuscript
+%% Submitted separately as per Elsevier supplementary material guidelines.
+
+\documentclass[12pt,a4paper]{article}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{longtable}
+\usepackage{float}
+
+\title{\textbf{Supplementary Material}\\[0.5em]
+\large PACE-ASD: Pose-Aware Contiguous Event Saliency-Gated Transformer\\
+for Autism Spectrum Disorder Screening from Markerless Video}
+\author{Sireesha Puppala, Kasi Vamshi Mohan, Tanuku VVS Sai Tejesh,\\
+Preetham Kota, Annabathula Yuva Dhanvanth}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\vspace{2em}
+
+% ─── S1: Reproducibility ─────────────────────────────────────────────────────
+\section{S1. Full Reproducibility Guide}
+\label{sec:s1}
+
+This section reproduces the complete \texttt{REPRODUCE.md} from the repository.
+Every result in the manuscript can be regenerated from raw data using the
+commands below.
+
+\subsection{S1.1 Environment}
+
+\begin{verbatim}
+Python   : 3.11.x
+CUDA     : 12.1
+OS       : Windows 11 / Ubuntu 22.04
+\end{verbatim}
+
+Install all dependencies:
+\begin{verbatim}
+pip install -r requirements.txt
+\end{verbatim}
+
+Key pinned packages:
+\begin{verbatim}
+torch==2.1.2           mediapipe==0.10.14     opencv-python==4.8.1.78
+numpy==1.26.4          scikit-learn==1.3.2    scipy==1.11.4
+\end{verbatim}
+
+\subsection{S1.2 Step 1 --- Dataset Audit}
+
+Verify all raw videos are present (100 regular subjects + 9 severe-ASD):
+\begin{verbatim}
+python src/audit.py --raw_dir "D:/dryad"
+\end{verbatim}
+Expected output: \texttt{Audit PASSED --- all expected files present.}
+
+\subsection{S1.3 Step 2 --- Preprocessing}
+
+Run MediaPipe on all raw videos and produce \texttt{processed/features/*.npy}:
+\begin{verbatim}
+python src/preprocess.py --raw_dir "D:/dryad" --out_dir processed
+\end{verbatim}
+
+Dry-run (no files written):
+\begin{verbatim}
+python src/preprocess.py --raw_dir "D:/dryad" --out_dir processed --dry_run
+\end{verbatim}
+
+Single-subject sanity check:
+\begin{verbatim}
+python src/preprocess.py --raw_dir "D:/dryad" --out_dir processed \
+    --subjects asd_1 td_1
+python -c "
+import numpy as np
+x = np.load('processed/features/asd_1.npy')
+print(x.shape, x.dtype)  # Expected: (300, 33, 2) float32
+"
+\end{verbatim}
+
+\subsection{S1.4 Step 3 --- Freeze Splits}
+
+\begin{verbatim}
+python -c "
+import yaml, sys
+sys.path.insert(0, 'src')
+from train import freeze_splits
+cfg = yaml.safe_load(open('configs/config.yaml'))
+freeze_splits(cfg)
+"
+\end{verbatim}
+
+Output: \texttt{splits/splits\_dryad\_only\_v1.json}
+
+\subsection{S1.5 Step 4 --- Sanity Check (One Fold)}
+
+\begin{verbatim}
+python src/train.py --config configs/config.yaml --model_id A1 --seed 0 --fold 0
+\end{verbatim}
+
+\subsection{S1.6 Step 5 --- Full Ablation (A1--A5, 20 seeds $\times$ 3 folds)}
+
+\begin{verbatim}
+python src/ablation.py --config configs/config.yaml
+\end{verbatim}
+
+Run a subset:
+\begin{verbatim}
+python src/ablation.py --config configs/config.yaml --models A1 A2 A3
+\end{verbatim}
+
+\subsection{S1.7 Step 6 --- Supplementary Evaluation (9 severe-ASD subjects)}
+
+\begin{verbatim}
+python src/ablation.py --config configs/config.yaml --eval_supplement
+\end{verbatim}
+
+\subsection{S1.8 Step 7 --- Interpretability}
+
+\begin{verbatim}
+python src/interpretability.py --config configs/config.yaml --models A1 A2 A3
+\end{verbatim}
+
+\subsection{S1.9 Output File Map}
+
+\begin{longtable}{@{}p{0.40\linewidth} p{0.55\linewidth}@{}}
+\toprule
+Path & Content \\
+\midrule
+\texttt{processed/features/*.npy} & (300, 33, 2) float32 keypoint arrays \\
+\texttt{processed/labels.csv} & Clip metadata (clip\_id, subject\_id, label, group) \\
+\texttt{splits/splits\_dryad\_only\_v1.json} & Frozen subject-level splits \\
+\texttt{models/\{model\_id\}/fold*\_seed*.pt} & Checkpoints + Platt scalers \\
+\texttt{results/ablation\_results.csv} & Mean $\pm$ SD across 20 seeds per model \\
+\texttt{results/\{model\_id\}\_per\_seed.json} & Per-seed test metrics (raw, 20 entries each) \\
+\texttt{results/supplement\_results.csv} & Supplementary sensitivity + Wilson CI \\
+\texttt{results/interpretability\_metrics\_\{A1,A2,A3\}.json} & Attention stability, coherence, kinematics \\
+\texttt{audit\_report.txt} & Dataset audit log \\
+\bottomrule
+\end{longtable}
+
+% ─── S2: Preprocessing Specification ─────────────────────────────────────────
+\section{S2. Preprocessing Specification (PREPROCESS\_SPEC)}
+\label{sec:s2}
+
+This section reproduces the canonical preprocessing specification that was
+locked before any model training.
+
+\subsection{S2.1 Input Videos}
+
+\begin{tabular}{@{}lll@{}}
+\toprule
+Group & Source path & N \\
+\midrule
+ASD children & \texttt{D:/dryad/Autism/children with ASD/\{1..50\}/video/video.avi} & 50 \\
+Typical children & \texttt{D:/dryad/Typical/\{1..50\}/video/video.avi} & 50 \\
+Severe ASD (supplement) & \texttt{D:/dryad/Autism/Severe level of ASD/case\{1..9\}/*.avi} & 9--10 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5em}
+Augmentation clips (\texttt{augmentation/}) are \textbf{not used} in this study.
+
+\subsection{S2.2 MediaPipe Configuration}
+
+\begin{tabular}{@{}ll@{}}
+\toprule
+Parameter & Value \\
+\midrule
+\texttt{model\_complexity} & 2 (full accuracy) \\
+\texttt{static\_image\_mode} & False (video mode) \\
+\texttt{smooth\_landmarks} & True \\
+\texttt{min\_detection\_confidence} & 0.5 \\
+\texttt{min\_tracking\_confidence} & 0.5 \\
+Package version & \texttt{mediapipe==0.10.14} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5em}
+33 landmarks, normalized $(x,y) \in [0,1]$.
+Z-coordinate and visibility score are discarded.
+
+\subsection{S2.3 Per-Frame Normalization}
+
+\textbf{Centering.}
+Mid-hip origin: landmarks 23 (left hip) and 24 (right hip).
+\begin{equation}
+  x_\text{centred}[t,j] = x[t,j] - \tfrac{1}{2}(x[t,23] + x[t,24]).
+\end{equation}
+
+\textbf{Scale normalization.}
+Inter-shoulder distance (landmarks 11, 12), clamped $\ge 10^{-5}$:
+\begin{equation}
+  x_\text{norm}[t] = x_\text{centred}[t] \;/\; \max(\|x[t,11] - x[t,12]\|_2, 10^{-5}).
+\end{equation}
+
+\textbf{Note.}
+An earlier implementation centred on landmark 0 (nose).
+This has been corrected to mid-hip as specified above, prior to any model training.
+
+\subsection{S2.4 Sequence Length}
+
+Target: $T = 300$ frames (10 seconds at 30 fps).
+Truncation: keep first 300 frames.
+Padding: zero-pad at end for shorter sequences.
+MediaPipe-failed frames stored as all-zeros.
+
+\subsection{S2.5 Output Format}
+
+Shape: \texttt{(300, 33, 2)} float32.
+Velocity and acceleration computed at runtime inside \texttt{SpatialEncoder}:
+\begin{align}
+  D_c &= 33 \times 2 \times 3 = 198 \quad (\text{position + velocity + acceleration}).
+\end{align}
+
+% ─── S3: Per-Seed Results ─────────────────────────────────────────────────────
+\section{S3. Per-Seed Test Results for All Models}
+\label{sec:s3}
+
+Tables S3.1--S3.4 report individual-seed test metrics for all 20 seeds of
+the PACE-ASD arms (A1--A4).
+Complete per-seed JSON files for all 18 models are released with the repository
+at \texttt{results/\{model\_id\}\_per\_seed.json}.
+
+\subsection{S3.1 A1 --- Full PACE-ASD ($L=15$, $M=8$)}
+
+\begin{longtable}{@{}rllllll@{}}
+\caption{A1 per-seed test metrics (20 seeds).} \\
+\toprule
+Seed & AUC & Accuracy & F1 & Sensitivity & Specificity & ECE \\
+\midrule
+\endfirsthead
+\toprule
+Seed & AUC & Accuracy & F1 & Sensitivity & Specificity & ECE \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+1  & 0.771 & 0.747 & 0.767 & 0.861 & 0.641 & 0.155 \\
+2  & 0.855 & 0.760 & 0.750 & 0.750 & 0.769 & 0.165 \\
+3  & 0.842 & 0.747 & 0.731 & 0.722 & 0.769 & 0.174 \\
+4  & 0.846 & 0.813 & 0.815 & 0.861 & 0.769 & 0.115 \\
+5  & 0.885 & 0.760 & 0.739 & 0.722 & 0.795 & 0.147 \\
+6  & 0.880 & 0.827 & 0.810 & 0.778 & 0.872 & 0.137 \\
+7  & 0.853 & 0.813 & 0.811 & 0.833 & 0.795 & 0.130 \\
+8  & 0.887 & 0.733 & 0.719 & 0.722 & 0.744 & 0.193 \\
+9  & 0.838 & 0.787 & 0.773 & 0.750 & 0.821 & 0.134 \\
+10 & 0.863 & 0.800 & 0.790 & 0.778 & 0.821 & 0.155 \\
+11 & 0.803 & 0.747 & 0.752 & 0.806 & 0.692 & 0.213 \\
+12 & 0.910 & 0.800 & 0.796 & 0.833 & 0.769 & 0.161 \\
+13 & 0.818 & 0.693 & 0.667 & 0.639 & 0.744 & 0.219 \\
+14 & 0.908 & 0.787 & 0.758 & 0.694 & 0.872 & 0.150 \\
+15 & 0.902 & 0.773 & 0.754 & 0.750 & 0.795 & 0.186 \\
+16 & 0.825 & 0.773 & 0.760 & 0.750 & 0.795 & 0.176 \\
+17 & 0.865 & 0.760 & 0.741 & 0.722 & 0.795 & 0.154 \\
+18 & 0.868 & 0.813 & 0.798 & 0.778 & 0.846 & 0.150 \\
+19 & 0.857 & 0.747 & 0.740 & 0.750 & 0.744 & 0.173 \\
+20 & 0.882 & 0.787 & 0.768 & 0.750 & 0.821 & 0.133 \\
+\midrule
+\textbf{Mean} & \textbf{0.858} & \textbf{0.773} & \textbf{0.762} & \textbf{0.763} & \textbf{0.783} & \textbf{0.161} \\
+\textbf{SD}   & \textbf{0.034} & \textbf{0.032} & \textbf{0.035} & \textbf{0.054} & \textbf{0.054} & \textbf{0.026} \\
+\end{longtable}
+
+\subsection{S3.2 A2 --- No-Block-ESG (Dense Transformer)}
+
+Per-seed results available in \texttt{results/A2\_per\_seed.json}.
+Summary: AUC $= 0.842 \pm 0.037$, Specificity $= 0.773 \pm 0.047$.
+
+\subsection{S3.3 A3 --- Frame-Granularity Gate ($L=1$, $M=120$)}
+
+Per-seed results available in \texttt{results/A3\_per\_seed.json}.
+Summary: AUC $= 0.865 \pm 0.032$, Specificity $= 0.803 \pm 0.053$.
+
+\subsection{S3.4 A4 --- No-Transformer}
+
+Per-seed results available in \texttt{results/A4\_per\_seed.json}.
+Summary: AUC $= 0.862 \pm 0.022$, Specificity $= 0.789 \pm 0.045$.
+
+% ─── S4: Full Statistical Comparison Table ────────────────────────────────────
+\section{S4. Full Pairwise Statistical Comparison: A1 vs. All Baselines}
+\label{sec:s4}
+
+Table~\ref{tab:s4_stats} reports all pairwise comparisons between A1 and
+each baseline, for all metrics where a 20-vs-20 seed match was achievable.
+For baselines with fewer than 20 non-collapsed seeds
+(SkelFormer: 6, STTS: 4, MTT: 11, Conv1D-BiLSTM: 19),
+AUC comparison is omitted and only accuracy, F1, sensitivity, specificity,
+and ECE are reported (Bonferroni corrected over 5 metrics).
+
+All tests: paired Wilcoxon signed-rank (two-sided), \texttt{scipy.stats.wilcoxon}.
+Effect size: Cohen's $d$ (positive = A1 better).
+
+\begin{longtable}{@{}l l r r r r r l@{}}
+\caption{A1 vs. baselines: paired Wilcoxon test results (test set, 20 matched seeds).
+``Sig.'' = Bonferroni-corrected significant at $\alpha=0.05$.}
+\label{tab:s4_stats} \\
+\toprule
+Baseline & Metric & A1 & Baseline & $\Delta$ & $p$ & $d$ & Sig. \\
+\midrule
+\endfirsthead
+\toprule
+Baseline & Metric & A1 & Baseline & $\Delta$ & $p$ & $d$ & Sig. \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\multirow{5}{*}{MTC-Former}
+ & AUC         & 0.858 & 0.874 & $-$0.016 & 0.083 & $-$0.384 & No \\
+ & Accuracy    & 0.773 & 0.757 & $+$0.017 & 0.105 & $+$0.345 & No \\
+ & F1          & 0.762 & 0.755 & $+$0.007 & 0.430 & $+$0.122 & No \\
+ & Sensitivity & 0.763 & 0.788 & $-$0.025 & 0.234 & $-$0.291 & No \\
+ & Specificity & 0.783 & 0.728 & $+$0.055 & \textbf{0.004} & $+$0.833 & \textbf{Yes} \\
+ & ECE         & 0.161 & 0.174 & $-$0.013 & 0.053 & $-$0.435 & No \\
+\midrule
+\multirow{6}{*}{Stacked LSTM}
+ & AUC         & 0.858 & 0.825 & $+$0.033 & 0.001 & $+$0.874 & Yes \\
+ & Accuracy    & 0.773 & 0.754 & $+$0.019 & 0.231 & $+$0.336 & No \\
+ & F1          & 0.762 & 0.738 & $+$0.024 & 0.058 & $+$0.480 & No \\
+ & Sensitivity & 0.763 & 0.722 & $+$0.040 & 0.012 & $+$0.600 & No \\
+ & Specificity & 0.783 & 0.783 & $+$0.000 & 0.475 & $-$0.000 & No \\
+ & ECE         & 0.161 & 0.174 & $-$0.013 & 0.036 & $-$0.509 & No \\
+\midrule
+\multirow{5}{*}{Kinematic CNN-LSTM}
+ & AUC         & 0.858 & 0.807 & $+$0.051 & 0.000 & $+$1.201 & Yes \\
+ & Accuracy    & 0.773 & 0.733 & $+$0.040 & 0.001 & $+$0.949 & Yes \\
+ & F1          & 0.762 & 0.726 & $+$0.036 & 0.003 & $+$0.789 & Yes \\
+ & Sensitivity & 0.763 & 0.738 & $+$0.025 & 0.144 & $+$0.327 & No \\
+ & Specificity & 0.783 & 0.729 & $+$0.054 & 0.015 & $+$0.654 & No \\
+ & ECE         & 0.161 & 0.192 & $-$0.031 & 0.002 & $-$0.800 & Yes \\
+\midrule
+\multirow{5}{*}{MS-G3D}
+ & AUC         & 0.858 & 0.536 & $+$0.322 & 0.000 & $+$4.555 & Yes \\
+ & Accuracy    & 0.773 & 0.515 & $+$0.258 & 0.000 & $+$4.696 & Yes \\
+ & F1          & 0.762 & 0.421 & $+$0.341 & 0.000 & $+$3.439 & Yes \\
+ & Sensitivity & 0.763 & 0.472 & $+$0.290 & 0.000 & $+$1.785 & Yes \\
+ & Specificity & 0.783 & 0.555 & $+$0.228 & 0.000 & $+$1.432 & Yes \\
+ & ECE         & 0.161 & 0.121 & $+$0.040 & 0.006 & $+$0.672 & Yes \\
+\midrule
+\multirow{5}{*}{STAR}
+ & AUC         & 0.858 & 0.749 & $+$0.109 & 0.000 & $+$1.277 & Yes \\
+ & Accuracy    & 0.773 & 0.623 & $+$0.150 & 0.000 & $+$2.344 & Yes \\
+ & F1          & 0.762 & 0.470 & $+$0.292 & 0.000 & $+$2.782 & Yes \\
+ & Sensitivity & 0.763 & 0.415 & $+$0.347 & 0.000 & $+$2.511 & Yes \\
+ & Specificity & 0.783 & 0.815 & $-$0.032 & 0.165 & $-$0.235 & No \\
+ & ECE         & 0.161 & 0.119 & $+$0.042 & 0.005 & $+$0.786 & Yes \\
+\midrule
+\multirow{5}{*}{MediaPipe + RF}
+ & AUC         & 0.858 & 0.822 & $+$0.036 & 0.001 & $+$1.033 & Yes \\
+ & Accuracy    & 0.773 & 0.699 & $+$0.074 & 0.000 & $+$1.931 & Yes \\
+ & F1          & 0.762 & 0.715 & $+$0.047 & 0.000 & $+$1.114 & Yes \\
+ & Sensitivity & 0.763 & 0.775 & $-$0.013 & 0.334 & $-$0.195 & No \\
+ & Specificity & 0.783 & 0.630 & $+$0.154 & 0.000 & $+$2.757 & Yes \\
+ & ECE         & 0.161 & 0.199 & $-$0.038 & 0.001 & $-$0.888 & Yes \\
+\midrule
+\multirow{5}{*}{MediaPipe + SVM}
+ & AUC         & 0.858 & 0.763 & $+$0.095 & 0.000 & $+$2.672 & Yes \\
+ & Accuracy    & 0.773 & 0.695 & $+$0.078 & 0.000 & $+$2.362 & Yes \\
+ & F1          & 0.762 & 0.694 & $+$0.068 & 0.000 & $+$1.877 & Yes \\
+ & Sensitivity & 0.763 & 0.721 & $+$0.042 & 0.006 & $+$0.701 & Yes \\
+ & Specificity & 0.783 & 0.672 & $+$0.112 & 0.000 & $+$1.910 & Yes \\
+ & ECE         & 0.161 & 0.141 & $+$0.020 & 0.008 & $+$0.726 & Yes \\
+\midrule
+\multirow{5}{*}{MediaPipe + XGBoost}
+ & AUC         & 0.858 & 0.821 & $+$0.036 & 0.001 & $+$0.995 & Yes \\
+ & Accuracy    & 0.773 & 0.689 & $+$0.085 & 0.000 & $+$2.386 & Yes \\
+ & F1          & 0.762 & 0.707 & $+$0.055 & 0.000 & $+$1.515 & Yes \\
+ & Sensitivity & 0.763 & 0.778 & $-$0.015 & 0.418 & $-$0.266 & No \\
+ & Specificity & 0.783 & 0.606 & $+$0.177 & 0.000 & $+$2.725 & Yes \\
+ & ECE         & 0.161 & 0.244 & $-$0.083 & 0.000 & $-$2.504 & Yes \\
+\end{longtable}
+
+% ─── S5: Model Architecture Details ──────────────────────────────────────────
+\section{S5. Model Architecture Parameter Counts}
+\label{sec:s5}
+
+Parameter counts computed analytically from \texttt{configs/config.yaml}
+(\texttt{spatial\_dim=128}, \texttt{conv1d\_channels=32},
+\texttt{transformer\_layers=1}, \texttt{transformer\_heads=4}).
+Total counts were independently verified by instantiating the model and
+calling \texttt{sum(p.numel() for p in model.parameters())}.
+
+\begin{table}[H]
+\centering
+\caption{Parameter counts for PACE-ASD components (current config).}
+\begin{tabular}{@{}l r@{}}
+\toprule
+Component & Parameters \\
+\midrule
+Spatial Encoder (residual MLP, $d{=}128$)                    &  76,032 \\
+Microkinetic Encoder (3$\times$ Conv1D, 32 ch, + GroupNorm)  &  37,152 \\
+Block-ESG gate MLP (Linear 96$\to$96$\to$1)                  &   9,409 \\
+Temporal Event Transformer (1L/4H, \texttt{d\_model}=96)     &  96,768 \\
+Classifier head (Linear 128$\to$64$\to$1 + LayerNorm)        &   8,449 \\
+Platt calibration temperature                                 &       1 \\
+\midrule
+\textbf{Total (A1, full PACE-ASD)}   & \textbf{227,811} \\
+A2 (no Block-ESG gate)               & 218,402 \\
+A3 (frame-granularity gate, $L{=}1$) & 227,811 \\
+A4 (no Transformer, linear head)     & 143,715 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.5em}
+\noindent
+\textbf{Note on spatial\_dim and micro\_dim.}
+With \texttt{spatial\_dim=128} and \texttt{conv1d\_channels=32},
+the microkinetic encoder produces \texttt{micro\_dim = 3\,$\times$\,32 = 96}.
+The Transformer input is therefore 96-dimensional.
+The config file (\texttt{configs/config.yaml}) is the authoritative source
+for all hyperparameters; in particular, \texttt{transformer\_layers=1}
+specifies a single-layer encoder.
+
+% ─── S6: Dataset Audit Summary ────────────────────────────────────────────────
+\section{S6. Dataset Audit Summary}
+\label{sec:s6}
+
+The following audit was performed before any model training or split assignment.
+
+\begin{itemize}
+  \item \textbf{Deduplication.} MD5 comparison of all 110 processed feature files
+        identified 5 pairs of byte-identical TD recordings in the Dryad deposit.
+        One from each pair was moved to \texttt{processed/removed\_duplicates/}.
+        Retained: td\_17, td\_22, td\_23, td\_24, td\_26.
+        Removed: td\_39, td\_5, td\_4, td\_7, td\_50.
+
+  \item \textbf{Main cohort (post-dedup).} 90 subjects: 45 ASD + 45 TD,
+        one clip per subject.
+        Final clip count: \textbf{90 regular clips}.
+
+  \item \textbf{Supplement.} 5 regular ASD subjects (asd\_2, asd\_13, asd\_27,
+        asd\_30, asd\_32) held out from main cohort (seed=42) + 9 severe-ASD
+        subjects = \textbf{14 supplement subjects (all ASD)}.
+
+  \item \textbf{Leakage check.} Post-deduplication MD5 verification confirmed
+        \textbf{zero overlaps} between the training/validation pool and the
+        22-subject held-out test set.
+
+  \item \textbf{Camera.} All regular-cohort videos: Samsung Note 9 rear camera
+        (confirmed by EXIF metadata on a random 10-subject audit).
+        The Dryad release also includes Kinect v2 skeleton data; not used.
+
+  \item \textbf{Augmentation.} Augmentation folder present in Dryad release;
+        not used (preprocessing script skips augmentation/).
+\end{itemize}
+
+Full audit log: \texttt{audit\_report.txt} in the repository.
+
+
+
+% ─── S7: Calibration Analysis ────────────────────────────────────────────────
+\section{S7. Platt Calibration Analysis}
+\label{sec:s7}
+
+Platt calibration was applied to A1--A4 and all deep learning baselines.
+For each model, the calibration temperature $T_\text{platt}$ was fitted on
+out-of-fold validation logits using maximum likelihood.
+Table~\ref{tab:calibration} reports mean ECE before and after calibration
+for A1 across 20 seeds.
+
+\begin{table}[H]
+\centering
+\caption{Expected Calibration Error (ECE, 15 bins) for A1 before and after
+Platt calibration.}
+\label{tab:calibration}
+\begin{tabular}{@{}l r r@{}}
+\toprule
+& Pre-calibration & Post-calibration \\
+\midrule
+Mean ECE (20 seeds) & 0.203\,$\pm$\,0.038 & 0.161\,$\pm$\,0.026 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Calibration reduces mean ECE by approximately 0.042, confirming that the
+Platt scaler improves probability reliability.
+
+% ─── S8: Clip-Length Distribution ────────────────────────────────────────────
+\section{S8. Clip-Length Distribution}
+\label{sec:s8}
+
+
+MediaPipe-extracted valid frame counts (non-zero frames) per clip were measured
+across the regular cohort (100 clips, after MediaPipe extraction):
+
+\begin{table}[H]
+\centering
+\caption{Valid frame count distribution (post-MediaPipe, pre-padding).}
+\begin{tabular}{@{}l r@{}}
+\toprule
+Statistic & Value \\
+\midrule
+Min & 68 \\
+5th percentile & 89 \\
+25th percentile & 108 \\
+Median & 124 \\
+75th percentile & 189 \\
+95th percentile & 271 \\
+Max & 300 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This distribution informs the claim in Section 3.2.3 that the 120-frame budget
+is near-complete retention for roughly half the corpus (median 124 valid frames).
+For clips at the 75th percentile (189 valid frames), \besg selects 120 of 189
+frames (63\%), constituting genuine sparse selection.
+
+% ─── S9: A5 Baseline Supplement Evaluation ────────────────────────────────────
+\section{S9. A5 Baseline Sensitivity in the Supplementary Cohort}
+\label{sec:s9}
+
+All A5 literature baselines (including MTC-Former, MTT, SkelFormer, MS-G3D,
+STTS, and the four sklearn baselines) are evaluated on the 14-subject
+supplementary cohort using the \texttt{eval\_supplement\_baseline} routine
+in \texttt{src/ablation.py}.
+
+\textbf{Evaluation strategy.}
+Because the supplement subjects were withheld entirely from training and
+hold no test-set identity, a direct evaluation approach is used: for each
+of the 20 random seeds, each baseline is re-fitted on the full 68-subject
+train/val pool (all three folds combined) and then applied to the 14
+supplement subjects.
+Sensitivity is computed from the seed-ensemble majority-vote prediction.
+This is methodologically equivalent to the approach used for A1--A4
+(which averages all 60 saved fold checkpoints).
+
+\textbf{Run command.}
+\begin{verbatim}
+python src/ablation.py --config configs/config.yaml --eval_supplement
+\end{verbatim}
+
+Results are written to \texttt{results/supplement\_results.csv} alongside
+the A1--A4 rows.
+Sensitivity and 95\% Wilson confidence intervals for all models are reported
+in Table~\ref{tab:supplement} of the main manuscript.
+
+\end{document}

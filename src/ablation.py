@@ -4,8 +4,9 @@ PACE-ASD — Ablation Runner (Protocol Section 4)
 Runs models A1–A5 in sequence, each with 20 seeds × 3-fold CV.
 Saves results/ablation_results.csv and results/ablation_table.pdf.
 
-Optional --eval_supplement evaluates PACE-ASD variants (A1–A4) on the 9 severe-ASD subjects
-(Section 6 supplementary note) and writes results/supplement_results.csv.
+Optional --eval_supplement evaluates PACE-ASD variants (A1–A4) AND A5 baselines
+on the 14-subject supplementary cohort (5 regular ASD + 9 severe-ASD, all ASD,
+sensitivity only) and writes results/supplement_results.csv.
 
 Usage:
     python src/ablation.py --config configs/config.yaml
@@ -404,6 +405,133 @@ def eval_supplement(model_id: str, splits: dict, config: dict,
     ensemble_preds = (np.mean(all_preds, axis=0) >= 0.5).astype(int)
     return compute_supplement_sensitivity(subj_labels_ref, ensemble_preds)
 
+
+def eval_supplement_baseline(
+    baseline_id: str, baseline_spec: dict, splits: dict,
+    config: dict, device: torch.device, n_seeds: int,
+) -> dict:
+    """
+    Evaluate an A5 baseline on the supplement cohort.
+
+    Strategy: for each seed, re-fit on the full trainval pool (all 3 folds
+    combined), predict on the supplement subjects, then aggregate sensitivity
+    across seeds.  This mirrors the approach used for A1-A4 (ensemble of all
+    saved checkpoints → majority-vote over seeds).
+
+    Works for both sklearn and PyTorch baselines.
+    """
+    import copy
+    from train import resolve_clip_lists
+
+    supp        = splits["supplement"]
+    supp_ids    = supp["clip_ids"]
+    supp_labels = supp["labels"]
+    supp_subjs  = supp["subject_ids"]
+    features_dir = os.path.join(config["data"]["processed_dir"], "features")
+
+    btype = baseline_spec.get("type", "")
+    is_sklearn = btype in SKLEARN_BASELINES
+
+    seed_base = config["training"]["seed"]
+    all_preds = []
+    subj_labels_ref = None
+
+    for i in range(n_seeds):
+        seed = seed_base + i
+        set_seed(seed)
+
+        # Collect all trainval clip IDs across the 3 folds for this seed
+        all_train_ids, all_train_labels, all_train_subjects = [], [], []
+        for fold_idx in range(config["training"]["n_folds"]):
+            (tr_ids, tr_labels, tr_subjs,
+             val_ids, val_labels, val_subjs,
+             _test_ids, _test_labels, _test_subjs) = resolve_clip_lists(
+                splits, fold_idx, config,
+            )
+            all_train_ids     += list(tr_ids) + list(val_ids)
+            all_train_labels  += list(tr_labels) + list(val_labels)
+            all_train_subjects += list(tr_subjs) + list(val_subjs)
+
+        if is_sklearn:
+            train_paths = [os.path.join(features_dir, f"{c}.npy")
+                           for c in all_train_ids]
+            supp_paths  = [os.path.join(features_dir, f"{c}.npy")
+                           for c in supp_ids]
+
+            X_train = extract_sklearn_features(train_paths)
+            X_supp  = extract_sklearn_features(supp_paths)
+
+            pipe = build_sklearn_baseline(btype, seed=seed)
+            pipe.fit(X_train, all_train_labels)
+            supp_probs = pipe.predict_proba(X_supp)[:, 1]
+            preds = (supp_probs >= 0.5).astype(int)
+
+        else:
+            # PyTorch baseline
+            from dataset import ASDMotionDataset, create_dataloaders
+            from baselines import PYTORCH_BASELINES, StackedLSTM, Conv1DBiLSTMAttn
+            from calibration import PlattScaler
+
+            baseline_class = PYTORCH_BASELINES.get(btype)
+            if baseline_class is None:
+                print(f"  [WARN] Unknown PyTorch baseline type '{btype}' — skipping.")
+                return {}
+
+            tc = config["training"]
+            train_ds = ASDMotionDataset(
+                all_train_ids, all_train_labels, features_dir, augment=False
+            )
+            train_loader = torch.utils.data.DataLoader(
+                train_ds, batch_size=tc["batch_size"], shuffle=True,
+                num_workers=tc["num_workers"],
+            )
+
+            import torch.nn as nn
+            from torch.optim import AdamW
+            from torch.optim.lr_scheduler import CosineAnnealingLR
+
+            model = baseline_class().to(device)
+            criterion = nn.BCEWithLogitsLoss()
+            optimizer = AdamW(model.parameters(), lr=tc["lr"],
+                              weight_decay=tc["weight_decay"])
+            scheduler = CosineAnnealingLR(optimizer, T_max=tc["epochs"], eta_min=1e-6)
+
+            for epoch in range(1, tc["epochs"] + 1):
+                model.train()
+                for seqs, labs in train_loader:
+                    seqs, labs = seqs.to(device), labs.to(device)
+                    optimizer.zero_grad()
+                    _, logits = model(seqs)
+                    nn.BCEWithLogitsLoss()(logits, labs).backward()
+                    torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+                    optimizer.step()
+                scheduler.step()
+
+            # Predict on supplement
+            supp_ds = ASDMotionDataset(supp_ids, supp_labels, features_dir, augment=False)
+            supp_loader = torch.utils.data.DataLoader(
+                supp_ds, batch_size=tc["batch_size"], shuffle=False,
+                num_workers=tc["num_workers"],
+            )
+            criterion = nn.BCEWithLogitsLoss()
+            logits_arr, _, labels_arr, _ = run_inference(model, supp_loader, criterion, device)
+            preds, _, subj_labels_ref, _ = subject_level_eval(
+                logits_arr, labels_arr, supp_subjs, scaler=None,
+            )
+
+        all_preds.append(preds)
+        if subj_labels_ref is None and is_sklearn:
+            subj_labels_ref = np.array(supp_labels)
+
+    if not all_preds:
+        return {}
+
+    ensemble_preds = (np.mean(all_preds, axis=0) >= 0.5).astype(int)
+    return compute_supplement_sensitivity(
+        subj_labels_ref if subj_labels_ref is not None else np.array(supp_labels),
+        ensemble_preds,
+    )
+
 def _model_kwargs_for_id(model_id: str) -> dict:
     if model_id in ABLATION_ARMS:
         return ABLATION_ARMS[model_id]["model_kwargs"]
@@ -554,34 +682,66 @@ def main():
 
     # ── Supplementary evaluation (Section 6) ──────────────────────────────────
     if args.eval_supplement:
+        n_supp = len(splits.get("supplement", {}).get("clip_ids", []))
         print(f"\n{'='*60}")
-        print(f"  Section 6: Supplementary Evaluation (9 severe-ASD subjects)")
+        print(f"  Section 6: Supplementary Evaluation ({n_supp} clips, all-ASD, sensitivity only)")
         print(f"{'='*60}")
 
         supp_rows = []
+
+        # ── A1–A4 PACE-ASD variants (load saved .pt checkpoints) ──────────────
+        print(f"\n  A1–A4 (PACE-ASD ablation variants):")
         for model_id in list(ABLATION_ARMS.keys()):
             cfg = apply_patch(config, ABLATION_ARMS[model_id]["config_patch"])
             s   = eval_supplement(model_id, splits, cfg, device)
             if s:
                 lo, hi = s.get("sensitivity_ci", (float("nan"), float("nan")))
-                print(f"  {model_id}: sensitivity={s.get('sensitivity', float('nan')):.3f} "
+                print(f"    {model_id}: sensitivity={s.get('sensitivity', float('nan')):.3f} "
                       f"95%CI [{lo:.3f}, {hi:.3f}]  (n={s.get('n',0)})")
                 supp_rows.append({
                     "model_id":    model_id,
+                    "description": ABLATION_ARMS[model_id]["desc"],
                     "n":           s.get("n", 0),
                     "sensitivity": s.get("sensitivity", float("nan")),
                     "ci_low":      lo,
                     "ci_high":     hi,
                 })
 
+        # ── A5 baselines (re-fit on trainval, evaluate on supplement) ──────────
+        print(f"\n  A5 baselines (re-fit on trainval, predict on supplement):")
+        n_seeds = config["training"].get("n_seeds", 20)
+        for bid, bspec in A5_BASELINES.items():
+            print(f"    {bid} ({bspec['desc']}) ...", end=" ", flush=True)
+            try:
+                s = eval_supplement_baseline(
+                    bid, bspec, splits, config, device, n_seeds=n_seeds,
+                )
+                if s:
+                    lo, hi = s.get("sensitivity_ci", (float("nan"), float("nan")))
+                    print(f"sensitivity={s.get('sensitivity', float('nan')):.3f} "
+                          f"95%CI [{lo:.3f}, {hi:.3f}]  (n={s.get('n',0)})")
+                    supp_rows.append({
+                        "model_id":    bid,
+                        "description": bspec["desc"],
+                        "n":           s.get("n", 0),
+                        "sensitivity": s.get("sensitivity", float("nan")),
+                        "ci_low":      lo,
+                        "ci_high":     hi,
+                    })
+                else:
+                    print("no result (skipped)")
+            except Exception as exc:
+                print(f"ERROR: {exc}")
+
         supp_csv = os.path.join(results_dir, "supplement_results.csv")
         if supp_rows:
             with open(supp_csv, "w", newline="") as f:
                 writer = csv.DictWriter(
-                    f, fieldnames=["model_id","n","sensitivity","ci_low","ci_high"])
+                    f, fieldnames=["model_id","description","n","sensitivity","ci_low","ci_high"])
                 writer.writeheader()
                 writer.writerows(supp_rows)
             print(f"\n  Supplement results → {supp_csv}")
+
 
     print(f"\n{'#'*60}")
     print(f"  Ablation complete.")
