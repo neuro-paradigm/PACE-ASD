@@ -127,7 +127,9 @@ def _page_loss_curves(pdf, title: str, epoch_history: list, best_epoch: int):
     ax.axvline(x=best_epoch + 1, color="gray", linestyle="--", alpha=0.5)
     ax.set_xlabel("Epoch")
     ax.set_ylabel("Loss")
-    ax.legend()
+    handles, labels = ax.get_legend_handles_labels()
+    if handles:
+        ax.legend(handles, labels)
     ax.set_xlim(0.5, len(epochs) + 0.5)
     plt.tight_layout()
     pdf.savefig(fig)
