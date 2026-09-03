@@ -1,8 +1,0 @@
-Highlights for:
-PACE-ASD: Pose-Aware Contiguous Event Saliency-Gated Transformer for Autism Spectrum Disorder Screening from Markerless Video
-
-• Block-ESG selects 8 contiguous 15-frame blocks, cutting Transformer tokens by 60%
-• Evaluated on 90 deduplicated children (45 ASD + 45 TD), leakage-free splits
-• PACE-ASD matches MTC-Former AUC while significantly beating its specificity (p=0.004)
-• Zero training collapse across 240 runs vs. majority collapse in 3/10 baselines
-• Gate–attention coherence (r=0.783) confirms mechanistic self-consistency

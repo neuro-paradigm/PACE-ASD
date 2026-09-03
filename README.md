@@ -1,178 +1,249 @@
-# PACE-ASD: Pose-Aware Contiguous Event Saliency Gate for ASD Screening
+﻿# PACE-ASD: Pose-Aware Contiguous Event Saliency-Gated Transformer for Markerless Autism Screening
 
-**Markerless video-based autism spectrum disorder (ASD) screening via skeleton pose sequences and a Block-Level Event Saliency Gate (Block-ESG).**
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3110/)
+[![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0%2B-orange.svg)](https://pytorch.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Dataset: Dryad](https://img.shields.io/badge/Dataset-Dryad%20CC0-green.svg)](https://doi.org/10.5061/dryad.s7h44j150)
+[![Status: Under Review](https://img.shields.io/badge/Status-Under%20Review-informational.svg)](https://www.journals.elsevier.com/intelligent-systems-with-applications)
 
-> This repository accompanies a manuscript under review at *Information Sciences with Applications* (Elsevier). Results are frozen pending re-training on the deduplicated cohort. See [Dataset](#dataset) for deduplication details.
+Official PyTorch implementation and reproduction package for **"PACE-ASD: A Pose-Aware Contiguous Event Saliency Gate for Markerless Autism Screening"**, under review at *Intelligent Systems with Applications* (Elsevier).
 
 ---
 
-## Overview
+## 📌 Overview
 
-PACE-ASD classifies 2-D skeleton pose sequences extracted from standard RGB video into ASD / typically-developing (TD).
-The core contribution is the **Block-ESG**: a lightweight differentiable gate that selects the *M = 8* most kinematically salient **contiguous 15-frame blocks** (120 / 300 frames total) before a single-layer, four-head Transformer encoder.
+Early detection of Autism Spectrum Disorder (ASD) is critical for improving developmental outcomes, yet gold-standard clinical assessments (such as the ADOS-2) require specialized clinicians and suffer from prolonged diagnostic waitlists. Markerless 2D skeleton pose estimation from standard, monocular RGB video offers an accessible and non-invasive alternative for clinical motor screening.
+
+However, existing deep learning action recognition models (e.g., spatio-temporal GCNs and video Transformers) face two major obstacles in pediatric motor screening:
+1. **Temporal Dilution:** Transient, informative atypical motor events are drowned within lengthy sequences of ordinary background movement when applying dense attention or global pooling.
+2. **Catastrophic Instability:** Over-parameterized architectures frequently suffer catastrophic training collapse when trained on modest clinical cohorts ($N < 100$).
+
+**PACE-ASD** resolves these challenges by introducing an inductive temporal bias via the **Block-Level Event Saliency Gate (Block-ESG)**:
+- Instead of attending over all 300 frames or selecting arbitrary, disconnected individual frames, Block-ESG dynamically identifies and routes the **$M = 8$ most kinematically salient contiguous 15-frame blocks** (500 ms motion primitives at 30 fps; 120 frames total) to a lightweight temporal Transformer encoder.
+- Provides **complete training stability** (0/20 collapsed seeds vs. up to 10/20 collapse in literature baselines).
+- Enforces **mechanistic interpretability** through a two-stage coherence audit: validating that gating saliency and self-attention weights reinforce the same motor events ($r = 0.822$).
+
+---
+
+## 🏗️ Model Architecture & Data Flow
 
 ```
-RGB video → MediaPipe pose → (300, 33, 2) keypoints
-    → Spatial Encoder (128-d per frame)
-        → Microkinetic Encoder (3× Conv1D → 96-d)
-            → Block-ESG (300 → 120 tokens)
-                → Temporal Transformer (1L / 4H)
-                    → Classifier + Platt calibration
-                        → P(ASD)
+Monocular RGB Video
+        │
+        ▼
+MediaPipe Pose (33 2-D Keypoints, T = 300 frames)
+        │
+        ▼ Hip-Centering & Inter-Shoulder Scale Normalization
+Kinematic Skeletal Sequence (B, 300, 33, 2)
+        │
+        ├──► Spatial Encoder (Per-frame MLP) ──────────────► Spatial Tokens (B, 300, 128)
+        │                                                           │
+        └──► Microkinetic Encoder (Conv1D: pos, vel, acc)           │
+                    │                                               │
+                    ▼                                               │
+             Salience Gate (Linear 96 -> 48 -> 1)                   │
+                    │                                               │
+                    ▼                                               │
+             Block-ESG Pooling (L = 15 frames, M = 8 blocks)        │
+                    │                                               │
+                    ▼ (Top-8 Contiguous Blocks Selected)            │
+             Selected Tokens (B, 120, 128) ◄────────────────────────┘
+                    │
+                    ▼
+             Temporal Transformer (1 Layer, 4 Heads, d = 128, with Padding Mask)
+                    │
+                    ▼ Mean Pooling across Active Tokens
+             Classification Head (MLP: 128 -> 64 -> 1)
+                    │
+                    ▼ Temperature Platt Scaling
+             Calibrated Prediction: P(ASD) ∈ [0, 1]
 ```
 
-| Variant | Description |
-|---|---|
-| **A1** | Full PACE-ASD (Block-ESG + Transformer) |
-| A2 | No gate — all 300 frames to Transformer |
-| A3 | Frame-granularity gate (L=1, M=120) |
-| A4 | No Transformer — linear head on gate output |
+### Architectural Ablation Arms
+* **A1 (Full PACE-ASD):** Block-ESG ($L=15, M=8$) + 1-layer 4-head Temporal Transformer (223,107 params).
+* **A2 (Dense Transformer / No-Block-ESG):** Direct self-attention across all 300 frames without gating (218,402 params).
+* **A3 (Frame-Granularity Gate):** Unconstrained single-frame selection ($L=1, M=120$) (223,107 params).
+* **A4 (No-Transformer):** Microkinetic spatial encoder + Block-ESG with linear pooling head (139,011 params).
 
 ---
 
-## Key Results (frozen, 20 seeds × 3-fold CV, n = 90)
+## 📊 Benchmark Results
 
-| Model | AUC | Specificity | Collapse rate |
-|---|---|---|---|
-| **A1 (PACE-ASD)** | 0.858 | **0.783** | **0/20** |
-| MTC-Former | 0.874 | 0.728 | 3/20 |
+Evaluated on the **deduplicated main cohort ($N = 90$, 45 ASD + 45 TD)** with 3-fold subject-level cross-validation and 20 independent random seeds per fold (**240 total runs per arm**). Collapsed seeds ($\text{test accuracy} < 0.55$) are strictly monitored.
 
-- Primary finding: A1 is **non-inferior** to MTC-Former on AUC (Δ = −0.016, p = 0.083, paired Wilcoxon).
-- A1 **significantly outperforms** MTC-Former on specificity (Δ = +0.055, p = 0.004, Bonferroni-corrected).
-- Gate ↔ Transformer coherence cross-check: Pearson r = 0.625, per-subject r = 0.783.
+### Main Performance Comparison (Test Split, 20-Seed Mean $\pm$ SD)
 
-> ⚠️ These result numbers are from the pre-deduplication run (n=100). Re-training on the deduplicated n=90 cohort is required before final submission. Numbers will be updated here after re-training.
+| Model Category | Model | AUC | Accuracy | F1 | Sensitivity | Specificity | ECE | Collapsed |
+|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **PACE-ASD Arms** | **A1 (Full PACE-ASD)** | **0.836 ± 0.026** | **0.733 ± 0.040** | **0.740 ± 0.052** | **0.814 ± 0.077** | **0.660 ± 0.072** | **0.173 ± 0.026** | **0 / 20** |
+| | A2 (No-Block-ESG) | 0.816 ± 0.028 | 0.697 ± 0.028 | 0.738 ± 0.022 | 0.892 ± 0.050 | 0.518 ± 0.072 | 0.182 ± 0.027 | 0 / 20 |
+| | A3 (Frame Gate, L=1) | 0.857 ± 0.039 | 0.739 ± 0.048 | 0.750 ± 0.058 | 0.827 ± 0.078 | 0.658 ± 0.080 | 0.193 ± 0.030 | 0 / 20 |
+| | A4 (No-Transformer) | 0.809 ± 0.033 | 0.667 ± 0.033 | 0.672 ± 0.055 | 0.750 ± 0.092 | 0.592 ± 0.089 | 0.196 ± 0.037 | 0 / 20 |
+| **Deep Learning Baselines** | MTC-Former (Zhu et al., 2025) | 0.778 ± 0.024 | 0.625 ± 0.031 | 0.668 ± 0.029 | 0.794 ± 0.056 | 0.469 ± 0.067 | 0.257 ± 0.029 | 0 / 20 |
+| | Stacked LSTM | 0.820 ± 0.032 | 0.696 ± 0.033 | 0.700 ± 0.050 | 0.756 ± 0.096 | 0.642 ± 0.110 | 0.140 ± 0.031 | 0 / 20 |
+| | Conv1D-BiLSTM-Attn | 0.781 ± 0.022 | 0.609 ± 0.021 | 0.674 ± 0.021 | 0.850 ± 0.048 | 0.388 ± 0.047 | 0.232 ± 0.042 | 0 / 20 |
+| | Kinematic CNN-LSTM | 0.806 ± 0.031 | 0.736 ± 0.045 | 0.764 ± 0.040 | 0.873 ± 0.051 | 0.610 ± 0.074 | 0.151 ± 0.015 | 0 / 20 |
+| | MS-G3D (Liu et al., 2020) | 0.652 ± 0.050 | 0.540 ± 0.048 | 0.557 ± 0.054 | 0.670 ± 0.141 | 0.421 ± 0.201 | 0.106 ± 0.021 | **10 / 20** |
+| | MS-G3D + ConvNeXt | 0.822 ± 0.031 | 0.720 ± 0.048 | 0.710 ± 0.070 | 0.774 ± 0.094 | 0.669 ± 0.117 | 0.194 ± 0.026 | 0 / 20 |
+| | SkelFormer (Yan et al., 2026) | 0.703 ± 0.075 | 0.633 ± 0.075 | 0.520 ± 0.152 | 0.515 ± 0.168 | 0.740 ± 0.177 | 0.142 ± 0.071 | **2 / 20** |
+| | STTS (Wang et al., 2022) | 0.714 ± 0.074 | 0.646 ± 0.066 | 0.499 ± 0.162 | 0.486 ± 0.180 | 0.793 ± 0.162 | 0.147 ± 0.046 | **1 / 20** |
+| | MTT (Kong et al., 2022) | 0.768 ± 0.061 | 0.668 ± 0.049 | 0.586 ± 0.139 | 0.602 ± 0.160 | 0.729 ± 0.131 | 0.130 ± 0.039 | 0 / 20 |
+| | STAR (Shi et al., 2021) | 0.748 ± 0.059 | 0.638 ± 0.056 | 0.587 ± 0.109 | 0.606 ± 0.161 | 0.667 ± 0.156 | 0.137 ± 0.047 | **1 / 20** |
+| **Classical ML Baselines** | MediaPipe + LR | 0.725 ± 0.000 | 0.696 ± 0.000 | 0.725 ± 0.000 | 0.818 ± 0.000 | 0.583 ± 0.000 | 0.200 ± 0.000 | 0 / 20 |
+| | MediaPipe + SVM (RBF) | 0.871 ± 0.000 | 0.694 ± 0.006 | 0.755 ± 0.005 | 0.971 ± 0.012 | 0.440 ± 0.016 | 0.189 ± 0.026 | 0 / 20 |
+| | MediaPipe + Random Forest | 0.819 ± 0.011 | 0.675 ± 0.021 | 0.734 ± 0.016 | 0.936 ± 0.023 | 0.436 ± 0.034 | 0.184 ± 0.016 | 0 / 20 |
+| | MediaPipe + XGBoost | 0.825 ± 0.008 | 0.736 ± 0.011 | 0.778 ± 0.008 | 0.964 ± 0.012 | 0.528 ± 0.018 | 0.222 ± 0.015 | 0 / 20 |
+
+### Key Findings & Statistical Significance
+1. **Superiority over SOTA Temporal Transformer Baseline:** A1 significantly outperforms MTC-Former on AUC ($\Delta = +0.058, p < 0.001$, Cohen's $d = +1.704$), specificity ($\Delta = +0.190, p < 0.001, d = +1.770$), accuracy ($\Delta = +0.109, p < 0.001$), F1 ($\Delta = +0.072, p < 0.001$), and calibration error ECE ($\Delta = -0.083, p < 0.001$).
+2. **Architectural Training Stability:** PACE-ASD arms achieve **0/20 collapse** across all seeds. In contrast, 4 of 10 deep action baselines collapse frequently (MS-G3D collapses in 50% of seeds [10/20], SkelFormer in 2/20, STTS in 1/20, and STAR in 1/20).
+3. **Mechanistic Self-Consistency:** In A1, the gate saliency scores correlate strongly with Transformer self-attention density ($r = 0.822$, Spearman $\rho = 0.801$). In frame-level gating (A3), this cross-check completely collapses ($r = 0.054, \rho = 0.050$), revealing that unconstrained frame selection selects disjoint, uninterpretable frame tokens.
+4. **Pediatric Kinematic Alignment:** Feature attribution converges on acceleration kinematics ($>72\%$ importance) and head/arm regions across all variants (A1, A2, A3), directly aligning with developmental motor literature.
 
 ---
 
-## Dataset
+## 📁 Dataset & Deduplication Audit
 
-**Al-Jubouri, A. A.; Hadi, I.; Rajihy, Y. (2020).** *Three Dimensional Dataset Combining Gait and Full Body Movement of Children with Autism Spectrum Disorders Collected by Kinect v2 Camera.* Dryad. [doi:10.5061/dryad.s7h44j150](https://doi.org/10.5061/dryad.s7h44j150)
+The experiment is conducted on the open-access **Dryad ASD Kinematic Dataset**:
+> **Aljubouri, A. A., Hadi, I., & Rajihy, Y. (2020).** *Three Dimensional Dataset Combining Gait and Full Body Movement of Children with Autism Spectrum Disorders Collected by Kinect v2 Camera.* Dryad Digital Repository. [doi:10.5061/dryad.s7h44j150](https://doi.org/10.5061/dryad.s7h44j150).
 
-This study uses the **color video** component (Samsung Note 9 rear camera). Kinect v2 skeleton files were not used.
+### Deduplication Audit
+A forensic MD5 checksum audit revealed **5 pairs of byte-identical TD video files** in the public deposit (duplicate recordings uploaded under multiple subject IDs). To prevent train-test data leakage, one subject from each identical pair was segregated into `processed/removed_duplicates/`:
+- `td_39` (duplicate of `td_17`)
+- `td_5` (duplicate of `td_22`)
+- `td_4` (duplicate of `td_23`)
+- `td_7` (duplicate of `td_24`)
+- `td_50` (duplicate of `td_26`)
 
-### Deduplication
+### Cohort Partitions
+- **Main Deduplicated Cohort ($N = 90$, 45 ASD + 45 TD):** Used for all primary cross-validation and baseline benchmarking (`splits/splits_dryad_v2_dedup.json`).
+- **Supplementary Protocol-Shift Cohort ($N = 14$, 5 regular ASD + 9 severe-ASD):** Held out completely from training to evaluate cross-session and protocol-shift robustness.
 
-An MD5 audit of all 110 processed feature files found **5 pairs of byte-identical TD recordings** in the Dryad deposit — duplicate source videos assigned to different subject IDs.
-One from each pair was moved to `processed/removed_duplicates/`:
+---
 
-| Kept | Removed (duplicate of kept) |
-|---|---|
-| td_17 | td_39 |
-| td_22 | td_5 |
-| td_23 | td_4 |
-| td_24 | td_7 |
-| td_26 | td_50 |
+## 🚀 Quickstart & Reproduction
 
-After deduplication: **95 unique recordings (50 ASD + 45 TD)**.
-
-### Cohort assignment (seed = 42)
-
-| Partition | Subjects | n |
-|---|---|---|
-| **Main cohort** | 45 ASD + 45 TD | **90** |
-| **Supplement** | 5 regular ASD + 9 severe-ASD | **14** |
-
-Post-deduplication MD5 check: **zero train/test overlaps** ✅
-
-
-
-## Reproduction
-
-### 1. Environment
+### 1. Environment Setup
 
 ```bash
 git clone https://github.com/neuro-paradigm/PACE-ASD.git
 cd PACE-ASD
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Python 3.11, CUDA 12.1, Windows 11 / Ubuntu 22.04. Full pinned versions in [`requirements.txt`](requirements.txt).
-
-### 2. Obtain the dataset
-
-Download `Dataset-2.rar` from [Dryad](https://doi.org/10.5061/dryad.s7h44j150) and extract to `D:/dryad/` (or edit `data.raw_dir` in `configs/config.yaml`).
-
-### 3. Preprocess
-
+### 2. Preprocessing (Optional — Preprocessed Features are Included)
+Preprocessed 2D landmark sequences (`(300, 33, 2)` float32 arrays) are already generated and tracked in `processed/features/`.
+To re-extract from raw video files:
 ```bash
-python src/preprocess.py --raw_dir "D:/dryad" --out_dir processed
+python src/preprocess.py --raw_dir "path/to/dryad" --out_dir processed
 ```
 
-Produces `processed/features/*.npy` — shape `(300, 33, 2)` float32.
+### 3. Reproduce Statistical Tables & Wilcoxon Tests
+To immediately compute summary metrics, collapse rates, and paired Wilcoxon statistics reported in the manuscript:
+```bash
+# Compute comprehensive benchmark summary and paired tests vs MTC-Former:
+python scripts/compute_stats.py
 
-### 4. Run full ablation (A1–A4, 20 seeds × 3 folds)
+# Run full paired Wilcoxon tests across all models with Bonferroni correction:
+python scripts/wilcoxon_test.py --results_dir results
+```
 
+### 4. Train Models from Scratch
+Train a single model arm (e.g., A1, seed 0, fold 0):
+```bash
+python src/train.py --config configs/config.yaml --model_id A1 --seed 0 --fold 0
+```
+
+Run the complete 20-seed ablation suite:
 ```bash
 python src/ablation.py --config configs/config.yaml
 ```
 
-Results written to `results/ablation_results.csv`. See [`REPRODUCE.md`](REPRODUCE.md) for step-by-step instructions including single-fold sanity checks.
-
-### 5. Verify frozen results
-
+Run the supplementary protocol-shift evaluation:
 ```bash
-python "ISWA JOURNAL submission/compute_stats.py"
+python src/ablation.py --config configs/config.yaml --eval_supplement_only
 ```
 
-Reproduces all paired Wilcoxon statistics reported in the manuscript.
+### 5. Interpretability & Mechanistic Coherence Audit
+Extract attention maps, kinematic attributions, and compute gate-attention coherence:
+```bash
+python src/interpretability.py --config configs/config.yaml --models A1 A2 A3
+```
 
 ---
 
-## Repository Structure
+## 📂 Repository Organization
 
 ```
 PACE-ASD/
-├── configs/config.yaml             # Authoritative hyperparameters
+├── configs/
+│   └── config.yaml                     # Authoritative hyperparameters & architecture specs
 ├── src/
-│   ├── model.py                    # ASDMotionModel, all variants
-│   ├── train.py                    # Training loop, cross-validation
-│   ├── preprocess.py               # MediaPipe pose extraction
-│   ├── ablation.py                 # Runs all ablation variants
-│   └── audit.py                    # Dataset audit
+│   ├── model.py                        # ASDMotionModel, SpatialEncoder, Microkinetic, Block-ESG
+│   ├── train.py                        # Training loops, loss formulation, Platt calibration
+│   ├── ablation.py                     # Multi-seed cross-validation harness
+│   ├── baselines.py                    # Classical ML and Deep Learning benchmark models
+│   ├── dataset.py                      # PyTorch Dataset, padding masking, landmark loaders
+│   ├── interpretability.py             # Feature attribution, attention extraction, coherence
+│   ├── metrics.py                      # AUC, ECE, F1, sensitivity, specificity, collapse guards
+│   ├── preprocess.py                   # MediaPipe pose extraction and scale normalization
+│   └── verify.py                       # Checkpoint and data integrity audits
+├── scripts/
+│   ├── compute_stats.py                # Standalone manuscript table reproduction script
+│   ├── wilcoxon_test.py                # Multi-model paired Wilcoxon signed-rank tests
+│   ├── build_supplement_content.py     # Supplementary material table parser
+│   └── audit_clip_lengths.py           # Clip duration and sampling rate validation
 ├── processed/
-│   ├── features/                   # *.npy keypoint arrays (not tracked in git)
-│   └── labels.csv                  # Subject-level metadata
-├── splits/splits_dryad_only_v1.json # Frozen train/test/fold split
+│   ├── features/                       # Preprocessed keypoint arrays (*.npy)
+│   ├── removed_duplicates/             # Segregated duplicate recordings from MD5 audit
+│   └── labels.csv                      # Cohort metadata and diagnostic labels
+├── splits/
+│   └── splits_dryad_v2_dedup.json      # Frozen 3-fold subject-level train/test splits
 ├── results/
-│   ├── ablation_results.csv        # Main comparison table
-│   └── supplement_results.csv      # Severe-ASD supplement
-├── ISWA JOURNAL submission/        # LaTeX manuscript + supplementary
-├── REPRODUCE.md                    # Detailed reproduction guide
-├── PREPROCESS_SPEC.md              # Preprocessing specification
-└── audit_report.txt                # Dataset audit log
+│   ├── A1_per_seed.json                # Per-seed metrics for A1 (PACE-ASD)
+│   ├── A2_per_seed.json                # Per-seed metrics for A2 (No-Block-ESG)
+│   ├── A3_per_seed.json                # Per-seed metrics for A3 (Frame Gate)
+│   ├── A4_per_seed.json                # Per-seed metrics for A4 (No-Transformer)
+│   ├── A5_*_per_seed.json              # Per-seed metrics for all 14 baseline models
+│   ├── ablation_results.csv            # Master benchmark results table
+│   └── supplement_results.csv          # Supplementary protocol-shift evaluation
+├── PREPROCESS_SPEC.md                  # Detailed mathematical specification of preprocessing
+├── REPRODUCE.md                        # Step-by-step reproduction instructions
+├── requirements.txt                    # Pinned Python package dependencies
+├── LICENSE                             # MIT Open Source License
+└── README.md                           # This document
 ```
 
 ---
 
-## Model Size
+## 📜 Citation
 
-With the current config (`spatial_dim=128`, `conv1d_channels=32`, `transformer_layers=1`):
+If you build upon this work, use the code, or utilize our deduplicated split protocols, please cite:
 
-| Variant | Parameters |
-|---|---|
-| A1 (full PACE-ASD) | 227,811 |
-| A2 (no gate) | 218,402 |
-| A3 (frame gate) | 227,811 |
-| A4 (no Transformer) | 143,715 |
-
----
-
-## Citation
-
-> Puppala, S.; Mohan, K. V.; Tejesh, T. V. V. S. S.; Kota, P.; Dhanvanth, A. Y. (2026).
-> *PACE-ASD: A Pose-Aware Contiguous Event Saliency Gate for Markerless Autism Screening.*
-> *Information Sciences with Applications.* (under review)
+```bibtex
+@article{puppala2026paceasd,
+  title   = {PACE-ASD: A Pose-Aware Contiguous Event Saliency Gate for Markerless Autism Screening},
+  author  = {Puppala, Sireesha and Mohan, Kasi Vamshi and Tejesh, Tanuku V. V. S. Sai and Kota, Preetham and Dhanvanth, Annabathula Yuva},
+  journal = {Intelligent Systems with Applications},
+  year    = {2026},
+  note    = {Under Review}
+}
+```
 
 ---
 
-## License
+## 📄 License & Ethics
 
-Code: MIT License. Dataset: CC0 1.0 Universal (Dryad, original depositors). See [LICENSE](LICENSE) for details.
+- **Code:** Licensed under the [MIT License](LICENSE).
+- **Dataset:** The underlying video data is sourced from the Dryad Digital Repository ([CC0 1.0 Universal Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/)).
+- **Ethics Statement:** This research represents a secondary computational analysis of publicly available, de-identified skeletal coordinates. No patient-identifiable data or identifiable raw video files are redistributed.
 
 ---
 
-## Contact
+## 📬 Contact
 
-Sireesha Puppala — [sireesha@neuroparadigm.in](mailto:sireesha@neuroparadigm.in)  
-NeuroParadigm Pvt. Ltd. / Keshav Memorial Institute of Technology, Hyderabad, India.
+For questions or inquiries regarding the implementation or methodology:
+- **Sireesha Puppala** (Corresponding Author): [sireesha@neuroparadigm.in](mailto:sireesha@neuroparadigm.in)  
+  *Head of Research, NeuroParadigm Pvt. Ltd. | Department of CSE, Keshav Memorial Institute of Technology, Hyderabad, India.*

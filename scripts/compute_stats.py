@@ -4,7 +4,9 @@ import numpy as np
 from scipy import stats
 import os
 
-os.chdir("d:/PACE-ASD")
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if os.path.exists(os.path.join(ROOT_DIR, "results")):
+    os.chdir(ROOT_DIR)
 
 def load_test_metrics(path):
     with open(path) as f:

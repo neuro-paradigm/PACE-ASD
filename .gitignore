@@ -41,3 +41,17 @@ scratch/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Journal submission files & Elsevier LaTeX templates
+ISWA JOURNAL submission/
+iswa template.zip
+iswa_template_extracted/
+*.aux
+*.log
+*.out
+*.toc
+*.synctex*
+*.bbl
+*.blg
+*.abs
+

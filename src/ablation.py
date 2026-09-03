@@ -328,7 +328,7 @@ def run_sklearn_baseline(
         per_seed_path = os.path.join(results_dir, f"{baseline_id}_per_seed.json")
         with open(per_seed_path, "w") as _psf:
             json.dump({"val": all_val, "test": all_test}, _psf, indent=2)
-        print(f"  [INFO] Per-seed metrics → {per_seed_path}")
+        print(f"  [INFO] Per-seed metrics -> {per_seed_path}")
 
     return {
         "val":  aggregate_seed_metrics(all_val),
@@ -396,6 +396,7 @@ def eval_supplement(model_id: str, splits: dict, config: dict,
             n_skipped += 1
             continue
 
+
     if not all_preds:
         print(f"  [WARN] No usable models for {model_id} supplement eval.")
         return {}
@@ -413,124 +414,122 @@ def eval_supplement_baseline(
     """
     Evaluate an A5 baseline on the supplement cohort.
 
-    Strategy: for each seed, re-fit on the full trainval pool (all 3 folds
-    combined), predict on the supplement subjects, then aggregate sensitivity
-    across seeds.  This mirrors the approach used for A1-A4 (ensemble of all
-    saved checkpoints → majority-vote over seeds).
+    PyTorch baselines: load already-saved fold/seed checkpoints from
+    models/{baseline_id}/*.pt — identical to eval_supplement for A1-A4.
+    No retraining; all 60 checkpoints are already on disk.
 
-    Works for both sklearn and PyTorch baselines.
+    Sklearn baselines: fit once on the full combined trainval pool.
+    No checkpoints are saved for sklearn models so refit is unavoidable,
+    but it takes <1 s and requires only one pass.
     """
-    import copy
     from train import resolve_clip_lists
 
-    supp        = splits["supplement"]
-    supp_ids    = supp["clip_ids"]
-    supp_labels = supp["labels"]
-    supp_subjs  = supp["subject_ids"]
+    supp         = splits["supplement"]
+    supp_ids     = supp["clip_ids"]
+    supp_labels  = supp["labels"]
+    supp_subjs   = supp["subject_ids"]
     features_dir = os.path.join(config["data"]["processed_dir"], "features")
 
-    btype = baseline_spec.get("type", "")
+    btype      = baseline_spec.get("type", "")
     is_sklearn = btype in SKLEARN_BASELINES
 
-    seed_base = config["training"]["seed"]
-    all_preds = []
-    subj_labels_ref = None
+    # ── PyTorch baseline: load saved checkpoints (no retraining) ─────────────
+    if not is_sklearn:
+        from baselines import PYTORCH_BASELINES
+        from calibration import PlattScaler
 
-    for i in range(n_seeds):
-        seed = seed_base + i
-        set_seed(seed)
+        models_dir = os.path.join(config["output"]["models_dir"], baseline_id)
+        if not os.path.isdir(models_dir):
+            print(f"  [WARN] No saved checkpoints for {baseline_id} — skipping.")
+            return {}
 
-        # Collect all trainval clip IDs across the 3 folds for this seed
-        all_train_ids, all_train_labels, all_train_subjects = [], [], []
-        for fold_idx in range(config["training"]["n_folds"]):
-            (tr_ids, tr_labels, tr_subjs,
-             val_ids, val_labels, val_subjs,
-             _test_ids, _test_labels, _test_subjs) = resolve_clip_lists(
-                splits, fold_idx, config,
-            )
-            all_train_ids     += list(tr_ids) + list(val_ids)
-            all_train_labels  += list(tr_labels) + list(val_labels)
-            all_train_subjects += list(tr_subjs) + list(val_subjs)
+        model_files = sorted([f for f in os.listdir(models_dir) if f.endswith(".pt")])
+        if not model_files:
+            print(f"  [WARN] No .pt files found in {models_dir} — skipping.")
+            return {}
 
-        if is_sklearn:
-            train_paths = [os.path.join(features_dir, f"{c}.npy")
-                           for c in all_train_ids]
-            supp_paths  = [os.path.join(features_dir, f"{c}.npy")
-                           for c in supp_ids]
+        baseline_class = PYTORCH_BASELINES.get(btype)
+        if baseline_class is None:
+            print(f"  [WARN] Unknown PyTorch baseline type '{btype}' — skipping.")
+            return {}
 
-            X_train = extract_sklearn_features(train_paths)
-            X_supp  = extract_sklearn_features(supp_paths)
+        ds        = ASDMotionDataset(supp_ids, supp_labels, features_dir, augment=False)
+        loader    = torch.utils.data.DataLoader(
+            ds, batch_size=config["training"]["batch_size"],
+            shuffle=False, num_workers=0,
+        )
+        criterion = torch.nn.BCEWithLogitsLoss()
 
-            pipe = build_sklearn_baseline(btype, seed=seed)
-            pipe.fit(X_train, all_train_labels)
-            supp_probs = pipe.predict_proba(X_supp)[:, 1]
-            preds = (supp_probs >= 0.5).astype(int)
+        all_preds       = []
+        subj_labels_ref = None
+        n_skipped       = 0
 
-        else:
-            # PyTorch baseline
-            from dataset import ASDMotionDataset, create_dataloaders
-            from baselines import PYTORCH_BASELINES, StackedLSTM, Conv1DBiLSTMAttn
-            from calibration import PlattScaler
+        for mf in model_files:
+            try:
+                ckpt = torch.load(os.path.join(models_dir, mf),
+                                  map_location=device, weights_only=False)
+                model = baseline_class().to(device)
+                model.load_state_dict(ckpt["state_dict"])
+                model.eval()
+                scaler = pickle.loads(ckpt.get("scaler", pickle.dumps(PlattScaler())))
 
-            baseline_class = PYTORCH_BASELINES.get(btype)
-            if baseline_class is None:
-                print(f"  [WARN] Unknown PyTorch baseline type '{btype}' — skipping.")
-                return {}
+                logits_arr, _, labels_arr, _ = run_inference(
+                    model, loader, criterion, device,
+                )
+                preds, _, subj_labels_out, _ = subject_level_eval(
+                    logits_arr, labels_arr, supp_subjs, scaler=scaler,
+                )
+                all_preds.append(preds)
+                subj_labels_ref = subj_labels_out
 
-            tc = config["training"]
-            train_ds = ASDMotionDataset(
-                all_train_ids, all_train_labels, features_dir, augment=False
-            )
-            train_loader = torch.utils.data.DataLoader(
-                train_ds, batch_size=tc["batch_size"], shuffle=True,
-                num_workers=tc["num_workers"],
-            )
+            except Exception as e:
+                print(f"  [WARN] {mf}: {e}, skipping.")
+                n_skipped += 1
+                continue
 
-            import torch.nn as nn
-            from torch.optim import AdamW
-            from torch.optim.lr_scheduler import CosineAnnealingLR
+        if not all_preds:
+            print(f"  [WARN] No usable checkpoints for {baseline_id}.")
+            return {}
+        if n_skipped:
+            print(f"  [INFO] {baseline_id}: {n_skipped}/{len(model_files)} checkpoints skipped.")
 
-            model = baseline_class().to(device)
-            criterion = nn.BCEWithLogitsLoss()
-            optimizer = AdamW(model.parameters(), lr=tc["lr"],
-                              weight_decay=tc["weight_decay"])
-            scheduler = CosineAnnealingLR(optimizer, T_max=tc["epochs"], eta_min=1e-6)
+        ensemble_preds = (np.mean(all_preds, axis=0) >= 0.5).astype(int)
+        return compute_supplement_sensitivity(subj_labels_ref, ensemble_preds)
 
-            for epoch in range(1, tc["epochs"] + 1):
-                model.train()
-                for seqs, labs in train_loader:
-                    seqs, labs = seqs.to(device), labs.to(device)
-                    optimizer.zero_grad()
-                    _, logits = model(seqs)
-                    nn.BCEWithLogitsLoss()(logits, labs).backward()
-                    torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-                    optimizer.step()
-                scheduler.step()
+    # ── Sklearn baseline: fit once on combined trainval pool ──────────────────
+    seed = config["training"]["seed"]
+    set_seed(seed)
 
-            # Predict on supplement
-            supp_ds = ASDMotionDataset(supp_ids, supp_labels, features_dir, augment=False)
-            supp_loader = torch.utils.data.DataLoader(
-                supp_ds, batch_size=tc["batch_size"], shuffle=False,
-                num_workers=tc["num_workers"],
-            )
-            criterion = nn.BCEWithLogitsLoss()
-            logits_arr, _, labels_arr, _ = run_inference(model, supp_loader, criterion, device)
-            preds, _, subj_labels_ref, _ = subject_level_eval(
-                logits_arr, labels_arr, supp_subjs, scaler=None,
-            )
+    all_train_ids, all_train_labels = [], []
+    for fold_idx in range(config["training"]["n_folds"]):
+        (tr_ids, tr_labels, _tr_subjs,
+         val_ids, val_labels, _val_subjs,
+         _test_ids, _test_labels, _test_subjs) = resolve_clip_lists(
+            splits, fold_idx, config,
+        )
+        all_train_ids    += list(tr_ids)    + list(val_ids)
+        all_train_labels += list(tr_labels) + list(val_labels)
 
-        all_preds.append(preds)
-        if subj_labels_ref is None and is_sklearn:
-            subj_labels_ref = np.array(supp_labels)
+    train_paths = [os.path.join(features_dir, f"{c}.npy") for c in all_train_ids]
+    supp_paths  = [os.path.join(features_dir, f"{c}.npy") for c in supp_ids]
 
-    if not all_preds:
-        return {}
+    X_train = extract_sklearn_features(train_paths)
+    X_supp  = extract_sklearn_features(supp_paths)
 
-    ensemble_preds = (np.mean(all_preds, axis=0) >= 0.5).astype(int)
-    return compute_supplement_sensitivity(
-        subj_labels_ref if subj_labels_ref is not None else np.array(supp_labels),
-        ensemble_preds,
-    )
+    pipe = build_sklearn_baseline(btype, seed=seed)
+    pipe.fit(X_train, all_train_labels)
+    supp_probs = pipe.predict_proba(X_supp)[:, 1]
+    supp_subjs = [c.rsplit('_', 1)[0] if 'severe_' in c else c for c in supp_ids]
+    unique_subjs = list(dict.fromkeys(supp_subjs))
+    subj_probs = {}
+    for s, p in zip(supp_subjs, supp_probs):
+        subj_probs.setdefault(s, []).append(p)
+    subj_preds = [int(np.mean(subj_probs[s]) >= 0.5) for s in unique_subjs]
+    subj_labels = [1] * len(unique_subjs)
+
+    return compute_supplement_sensitivity(subj_labels, subj_preds)
+
+
 
 def _model_kwargs_for_id(model_id: str) -> dict:
     if model_id in ABLATION_ARMS:
@@ -546,7 +545,9 @@ def main():
     parser.add_argument("--models",  nargs="*", default=None,
                         help="Subset of models to run (default: all A1–A5)")
     parser.add_argument("--eval_supplement", action="store_true",
-                        help="After training, evaluate on 9 severe-ASD subjects")
+                        help="After training, evaluate on 14 supplementary ASD subjects")
+    parser.add_argument("--eval_supplement_only", action="store_true",
+                        help="Skip training and run only supplementary evaluation using saved checkpoints")
     args = parser.parse_args()
 
     with open(args.config) as f:
@@ -569,11 +570,16 @@ def main():
     # Which arms to run?
     run_pace      = list(ABLATION_ARMS.keys())
     run_baselines = list(A5_BASELINES.keys())
-    if args.models:
+    if args.eval_supplement_only:
+        run_pace      = []
+        run_baselines = []
+        args.eval_supplement = True
+    elif args.models is not None:
         run_pace      = [m for m in run_pace      if m in args.models]
         run_baselines = [m for m in run_baselines if m in args.models]
 
     all_results = {}
+
 
     # ── A1–A4 ────────────────────────────────────────────────────────────────
     for model_id, arm in ABLATION_ARMS.items():
@@ -637,7 +643,7 @@ def main():
             per_seed_path = os.path.join(results_dir, f"{bid}_per_seed.json")
             with open(per_seed_path, "w") as _psf:
                 json.dump({"val": all_val, "test": all_test}, _psf, indent=2)
-            print(f"  [INFO] Per-seed metrics → {per_seed_path}")
+            print(f"  [INFO] Per-seed metrics -> {per_seed_path}")
             res = {"val": aggregate_seed_metrics(all_val),
                    "test": aggregate_seed_metrics(all_test)}
         else:
@@ -655,30 +661,32 @@ def main():
             t_str  = f"{v_test.get('mean', float('nan')):.4f} ± {v_test.get('std', float('nan')):.4f}"
             print(f"    {k:<15} {v_str:<20} {t_str:<20}")
 
-    # ── Save results CSV ──────────────────────────────────────────────────────
-    csv_path = os.path.join(results_dir, "ablation_results.csv")
-    metric_keys = ["accuracy", "auc", "f1", "sensitivity", "specificity", "ece", "threshold"]
-    with open(csv_path, "w", newline="") as f:
-        cols = ["model_id", "description", "split"] + [
-            f"{k}_{s}" for k in metric_keys for s in ["mean", "std"]
-        ]
-        writer = csv.DictWriter(f, fieldnames=cols)
-        writer.writeheader()
-        for mid, res in all_results.items():
-            desc = (ABLATION_ARMS.get(mid, A5_BASELINES.get(mid, {}))
-                    .get("desc", mid))
-            for split_name in ["val", "test"]:
-                row = {"model_id": mid, "description": desc,
-                       "split": split_name}
-                for k in metric_keys:
-                    v = res[split_name].get(k, {})
-                    row[f"{k}_mean"] = v.get("mean", float("nan"))
-                    row[f"{k}_std"]  = v.get("std",  float("nan"))
-                writer.writerow(row)
-    print(f"\n  Results CSV → {csv_path}")
+    # ── Save results CSV (only if models were trained in this run) ────────────
+    if all_results:
+        csv_path = os.path.join(results_dir, "ablation_results.csv")
+        metric_keys = ["accuracy", "auc", "f1", "sensitivity", "specificity", "ece", "threshold"]
+        with open(csv_path, "w", newline="") as f:
+            cols = ["model_id", "description", "split"] + [
+                f"{k}_{s}" for k in metric_keys for s in ["mean", "std"]
+            ]
+            writer = csv.DictWriter(f, fieldnames=cols)
+            writer.writeheader()
+            for mid, res in all_results.items():
+                desc = (ABLATION_ARMS.get(mid, A5_BASELINES.get(mid, {}))
+                        .get("desc", mid))
+                for split_name in ["val", "test"]:
+                    row = {"model_id": mid, "description": desc,
+                           "split": split_name}
+                    for k in metric_keys:
+                        v = res[split_name].get(k, {})
+                        row[f"{k}_mean"] = v.get("mean", float("nan"))
+                        row[f"{k}_std"]  = v.get("std",  float("nan"))
+                    writer.writerow(row)
+        print(f"\n  Results CSV -> {csv_path}")
 
-    # ── Generate ablation table PDF ───────────────────────────────────────────
-    generate_ablation_table(all_results, results_dir)
+        # ── Generate ablation table PDF ───────────────────────────────────────────
+        generate_ablation_table(all_results, results_dir)
+
 
     # ── Supplementary evaluation (Section 6) ──────────────────────────────────
     if args.eval_supplement:
@@ -740,7 +748,7 @@ def main():
                     f, fieldnames=["model_id","description","n","sensitivity","ci_low","ci_high"])
                 writer.writeheader()
                 writer.writerows(supp_rows)
-            print(f"\n  Supplement results → {supp_csv}")
+            print(f"\n  Supplement results -> {supp_csv}")
 
 
     print(f"\n{'#'*60}")
