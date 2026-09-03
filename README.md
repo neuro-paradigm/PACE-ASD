@@ -4,15 +4,14 @@
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0%2B-orange.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Dataset: Dryad](https://img.shields.io/badge/Dataset-Dryad%20CC0-green.svg)](https://doi.org/10.5061/dryad.s7h44j150)
-[![Status: Under Review](https://img.shields.io/badge/Status-Under%20Review-informational.svg)](https://www.journals.elsevier.com/intelligent-systems-with-applications)
 
-Official PyTorch implementation and reproduction package for **"PACE-ASD: A Pose-Aware Contiguous Event Saliency Gate for Markerless Autism Screening"**, under review at *Intelligent Systems with Applications* (Elsevier).
+Official PyTorch implementation and reproduction codebase for **PACE-ASD (Pose-Aware Contiguous Event Saliency-Gated Transformer for Markerless Autism Screening)**.
 
 ---
 
 ## 📌 Overview
 
-Early detection of Autism Spectrum Disorder (ASD) is critical for improving developmental outcomes, yet gold-standard clinical assessments (such as the ADOS-2) require specialized clinicians and suffer from prolonged diagnostic waitlists. Markerless 2D skeleton pose estimation from standard, monocular RGB video offers an accessible and non-invasive alternative for clinical motor screening.
+Early detection of Autism Spectrum Disorder (ASD) is critical for improving developmental outcomes, yet gold-standard clinical assessments (such as the ADOS-2) require specialized clinicians and suffer from prolonged diagnostic waitlists. Markerless 2D skeleton pose estimation from standard, monocular RGB video offers an accessible and non-invasive alternative for motor screening.
 
 However, existing deep learning action recognition models (e.g., spatio-temporal GCNs and video Transformers) face two major obstacles in pediatric motor screening:
 1. **Temporal Dilution:** Transient, informative atypical motor events are drowned within lengthy sequences of ordinary background movement when applying dense attention or global pooling.
@@ -141,7 +140,7 @@ python src/preprocess.py --raw_dir "path/to/dryad" --out_dir processed
 ```
 
 ### 3. Reproduce Statistical Tables & Wilcoxon Tests
-To immediately compute summary metrics, collapse rates, and paired Wilcoxon statistics reported in the manuscript:
+To immediately compute summary metrics, collapse rates, and paired Wilcoxon statistics:
 ```bash
 # Compute comprehensive benchmark summary and paired tests vs MTC-Former:
 python scripts/compute_stats.py
@@ -191,9 +190,9 @@ PACE-ASD/
 │   ├── preprocess.py                   # MediaPipe pose extraction and scale normalization
 │   └── verify.py                       # Checkpoint and data integrity audits
 ├── scripts/
-│   ├── compute_stats.py                # Standalone manuscript table reproduction script
+│   ├── compute_stats.py                # Standalone evaluation table reproduction script
 │   ├── wilcoxon_test.py                # Multi-model paired Wilcoxon signed-rank tests
-│   ├── build_supplement_content.py     # Supplementary material table parser
+│   ├── build_supplement_content.py     # Evaluation table builder
 │   └── audit_clip_lengths.py           # Clip duration and sampling rate validation
 ├── processed/
 │   ├── features/                       # Preprocessed keypoint arrays (*.npy)
@@ -218,22 +217,6 @@ PACE-ASD/
 
 ---
 
-## 📜 Citation
-
-If you build upon this work, use the code, or utilize our deduplicated split protocols, please cite:
-
-```bibtex
-@article{puppala2026paceasd,
-  title   = {PACE-ASD: A Pose-Aware Contiguous Event Saliency Gate for Markerless Autism Screening},
-  author  = {Puppala, Sireesha and Mohan, Kasi Vamshi and Tejesh, Tanuku V. V. S. Sai and Kota, Preetham and Dhanvanth, Annabathula Yuva},
-  journal = {Intelligent Systems with Applications},
-  year    = {2026},
-  note    = {Under Review}
-}
-```
-
----
-
 ## 📄 License & Ethics
 
 - **Code:** Licensed under the [MIT License](LICENSE).
@@ -244,6 +227,6 @@ If you build upon this work, use the code, or utilize our deduplicated split pro
 
 ## 📬 Contact
 
-For questions or inquiries regarding the implementation or methodology:
-- **Sireesha Puppala** (Corresponding Author): [sireesha@neuroparadigm.in](mailto:sireesha@neuroparadigm.in)  
+For questions or inquiries regarding the project:
+- **Sireesha Puppala** (Project Lead): [sireesha@neuroparadigm.in](mailto:sireesha@neuroparadigm.in)  
   *Head of Research, NeuroParadigm Pvt. Ltd. | Department of CSE, Keshav Memorial Institute of Technology, Hyderabad, India.*

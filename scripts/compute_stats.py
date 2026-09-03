@@ -1,4 +1,4 @@
-"""Compute summary statistics for ISWA manuscript tables."""
+"""Compute summary statistics for PACE-ASD evaluation tables."""
 import json
 import numpy as np
 from scipy import stats
