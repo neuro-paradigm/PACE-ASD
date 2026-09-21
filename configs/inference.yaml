@@ -1,0 +1,37 @@
+# PACE-ASD Inference Configuration
+# Used by scripts/infer.py
+
+model:
+  spatial_dim: 128
+  conv1d_channels: 32
+  dropout: 0.4
+  event_block_size: 15
+  event_top_m: 8
+  transformer_heads: 4
+  transformer_layers: 1
+
+# Inference-only settings
+inference:
+  model_variant: A1          # A1 (Full PACE-ASD) | A2 (No-Gate) | A3 (Frame-Gate) | A4 (No-Transformer)
+  device: auto               # auto | cpu | cuda
+  threshold: 0.5             # Decision threshold for binary prediction
+  calibrate: true            # Apply Platt calibration (requires scaler saved in checkpoint)
+  use_gate: true
+  use_transformer: true
+
+# Preprocessing (must match training preprocessing)
+preprocessing:
+  max_frames: 300
+  num_landmarks: 33
+  fps: 30
+  mediapipe_model_complexity: 2
+  mediapipe_smooth_landmarks: true
+  mediapipe_min_detection_confidence: 0.5
+  mediapipe_min_tracking_confidence: 0.5
+
+# Output settings
+output:
+  save_kinematics: true      # Save position/velocity/acceleration as .npz
+  save_events: true          # Save selected event blocks as JSON
+  save_attribution: true     # Save gradient-based body-region attribution
+  save_visualizations: true  # Generate PNG visualizations

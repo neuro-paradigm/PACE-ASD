@@ -1,5 +1,5 @@
 data:
-  raw_dir: "D:/dryad"
+  raw_dir: null  # Set via --raw_dir CLI argument or environment variable PACE_ASD_RAW_DIR
   processed_dir: processed
   fps: 30
   max_frames: 300

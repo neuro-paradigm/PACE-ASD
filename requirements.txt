@@ -1,6 +1,16 @@
-# PACE-ASD Dryad-Only — Pinned Dependencies
-# Python 3.11, CUDA 12.1, Windows 11 / Ubuntu 22.04
-# Install: pip install -r requirements.txt
+# PACE-ASD — Python Dependencies
+# Python 3.11 | Windows 11 / Ubuntu 22.04
+#
+# Installation:
+#   pip install -r requirements.txt
+#
+# Note on PyTorch:
+#   CPU-only:   pip install torch==2.1.2 torchvision==0.16.2
+#   CUDA 12.1:  pip install torch==2.1.2+cu121 torchvision==0.16.2+cu121 \
+#                 --index-url https://download.pytorch.org/whl/cu121
+#
+# All inference and testing functionality works on CPU.
+# GPU is recommended for training (see docs/installation.md).
 
 torch==2.1.2
 torchvision==0.16.2
@@ -14,3 +24,7 @@ pandas==2.1.4
 pyyaml==6.0.1
 tqdm==4.66.1
 xgboost==2.0.3
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0

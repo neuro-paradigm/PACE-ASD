@@ -4,21 +4,9 @@ __pycache__/
 *$py.class
 *.so
 .Python
-env/
 build/
-develop-eggs/
 dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
 *.egg-info/
-.installed.cfg
 *.egg
 
 # Virtual Environment
@@ -26,24 +14,35 @@ venv/
 .venv/
 ENV/
 
-# Project Directories & Large Data
-data/
-models/
-reports/
-scratch/
-*.png
-*.pdf
-*.pt
-*.pkl
-
 # IDEs & System files
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
 
-# Journal submission files & Elsevier LaTeX templates
+# Test & coverage caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Outputs & temporary scratch
+outputs/*
+!outputs/.gitkeep
+scratch/
+audit_report.txt
+baseline_test_results.txt
+scripts/generated_tables.json
+scripts/report_page2.png
+
+# Raw videos (Never commit raw clinical videos)
+data/*.avi
+data/*.mp4
+data/raw/
+
+# Old journal submission working archives (local submission documents)
 ISWA JOURNAL submission/
+ISWA JOURNAL submission*.zip
+ISWA_Submission_Package.zip
 iswa template.zip
 iswa_template_extracted/
 *.aux
@@ -55,3 +54,15 @@ iswa_template_extracted/
 *.blg
 *.abs
 
+# Generated PDF reports and heavy experimental attention dumps
+reports/
+results/attn/
+results/*.pdf
+results/*_repro.json
+
+# Checkpoints:
+# Ignore large baseline model checkpoints (>1.2 GB) and ablation models.
+# Only track primary PACE-ASD (A1) checkpoints for review reproducibility.
+models/*
+!models/A1/
+!models/A1/*.pt

@@ -1,0 +1,50 @@
+# PACE-ASD Evaluation Configuration
+# Used by scripts/evaluate.py to reproduce manuscript results
+
+data:
+  processed_dir: processed
+  features_subdir: features
+
+model:
+  spatial_dim: 128
+  conv1d_channels: 32
+  dropout: 0.4
+  event_block_size: 15
+  event_top_m: 8
+  transformer_heads: 4
+  transformer_layers: 1
+
+training:
+  seed: 42
+  n_folds: 3
+  n_seeds: 20
+
+calibration:
+  lr: 0.01
+  max_iter: 100
+
+output:
+  models_dir: models
+  results_dir: results
+  splits_file: splits/splits_dryad_v2_dedup.json
+
+# Models to evaluate (A1 = full PACE-ASD)
+models:
+  A1:
+    use_gate: true
+    use_transformer: true
+    desc: "Full PACE-ASD (L=15, M=8)"
+  A2:
+    use_gate: false
+    use_transformer: true
+    desc: "No-Block-ESG (Dense Transformer)"
+  A3:
+    use_gate: true
+    use_transformer: true
+    event_block_size: 1
+    event_top_m: 120
+    desc: "Frame-Granularity Gate (L=1, M=120)"
+  A4:
+    use_gate: true
+    use_transformer: false
+    desc: "No-Transformer (Linear Head)"
