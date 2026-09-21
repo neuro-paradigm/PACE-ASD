@@ -3,147 +3,186 @@
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3110/)
 [![PyTorch 2.1](https://img.shields.io/badge/PyTorch-2.1.2-orange.svg)](https://pytorch.org/)
 [![Dataset: Dryad CC0](https://img.shields.io/badge/Dataset-Dryad%20CC0-green.svg)](https://doi.org/10.5061/dryad.s7h44j150)
+[![Protocol: SAP v1.0 Locked](https://img.shields.io/badge/Protocol-SAP%20v1.0%20(55bdce4)-purple.svg)](STATISTICAL_ANALYSIS_PLAN.md)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](tests/)
 
-Official research software implementation and reproduction package for **PACE-ASD (Pose-Aware Contiguous Event Saliency-Gated Transformer for Markerless Monocular Video-Based ASD Screening Research)**, prepared for submission to *BMC Medical Informatics and Decision Making*.
+Official research software implementation and reproduction codebase for **PACE-ASD (Pose-Aware Contiguous Event Saliency-Gated Transformer for Markerless Monocular Video-Based ASD Screening Research)**, prepared for submission as a Software Article to *BMC Medical Informatics and Decision Making*.
 
 ---
 
-## Overview
+## 📌 Executive Summary & Scope
 
-Early screening for Autism Spectrum Disorder (ASD) is critical for timely developmental intervention, yet gold-standard diagnostic assessments (such as ADOS-2) require specialized clinicians and face extensive waitlists. Markerless 2D skeletal pose estimation from standard, monocular RGB video offers an accessible and non-invasive alternative for quantitative motor screening.
+**PACE-ASD** is an open-source research software framework designed to quantify atypical motor patterns in children with Autism Spectrum Disorder (ASD) from ordinary, monocular 2D RGB video. 
 
-Existing deep action recognition architectures (e.g., spatio-temporal GCNs and dense video Transformers) face two major obstacles in pediatric motor screening:
-1. **Temporal Dilution:** Transient, clinically informative atypical motor events are drowned within lengthy sequences of ordinary background movement when applying dense attention or global pooling.
-2. **Catastrophic Training Collapse:** Over-parameterized architectures frequently collapse during optimization when trained on modest clinical cohorts ($N < 100$).
-
-**PACE-ASD** resolves these challenges by introducing an inductive temporal bias via the **Block-Level Event Saliency Gate (Block-ESG)**:
-- Instead of attending over all 300 frames or selecting arbitrary, disconnected individual frames, Block-ESG dynamically identifies and routes the **$M = 8$ most kinematically salient contiguous 15-frame blocks** (500 ms motion primitives at 30 fps; 120 frames total) to a lightweight temporal Transformer encoder.
-- Provides **complete training stability** (0/20 collapsed seeds vs. up to 10/20 collapse in literature baselines).
-- Enforces **mechanistic interpretability** through a two-stage coherence audit: validating that gating saliency and self-attention weights reinforce the same motor events ($r = 0.822$).
+### Key Characteristics & Study Boundaries
+- **Strictly Single-Site Pediatric Cohort:** Evaluated exclusively on the open-access **Dryad ASD Kinematic Dataset** ($N = 90$ children, 45 ASD and 45 TD).
+- **No External Multi-Center Validation Claimed:** Exploratory experiments with external adult datasets (such as Move4AS) were **completely excluded and discarded** from this study to avoid cross-age and cross-protocol clinical confounds. External multi-center validation remains an open limitation.
+- **Pre-Registered Locked Protocol:** All reported headline statistics are anchored to the pre-registered **Statistical Analysis Plan (SAP v1.0, commit `55bdce4`)** with a frozen 23-subject held-out test split (`splits/splits_dryad_v2_dedup.json`) evaluated across 20 independent random seeds.
+- **Contiguous Block Routing (Block-ESG):** The primary method routes **contiguous 15-frame blocks** (~500 ms motor primitives). Frame-level unconstrained gating was evaluated as an inferior ablation arm (A3) that breaks temporal attention coherence ($r = 0.054$ vs. $r = 0.822$ for Block-ESG).
+- **Platt Temperature Calibration:** Post-hoc calibration ($\hat{p} = \sigma(\text{logit} / T)$) is fitted strictly on out-of-fold validation logits ($T = 1.63$ for A1), reducing Expected Calibration Error (ECE) from $0.213 \rightarrow 0.173$ without test data leakage.
 
 ---
 
-## What the Software Does
-
-The software implements an end-to-end reproducible research pipeline:
-1. **Pose Extraction:** Extracts 33 2D skeletal keypoints per frame from monocular RGB video using MediaPipe Pose.
-2. **Kinematic Normalization:** Normalizes coordinates via mid-hip centering and inter-shoulder distance scaling; computes velocity and acceleration finite differences.
-3. **Multi-Scale Temporal Convolution:** Extracts short-timescale motion features via parallel 1D convolutions (k=1, 3, 5) with GroupNorm.
-4. **Contiguous Event Saliency Gating:** Scores 15-frame blocks and selects the top-8 most salient contiguous segments.
-5. **Temporal Transformer Attention:** Aggregates selected event tokens using self-attention with absolute sinusoidal positional encoding.
-6. **Calibrated Screening Inference:** Outputs raw and Platt-calibrated P(ASD) probabilities with Expected Calibration Error (ECE) monitoring.
-7. **Comprehensive Interpretability:** Decomposes decision evidence across body regions (head, arms, torso, legs) and kinematic streams (position, velocity, acceleration).
-
----
-
-## System Architecture
+## 🏗️ System Architecture & Data Flow
 
 ```
 Monocular RGB Video (.mp4 / .avi)
         │
-        ▼  MediaPipe Pose (33 2-D Keypoints, T = 300 frames)
-Normalized Pose Sequence (B, 300, 33, 2)
+        ▼  MediaPipe Pose (33 2D Landmarks, T = 300 frames)
+Hip-Centering & Inter-Shoulder Scale Normalization
         │
-        ├──► SpatialEncoder (Per-frame MLP: pos + vel + acc -> D_c = 198) ──► (B, 300, 128)
-        │                                                                            │
-        └──► MicrokineticEncoder (Conv1D: k=1, 3, 5 + GroupNorm)                      │
-                    │                                                                │
-                    ▼                                                                │
-             Salience Gate (Linear 96 -> 48 -> 1)                                    │
-                    │                                                                │
-                    ▼                                                                │
-             Block-ESG Pooling (L = 15 frames, M = 8 blocks)                         │
-                    │                                                                │
-                    ▼ (Top-8 Contiguous Blocks Selected)                             │
-             Selected Tokens (B, 120, 128) ◄─────────────────────────────────────────┘
-                    │
-                    ▼
-             Temporal Event Transformer (1 Layer, 4 Heads, d = 128)
-                    │
-                    ▼ Mean Pooling across Active Tokens
-             Classification Head (MLP: 128 -> 64 -> 1)
-                    │
-                    ▼ Platt Temperature Scaling
-             Calibrated Prediction: P(ASD) ∈ [0, 1]
+        ▼  Normalized Kinematic Sequence: (B, 300, 33, 2)
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│ SpatialEncoder (Per-frame MLP: pos + vel + acc -> D_c = 198) ──► Tokens: (B, 300, 128)      │
+│                                                                        │                    │
+│ MicrokineticEncoder (Parallel Conv1D: k=1, 3, 5 + GroupNorm)           │                    │
+│   │                                                                    │                    │
+│   ▼ Saliency Gate (Linear 96 -> 48 -> 1)                               │                    │
+│   │                                                                    │                    │
+│   ▼ Block-ESG Routing: Groups into 20 blocks of L=15 frames            │                    │
+│     Selects Top-M=8 Contiguous Blocks (120 frames total)               │                    │
+│   │                                                                    │                    │
+│   ▼ Selected Tokens: (B, 120, 128) ◄───────────────────────────────────┘                    │
+│                                                                                             │
+│ Temporal Event Transformer (1 Layer, 4 Heads, d = 128, Sinusoidal Positional Encoding)      │
+│   │                                                                                         │
+│   ▼ Mean-pooling across active tokens -> Linear(128 -> 64 -> 1)                             │
+│ Raw Logit                                                                                   │
+│   │                                                                                         │
+│   ▼ Platt Temperature Scaling: logit_cal = logit / T (fitted on validation set, T = 1.63)    │
+│ Calibrated P(ASD) ∈ [0, 1]                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Module Reference
 
 | Component | File | Function |
 |---|---|---|
-| `SpatialEncoder` | `src/model.py` | Per-frame MLP with LayerNorm; computes position, velocity, and acceleration streams |
-| `MicrokineticEncoder` | `src/model.py` | Multi-scale temporal feature extractor (Conv1d k=1, 3, 5 + GroupNorm) |
-| `EventSaliencyGate` | `src/model.py` | Block-ESG: groups frames into contiguous blocks, scores saliency, routes top-M |
-| `TemporalEventTransformer`| `src/model.py` | Sparse event token transformer with sinusoidal position encoding |
-| `ASDMotionModel` | `src/model.py` | Complete end-to-end model with ablation flags (A1, A2, A3, A4) |
-| `PlattScaler` | `src/calibration.py` | Post-hoc temperature and bias recalibration preserving AUC ranking |
-| `compute_bilateral_asymmetry` | `src/asymmetry.py` | Descriptive bilateral movement difference analysis |
-| `PACEASDPredictor` | `src/inference_api.py` | High-level Python API for single-sample inference |
+| `SpatialEncoder` | `src/model.py` | Computes per-frame position, velocity ($\times 10$), and acceleration ($\times 5$) streams with LayerNorm |
+| `MicrokineticEncoder` | `src/model.py` | Multi-scale temporal feature extractor (Conv1D $k \in \{1, 3, 5\}$ with GroupNorm) |
+| `EventSaliencyGate` (Block-ESG) | `src/model.py` | Groups sequence into 20 blocks ($L=15$), scores saliency, and routes top-$M=8$ contiguous segments |
+| `TemporalEventTransformer`| `src/model.py` | Lightweight Transformer encoder with absolute sinusoidal positional encoding |
+| `ASDMotionModel` | `src/model.py` | End-to-end architecture with ablation flags (`use_gate`, `use_transformer`) |
+| `PlattScaler` | `src/calibration.py` | Post-hoc temperature and bias recalibration preserving AUC rank order |
+| `compute_bilateral_asymmetry` | `src/asymmetry.py` | Descriptive bilateral movement difference analysis (explicitly non-biomarker) |
+| `PACEASDPredictor` | `src/inference_api.py` | High-level Python API for single-sample inference from video or `.npy` |
 
 ---
 
-## Features
+## 📊 Benchmark Results & Manuscript Findings
 
-- **Markerless Monocular Input:** Operates on standard consumer RGB video without requiring depth sensors or wearable markers.
-- **Automated Pose Extraction:** Built-in MediaPipe Pose pipeline with automatic hip-centering and shoulder-distance scale normalization.
-- **Exposed Kinematic Trajectories:** Saves full position, velocity, and acceleration tensors (`kinematics.npz`).
-- **Contiguous Temporal Event Discovery:** Identifies and extracts specific salient movement windows (`selected_events.json`).
-- **Multi-Level Interpretability:** Provides body-region (head, arms, torso, legs) and kinematic-stream (position, velocity, acceleration) attributions (`attribution.json`).
-- **Calibrated Decision Outputs:** Uses Platt scaling to ensure predicted probabilities match empirical risk.
-- **Descriptive Bilateral Asymmetry:** Computes left-right movement differences as descriptive movement features (not claimed as standalone biomarkers).
-- **Dual Inference Entry Points:** Accepts either raw video (`.mp4`, `.avi`) or pre-extracted landmark tensors (`.npy`).
-- **Complete Test Suite:** 9 unit and end-to-end tests covering all modules with synthetic data.
-- **Strict Reproducibility:** Frozen cross-validation splits, fixed seeds, and pre-trained checkpoints included.
+All results reflect the pre-registered 20-seed protocol evaluated on the locked 23-subject held-out test partition (`splits/splits_dryad_v2_dedup.json`). Values represent **mean ± standard deviation across 20 independent seeds** ($\text{seed} \in [42, 61]$), with 3 cross-validation fold models trained per seed ($3 \times 20 = 60$ checkpoints per deep architecture).
+
+### Primary Comparative Benchmark (Test Partition, $N = 23$)
+
+| Model Family | Model / Ablation Variant | ROC AUC | Accuracy | Sensitivity | Specificity | F1-Score | ECE | Collapse Rate |
+|---|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Primary Model** | **A1: Full PACE-ASD ($L=15, M=8$)** | **0.836 ± 0.026** | **0.733 ± 0.040** | **0.814 ± 0.077** | **0.660 ± 0.072** | **0.740 ± 0.052** | **0.173 ± 0.026** | **0 / 20 (0%)** |
+| *Closest Peer* | MTC-Former (Zhu et al., 2025) | 0.778 ± 0.024 | 0.625 ± 0.031 | 0.794 ± 0.056 | 0.469 ± 0.067 | 0.668 ± 0.029 | 0.257 ± 0.029 | 0 / 20 (0%) |
+| *Ablation Arm* | A2: No-Block-ESG (Dense Transformer) | 0.816 ± 0.028 | 0.697 ± 0.028 | 0.892 ± 0.050 | 0.518 ± 0.072 | 0.738 ± 0.022 | 0.182 ± 0.027 | 0 / 20 (0%) |
+| *Ablation Arm* | A3: Frame-Gate ($L=1, M=120$)* | 0.857 ± 0.039 | 0.739 ± 0.048 | 0.827 ± 0.078 | 0.658 ± 0.080 | 0.750 ± 0.058 | 0.193 ± 0.030 | 0 / 20 (0%) |
+| *Ablation Arm* | A4: No-Transformer (Linear Head) | 0.809 ± 0.033 | 0.667 ± 0.033 | 0.750 ± 0.092 | 0.592 ± 0.089 | 0.672 ± 0.055 | 0.196 ± 0.037 | 0 / 20 (0%) |
+| *Literature DL* | Kinematic CNN-LSTM | 0.806 ± 0.031 | 0.736 ± 0.045 | 0.873 ± 0.051 | 0.610 ± 0.074 | 0.764 ± 0.040 | 0.151 ± 0.015 | 0 / 20 (0%) |
+| *Literature DL* | Stacked LSTM | 0.820 ± 0.032 | 0.696 ± 0.033 | 0.756 ± 0.096 | 0.642 ± 0.110 | 0.700 ± 0.050 | 0.140 ± 0.031 | 0 / 20 (0%) |
+| *Literature DL* | MS-G3D (Liu et al., 2020) | 0.652 ± 0.050 | 0.540 ± 0.048 | 0.670 ± 0.141 | 0.421 ± 0.201 | 0.557 ± 0.054 | 0.106 ± 0.021 | 10 / 20 (50%) |
+| *Literature DL* | MS-G3D + ConvNeXt | 0.822 ± 0.031 | 0.720 ± 0.048 | 0.774 ± 0.094 | 0.669 ± 0.117 | 0.710 ± 0.070 | 0.194 ± 0.026 | 0 / 20 (0%) |
+| *Literature DL* | SkelFormer (Yan et al., 2026) | 0.703 ± 0.075 | 0.633 ± 0.075 | 0.515 ± 0.168 | 0.740 ± 0.177 | 0.520 ± 0.152 | 0.142 ± 0.071 | 2 / 20 (10%) |
+| *Literature DL* | STTS (Zunino et al., 2018) | 0.714 ± 0.074 | 0.646 ± 0.066 | 0.486 ± 0.180 | 0.793 ± 0.162 | 0.499 ± 0.162 | 0.147 ± 0.046 | 1 / 20 (5%) |
+| *Classical ML* | MediaPipe + Random Forest | 0.819 ± 0.011 | 0.675 ± 0.021 | 0.936 ± 0.023 | 0.436 ± 0.034 | 0.734 ± 0.016 | 0.184 ± 0.016 | 0 / 20 (0%) |
+| *Classical ML* | MediaPipe + XGBoost | 0.825 ± 0.008 | 0.736 ± 0.011 | 0.964 ± 0.012 | 0.528 ± 0.018 | 0.778 ± 0.008 | 0.222 ± 0.015 | 0 / 20 (0%) |
+
+*\*Important Architectural Finding regarding A3:* While frame-level gating (A3) exhibits marginally higher raw discrimination metrics, its mechanistic attention coherence completely collapses ($r = 0.054$ vs. $r = 0.822$), selecting disconnected, uninterpretable frame tokens. Contiguous 15-frame blocks (A1) are required for interpretable temporal routing.
+
+### Statistical Significance vs. Primary Architecture Comparator (MTC-Former)
+Paired two-sided Wilcoxon signed-rank tests across matched random seed pairs ($N = 20$, with Bonferroni correction $\alpha_{\text{adj}} = 0.05 / 6 = 0.0083$):
+- **ROC AUC:** $\Delta = +0.0583$ [95% CI: $+0.0437, +0.0724$], $p = 0.0000$, Cohen's $d = +1.704$ (**PACE-ASD significantly superior**)
+- **Specificity:** $\Delta = +0.1903$ [95% CI: $+0.1402, +0.2306$], $p = 0.0000$, Cohen's $d = +1.770$ (**PACE-ASD significantly superior**)
+- **Accuracy:** $\Delta = +0.1087$ [95% CI: $+0.0877, +0.1297$], $p = 0.0000$, Cohen's $d = +2.240$ (**PACE-ASD significantly superior**)
+- **F1-Score:** $\Delta = +0.0720$ [95% CI: $+0.0457, +0.0945$], $p = 0.0003$, Cohen's $d = +1.220$ (**PACE-ASD significantly superior**)
+- **Calibration (ECE):** $\Delta = -0.0833$ [95% CI: $-0.0995, -0.0657$], $p = 0.0000$, Cohen's $d = -2.104$ (**PACE-ASD significantly superior**)
 
 ---
 
-## Installation
+## 🔍 Core Methodological Innovations
 
-### 1. Clone Repository
+### 1. Contiguous Block Selection vs. Unconstrained Frame Gating
+A core architectural finding of the manuscript is the necessity of **block-level contiguity**:
+- **PACE-ASD (A1, $L=15, M=8$):** Groups the 300 frames into 20 candidate contiguous segments of $L=15$ frames (~500 ms motion primitives at 30 fps), routing the top $M=8$ blocks (120 frames total) to the Transformer.
+- **Frame-Level Gating Ablation (A3, $L=1, M=120$):** Scores individual frames and routes arbitrary disconnected frame tokens.
+- **The Coherence Audit:** In A1, the gate saliency scores correlate strongly with Transformer self-attention density ($r = 0.822$, Spearman $\rho = 0.801$). In A3, this cross-check completely breaks down ($r = 0.054, \rho = 0.050$). Unconstrained frame routing selects isolated, discontinuous frames that lack atomic kinematic context. Contiguous 15-frame blocks ground attention in coherent sub-movements, ensuring structural interpretability.
+
+### 2. Platt Temperature Scaling
+In the manuscript, post-hoc probability recalibration is conducted via **Platt Temperature Scaling**:
+$$\hat{p} = \sigma\left(\frac{\text{logit}}{T} + b\right)$$
+- The positive temperature parameter $T > 0$ and optional intercept $b$ are fitted strictly on out-of-fold validation logits via L-BFGS ($T = 1.63$ for A1).
+- No test-set data or labels are exposed during calibration fitting.
+- Recalibration reduces test ECE from $0.213 \rightarrow 0.173$ without altering prediction rank order or ROC AUC.
+
+### 3. Pediatric Kinematic Alignment
+Gradient $\times$ Input attribution reveals that PACE-ASD decisions are driven primarily by:
+- **Kinematic Streams:** Acceleration features account for $>72\%$ of attribution mass across variants (acceleration $72.9\%$, position $17.6\%$, velocity $9.6\%$).
+- **Body Regions:** Atypical movement signals concentrate in head ($36.9\%$) and arm ($32.4\%$) kinematics, aligning directly with pediatric motor development literature on atypical upper-body stereotypic movement.
+
+---
+
+## 📁 Cohort Partitioning & Forensic Deduplication
+
+The experiment is conducted exclusively on the open-access **Dryad ASD Kinematic Dataset**:
+> **Aljubouri, A. A., Hadi, I., & Rajihy, Y. (2020).** *Three Dimensional Dataset Combining Gait and Full Body Movement of Children with Autism Spectrum Disorders Collected by Kinect v2 Camera.* Dryad Digital Repository. [doi:10.5061/dryad.s7h44j150](https://doi.org/10.5061/dryad.s7h44j150).
+
+### Forensic MD5 Checksum Deduplication
+A forensic MD5 audit revealed **5 pairs of byte-identical TD video files** in the public deposit. To eliminate train-test data leakage, one duplicate recording from each pair was quarantined in `processed/removed_duplicates/`:
+- `td_39` (byte-identical duplicate of `td_17`)
+- `td_5` (byte-identical duplicate of `td_22`)
+- `td_4` (byte-identical duplicate of `td_23`)
+- `td_7` (byte-identical duplicate of `td_24`)
+- `td_50` (byte-identical duplicate of `td_26`)
+
+### Frozen Cohort Partitions (`splits/splits_dryad_v2_dedup.json`)
+- **Main Clean Cohort ($N = 90$ children, 45 ASD + 45 TD):**
+  - **Held-Out Test Set ($N = 23$ subjects, 11 ASD + 12 TD):** Exactly ~25% of the cohort, locked prior to model fitting (`splits/splits_dryad_v2_dedup.json`).
+  - **Train/Validation Set ($N = 67$ subjects, 34 ASD + 33 TD):** Partitioned into 3 balanced stratified folds for cross-validation and calibration fitting.
+- **Supplementary Protocol-Shift Cohort ($N = 9$ severe-ASD subjects):** Never included in train, validation, or test partitions; evaluated solely in supplementary sensitivity analyses.
+
+---
+
+## 🚀 Installation & Quick Start
+
+### 1. Environment Setup
 
 ```bash
 git clone https://github.com/neuro-paradigm/PACE-ASD.git
 cd PACE-ASD
-```
-
-### 2. Environment Setup
-
-```bash
 python -m venv .venv
 
-# Windows:
+# On Windows:
 .venv\Scripts\activate
 
-# Linux / macOS:
+# On Linux/macOS:
 source .venv/bin/activate
-```
 
-### 3. Install Dependencies
-
-For CPU inference and testing (no GPU required):
-```bash
+# Install dependencies (CPU-only is sufficient for inference and testing)
 pip install -r requirements.txt
+
+# Verify environment
+python src/verify.py
 ```
 
-For GPU-accelerated training (CUDA 12.1):
+*For GPU-accelerated training (CUDA 12.1):*
 ```bash
 pip install torch==2.1.2+cu121 torchvision==0.16.2+cu121 --index-url https://download.pytorch.org/whl/cu121
 pip install -r requirements.txt
 ```
 
-### 4. Verify Setup
-
+### 2. Run Comprehensive Unit Tests (37/37 Passing)
+All unit tests use synthetic data fixtures and run in <5 seconds without requiring dataset downloads:
 ```bash
-python src/verify.py
+python -m pytest tests/ -v
 ```
 
----
+### 3. Run Single-Sample Inference
 
-## Quick Start
-
-### Run Inference on a Pre-extracted Sample (No MediaPipe required)
-
+**From pre-extracted features (no MediaPipe required):**
 ```bash
 python scripts/infer.py \
     --input_npy processed/features/asd_1.npy \
@@ -152,38 +191,16 @@ python scripts/infer.py \
     --output outputs/example_asd1
 ```
 
-### Run Inference on a Raw Video
-
+**From raw video (`.mp4`, `.avi`):**
 ```bash
 python scripts/infer.py \
     --input path/to/video.mp4 \
     --checkpoint models/A1/fold1_seed42.pt \
     --config configs/inference.yaml \
-    --output outputs/example_video
+    --output outputs/my_video_output
 ```
 
-### Run Unit Tests
-
-```bash
-python -m pytest tests/ -v
-```
-
----
-
-## Inference
-
-The inference command produces structured JSON and NPZ files along with publication-quality visualizations.
-
-```bash
-python scripts/infer.py \
-    --input_npy processed/features/asd_1.npy \
-    --checkpoint models/A1/fold1_seed42.pt \
-    --config configs/inference.yaml \
-    --output outputs/demo
-```
-
-### Python API
-
+**Python Programmatic API:**
 ```python
 import sys
 sys.path.insert(0, 'src')
@@ -193,205 +210,124 @@ predictor = PACEASDPredictor(
     checkpoint='models/A1/fold1_seed42.pt',
     config='configs/inference.yaml'
 )
-
-# Accepts .npy or .mp4
 result = predictor.predict('processed/features/asd_1.npy')
 
-print("Prediction:", result["prediction"])
-print("Calibrated P(ASD):", result["calibrated_probability"])
-print("Body-Region Attribution:", result["body_region_attribution"])
-print("Selected Events:", result["selected_events"])
+print(f"Prediction: {result['prediction']}")
+print(f"Calibrated P(ASD): {result['calibrated_probability']:.4f}")
+print(f"Body-Region Attribution: {result['body_region_attribution']}")
 ```
 
----
-
-## Output Files
-
-Each inference execution populates the target directory with:
-
-```
-outputs/demo/
-├── result.json                   # Calibrated probability, prediction, metadata
-├── kinematics.npz                # 3D arrays: positions, velocities, accelerations
-├── selected_events.json          # Block-ESG selected temporal blocks & scores
-├── attribution.json              # Body-region and kinematic-stream attribution
-└── visualizations/
-    ├── kinematics.png            # Trajectory graphs (position, velocity, acceleration)
-    ├── event_saliency.png        # Block-ESG saliency bar plot
-    └── evidence_summary.png      # 4-panel comprehensive evidence summary
-```
-
-See [`docs/inference.md`](docs/inference.md) for full schema details.
-
----
-
-## Movement and Kinematic Outputs
-
-All kinematic representations are preserved and exposed in `kinematics.npz`:
-- `positions`: $(300, 33, 2)$ float32, mid-hip centred and inter-shoulder scaled.
-- `velocities`: $(300, 33, 2)$ float32, first-order finite differences with boundary protection ($\times 10$ scaling).
-- `accelerations`: $(300, 33, 2)$ float32, second-order finite differences ($\times 5$ scaling).
-- `frame_indices`: $(300,)$ int32, temporal timeline indices.
-
----
-
-## Temporal Event Outputs
-
-The Block-ESG module exposes:
-- Selected contiguous blocks of $L=15$ frames (~500 ms motion primitives).
-- Exact block boundary frames in `selected_events.json`.
-- Gate saliency scores across all candidate blocks, indicating which segments exhibited atypical kinematic profiles.
-
----
-
-## Interpretability Outputs
-
-Interpretability is exposed via two complementary mechanisms:
-1. **Body-Region Attribution:** Proportional Gradient $\times$ Input importance grouped into Head (landmarks 0–10), Arms (11–22), Torso (23–24), and Legs (25–32).
-2. **Kinematic-Stream Attribution:** Relative contribution of spatial position vs. velocity vs. acceleration streams.
-3. **Mechanistic Coherence:** Consistency between gating saliency and Transformer self-attention density ($r = 0.822$).
-
----
-
-## Training
-
-To train a single PACE-ASD model fold:
+### 4. Reproduce Benchmark Statistics & Wilcoxon Tests
 ```bash
-python src/train.py --config configs/config.yaml --model_id A1 --seed 42 --fold 0
-```
-
-To run the complete 20-seed $\times$ 3-fold cross-validation experiment:
-```bash
-python src/ablation.py --config configs/config.yaml --models A1
-```
-
-*Note:* Training requires the underlying raw Dryad dataset. See [`data/README.md`](data/README.md).
-
----
-
-## Evaluation
-
-To reproduce evaluation metrics across frozen splits using pre-trained checkpoints:
-```bash
+# Evaluate pre-trained A1 checkpoints across all folds/seeds:
 python scripts/evaluate.py --model_id A1
-```
 
-To compute comprehensive benchmark statistics and collapse audits:
-```bash
+# Compute headline summary table and collapse statistics:
 python scripts/compute_stats.py
-```
 
-To run multi-model paired Wilcoxon signed-rank tests:
-```bash
+# Compute paired Wilcoxon signed-rank tests with Bonferroni correction:
 python scripts/wilcoxon_test.py --results_dir results
 ```
 
----
-
-## Reproducibility
-
-- **Frozen Splits:** Stored in `splits/splits_dryad_v2_dedup.json`.
-- **Pre-computed Results:** Stored in `results/A1_per_seed.json` through `results/A5_*_per_seed.json`.
-- **Pre-trained Checkpoints:** Included in `models/A1/` (60 checkpoints across 3 folds and 20 seeds).
-- Detailed reproduction steps are provided in [`docs/reproducibility.md`](docs/reproducibility.md).
-
----
-
-## Dataset
-
-Evaluated on the open-access **Dryad ASD Kinematic Dataset**:
-> Aljubouri, A. A., Hadi, I., & Rajihy, Y. (2020). *Three Dimensional Dataset Combining Gait and Full Body Movement of Children with Autism Spectrum Disorders Collected by Kinect v2 Camera.* Dryad Digital Repository. [doi:10.5061/dryad.s7h44j150](https://doi.org/10.5061/dryad.s7h44j150).
-
-### Forensic Deduplication Audit
-An MD5 cryptographic audit identified 5 pairs of byte-identical TD video recordings in the public release. One duplicate from each pair was quarantined in `processed/removed_duplicates/` to prevent train-test contamination, yielding a clean main cohort of **$N = 90$ subjects (45 ASD, 45 TD)**. See [`data/README.md`](data/README.md).
+### 5. Generate Multi-Panel Case Study Visualizations
+```bash
+python scripts/generate_case_study.py \
+    --clip_id asd_1 \
+    --checkpoint models/A1/fold1_seed42.pt \
+    --config configs/inference.yaml \
+    --output outputs/case_study_asd1
+```
 
 ---
 
-## Checkpoints
+## 📦 Output Artifacts Reference
 
-- Checkpoints for the primary A1 model (60 models: 3 folds $\times$ 20 seeds) are located in `models/A1/`.
-- Additional baseline model checkpoints are stored in `models/A2/`, `models/A3/`, `models/A4/`, and `models/A5_*/`.
-- If retraining is needed, scripts and hyperparameters are fully documented in [`checkpoints/README.md`](checkpoints/README.md).
+Each inference execution writes structured, reproducible outputs:
+- **`result.json`:** Raw logit, raw probability, calibrated probability $P(\text{ASD})$, binary classification, threshold, runtime, and summary metadata.
+- **`kinematics.npz`:** Full $(300, 33, 2)$ position, velocity ($\times 10$), and acceleration ($\times 5$) coordinate tensors.
+- **`selected_events.json`:** Block-ESG selected contiguous 15-frame blocks, exact frame ranges, and all candidate block saliency scores.
+- **`attribution.json`:** Gradient $\times$ Input attributions decomposed across 4 body regions (Head, Arms, Torso, Legs) and 3 kinematic streams (position, velocity, acceleration).
+- **`visualizations/`:**
+  - `kinematics.png`: Trajectory plots for position, velocity, and acceleration.
+  - `event_saliency.png`: Bar plot showing Block-ESG saliency across all 20 blocks.
+  - `evidence_summary.png`: 4-panel diagnostic figure visualizing trajectories, selected blocks, and regional attributions.
 
 ---
 
-## Repository Structure
+## 📂 Repository Organization
 
 ```
 PACE-ASD/
 ├── configs/
-│   ├── config.yaml                    # Master training configuration
-│   ├── inference.yaml                 # Inference settings & thresholds
-│   └── evaluation.yaml                # Model evaluation configurations
+│   ├── config.yaml                    # Master training & cross-validation configuration
+│   ├── inference.yaml                 # Inference parameters, thresholds, and output flags
+│   └── evaluation.yaml                # Model evaluation configurations (A1–A4)
 ├── docs/
-│   ├── installation.md                # Environment setup instructions
-│   ├── usage.md                       # Comprehensive CLI & API usage
+│   ├── installation.md                # System requirements & setup guide
+│   ├── usage.md                       # Comprehensive CLI and Python API usage
 │   ├── architecture.md                # Mathematical architecture details
-│   ├── inference.md                   # Output schemas and interpretation
+│   ├── inference.md                   # Complete output schema reference
 │   ├── reproducibility.md             # Benchmark reproduction protocol
-│   ├── software_comparison.md         # Comparison matrix vs. existing tools
-│   ├── troubleshooting.md             # FAQ and common fixes
-│   └── SUBMISSION_READINESS.md        # BMC submission audit checklist
+│   ├── software_comparison.md         # Comparison matrix vs. literature tools
+│   ├── troubleshooting.md             # Common errors and solutions
+│   └── SUBMISSION_READINESS.md        # BMC submission audit matrix (22 items)
 ├── src/
-│   ├── model.py                       # Core PACE-ASD model & ablation variants
-│   ├── inference_api.py               # PACEASDPredictor class
-│   ├── asymmetry.py                   # Descriptive bilateral asymmetry utility
-│   ├── calibration.py                 # PlattScaler temperature scaling
-│   ├── interpretability.py            # Gradient x Input & attention coherence
-│   ├── preprocess.py                  # MediaPipe pose extraction & normalization
-│   ├── dataset.py                     # Sequence loaders & data augmentation
-│   ├── train.py                       # Model training loop & early stopping
+│   ├── model.py                       # ASDMotionModel, SpatialEncoder, Microkinetic, Block-ESG
+│   ├── inference_api.py               # PACEASDPredictor programmatic inference interface
+│   ├── asymmetry.py                   # Descriptive bilateral movement asymmetry utility
+│   ├── calibration.py                 # PlattScaler positive-temperature scaling
+│   ├── interpretability.py            # Gradient x Input & gate-attention coherence
+│   ├── preprocess.py                  # MediaPipe pose extraction & scale normalization
+│   ├── dataset.py                     # Sequence loaders & sequence mixup augmentation
+│   ├── train.py                       # Training loop, early stopping, Platt fitting
 │   ├── ablation.py                    # Multi-seed CV ablation runner
 │   ├── baselines.py                   # 14 literature deep learning & ML baselines
-│   ├── metrics.py                     # Evaluation metrics (AUC, ECE, F1, CI)
+│   ├── metrics.py                     # Evaluation metrics (AUC, ECE, F1, CI, collapse guards)
 │   ├── report.py                      # PDF report generator
-│   └── verify.py                      # Installation verification script
+│   └── verify.py                      # Checkpoint and data integrity audits
 ├── scripts/
-│   ├── infer.py                       # Single-sample inference CLI
+│   ├── infer.py                       # Single-sample inference CLI (video + .npy)
 │   ├── evaluate.py                    # Checkpoint evaluation reproducer
 │   ├── generate_case_study.py         # 8-panel case study generator
 │   ├── compute_stats.py               # Benchmark table calculator
 │   ├── wilcoxon_test.py               # Statistical significance testing
-│   └── audit_clip_lengths.py          # Frame count and duration audit
-├── tests/
-│   ├── conftest.py                    # Pytest fixtures & synthetic data
-│   ├── test_pose.py                   # Keypoint normalization tests
-│   ├── test_normalization.py          # Scale & centering tests
-│   ├── test_kinematics.py             # Velocity & acceleration tests
-│   ├── test_asymmetry.py              # Bilateral asymmetry tests
-│   ├── test_block_esg.py              # Event saliency gate tests
-│   ├── test_model_shapes.py           # Forward pass tensor shape tests
-│   ├── test_calibration.py            # Platt scaling tests
-│   └── test_end_to_end.py             # End-to-end inference tests
+│   ├── audit_clip_lengths.py          # Frame count and duration audit
+│   └── create_reviewer_package.py     # Reviewer release bundle packaging script
+├── tests/                             # 9 unit & integration test files (37/37 passing)
 ├── processed/
-│   ├── features/                      # Preprocessed landmark arrays (*.npy)
-│   ├── removed_duplicates/            # Quarantined duplicate recordings
-│   └── labels.csv                     # Cohort metadata
-├── models/                            # Trained model checkpoints (*.pt)
-├── splits/                            # Frozen 3-fold CV splits
-├── results/                           # Benchmark JSON & CSV results
-├── examples/                          # Example inputs and expected outputs
-├── release/                           # Reviewer release bundle & guide
+│   ├── features/                      # Preprocessed landmark arrays (*.npy, 105 files)
+│   ├── removed_duplicates/            # Quarantined duplicate recordings from MD5 audit
+│   └── labels.csv                     # Cohort metadata and diagnostic labels
+├── models/
+│   └── A1/                            # 60 checkpoints for PACE-ASD (fold1-3 x seed42-61)
+├── splits/
+│   └── splits_dryad_v2_dedup.json     # Frozen subject-level train/test partitions
+├── results/                           # Master results, per-seed JSONs, Wilcoxon outputs
+├── examples/                          # Example inputs and verified expected outputs
+├── release/                           # Reviewer bundle & quick-start guide
 ├── requirements.txt                   # Pinned dependency specification
-├── pyproject.toml                     # Package build configuration
-├── CITATION.cff                       # Citation metadata
+├── pyproject.toml                     # Build system configuration
+├── CITATION.cff                       # Citation metadata with full author details
+├── CHANGELOG.md                       # Version history
+├── STATISTICAL_ANALYSIS_PLAN.md       # Pre-registered locked Statistical Analysis Plan (v1.0)
 └── README.md                          # Main repository documentation
 ```
 
 ---
 
-## Limitations
+## ⚠️ Limitations & Ethical Considerations
 
-- **Research Software Only:** PACE-ASD is an academic research software tool, not a cleared medical device. It does not provide clinical diagnoses.
-- **Demographic Representation:** Evaluated on the Dryad pediatric cohort ($N=90$); generalization across diverse camera angles, lighting conditions, and age groups requires broader clinical validation.
-- **2D Keypoints:** 3D depth is not reconstructed; out-of-plane rotational movements may affect tracking fidelity.
-- **Descriptive Asymmetry:** Bilateral asymmetry metrics are descriptive kinematic measures and are not validated standalone clinical biomarkers.
+1. **Research Software Only:** PACE-ASD is an academic research software tool, not a cleared medical device. It does not provide medical diagnoses or replace clinical evaluations.
+2. **Single-Site Pediatric Cohort:** Evaluated solely on the Dryad dataset ($N=90$ children). Generalization across diverse recording devices, ambient lighting conditions, and broader age groups has not been clinically validated.
+3. **No External OOD Generalization Claimed:** Due to clinical confounds in external adult datasets, no out-of-distribution generalization is claimed. Multi-center pediatric validation is an essential future milestone.
+4. **2D Landmark Trajectories:** Coordinates are extracted in 2D ($x, y$); out-of-plane rotational movements are not reconstructed in 3D.
+5. **Descriptive Asymmetry:** Bilateral movement asymmetry metrics are descriptive kinematic measures and are not validated clinical biomarkers.
 
 ---
 
-## Citation
+## 📖 Citation
 
-If you utilize this codebase or research in your work, please cite:
+If you use PACE-ASD in your research, please cite:
 
 ```bibtex
 @article{puppala2026paceasd,
@@ -405,17 +341,11 @@ If you utilize this codebase or research in your work, please cite:
 }
 ```
 
-See [`CITATION.cff`](CITATION.cff) for complete metadata.
+See [`CITATION.cff`](CITATION.cff) for complete machine-readable citation metadata.
 
 ---
 
-## Data License
-
-- **Dataset:** [CC0 1.0 Universal Public Domain](https://creativecommons.org/publicdomain/zero/1.0/) (Dryad Digital Repository)
-
----
-
-## Authors & Contact
+## 👥 Authors & Contact
 
 | Author | Role | Affiliation | ORCID |
 |---|---|---|---|
