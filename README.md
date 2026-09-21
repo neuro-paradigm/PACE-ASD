@@ -2,7 +2,6 @@
 
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3110/)
 [![PyTorch 2.1](https://img.shields.io/badge/PyTorch-2.1.2-orange.svg)](https://pytorch.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Dataset: Dryad CC0](https://img.shields.io/badge/Dataset-Dryad%20CC0-green.svg)](https://doi.org/10.5061/dryad.s7h44j150)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](tests/)
 
@@ -376,7 +375,6 @@ PACE-ASD/
 ├── requirements.txt                   # Pinned dependency specification
 ├── pyproject.toml                     # Package build configuration
 ├── CITATION.cff                       # Citation metadata
-├── LICENSE                            # MIT License
 └── README.md                          # Main repository documentation
 ```
 
@@ -411,9 +409,8 @@ See [`CITATION.cff`](CITATION.cff) for complete metadata.
 
 ---
 
-## License
+## Data License
 
-- **Source Code:** [MIT License](LICENSE)
 - **Dataset:** [CC0 1.0 Universal Public Domain](https://creativecommons.org/publicdomain/zero/1.0/) (Dryad Digital Repository)
 
 ---

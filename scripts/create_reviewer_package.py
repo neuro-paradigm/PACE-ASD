@@ -9,7 +9,6 @@ ZIP_PATH = os.path.join(OUT_DIR, "PACE-ASD-v1.0-reviewer.zip")
 
 FILES_TO_INCLUDE = [
     "README.md",
-    "LICENSE",
     "CITATION.cff",
     "CHANGELOG.md",
     "requirements.txt",

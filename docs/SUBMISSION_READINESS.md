@@ -28,7 +28,7 @@ This document audits the PACE-ASD software repository against the software artic
 | 14 | **Unit & Integration Tests** | **PASS** | `tests/test_*.py` (9 test files) | Tests pose normalization, kinematics, asymmetry, Block-ESG, model shapes, Platt calibration, and end-to-end inference using synthetic fixtures. |
 | 15 | **Documentation** | **PASS** | `docs/` (7 documents), `README.md` | Comprehensive coverage: installation, usage, architecture, inference schemas, reproducibility, software comparison, troubleshooting. |
 | 16 | **Requirements & Environment** | **PASS** | `requirements.txt`, `pyproject.toml` | Pinned compatible versions with PyTorch CPU/CUDA installation instructions. |
-| 17 | **Open Source License** | **PASS** | `LICENSE` | Standard MIT License with all 5 authors and institutional copyright (NeuroParadigm Pvt. Ltd. & KMIT). |
+| 17 | **Software Licensing** | **PENDING** | `docs/` | Software license removed per user instruction; to be finalized prior to final camera-ready publication. |
 | 18 | **Citation Metadata** | **PASS** | `CITATION.cff` | Machine-readable CFF 1.2.0 metadata containing all 5 authors, ORCID IDs, affiliations, and preferred citation. |
 | 19 | **Reproducibility Protocol** | **PASS** | `docs/reproducibility.md`, `splits/splits_dryad_v2_dedup.json` | Frozen cross-validation split, fixed seeds (42–61), deterministic PyTorch flags, and step-by-step instructions. |
 | 20 | **Reviewer Release Package** | **PASS** | `release/README_REVIEWER.md`, `release/PACE-ASD-v1.0-reviewer.zip` | Standalone reviewer package excluding development artifacts and raw data, with a 15-minute quick-start guide. |
