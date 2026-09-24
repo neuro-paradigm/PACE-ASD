@@ -6,7 +6,7 @@
 [![Protocol: SAP v1.0 Locked](https://img.shields.io/badge/Protocol-SAP%20v1.0%20(55bdce4)-purple.svg)](STATISTICAL_ANALYSIS_PLAN.md)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](tests/)
 
-Official research software implementation and reproduction codebase for **PACE-ASD (Pose-Aware Contiguous Event Saliency-Gated Transformer for Markerless Monocular Video-Based ASD Screening Research)**, prepared for submission as a Software Article to *BMC Medical Informatics and Decision Making*.
+Official research software implementation and reproduction codebase for **PACE-ASD (Pose-Aware Contiguous Event Saliency-Gated Transformer for Markerless Monocular Video-Based ASD Screening Research)**.
 
 ---
 
@@ -327,19 +327,21 @@ PACE-ASD/
 
 ## 📖 Citation
 
-If you use PACE-ASD in your research, please cite:
+If you use PACE-ASD in your research, please cite this software repository:
 
 ```bibtex
-@article{puppala2026paceasd,
-  title   = {{PACE-ASD}: Pose-Aware Contiguous Event Saliency-Gated Transformer
+@software{paceasd2026,
+  title  = {{PACE-ASD}: Pose-Aware Contiguous Event Saliency-Gated Transformer
              for Markerless Monocular Video-Based {ASD} Screening Research},
-  author  = {Puppala, Sireesha and {Kasi}, {Vamshi Mohan} and
+  author = {Puppala, Sireesha and {Kasi}, {Vamshi Mohan} and
              Tanuku, {VVS Sai Tejesh} and Kota, Preetham and
              Annabathula, {Yuva Dhanvanth}},
+  url    = {https://github.com/neuro-paradigm/PACE-ASD},
+  year   = {2026}
 }
 ```
 
-See [`CITATION.cff`](CITATION.cff) for complete machine-readable citation metadata.
+See [`CITATION.cff`](CITATION.cff) for machine-readable citation metadata.
 
 ---
 

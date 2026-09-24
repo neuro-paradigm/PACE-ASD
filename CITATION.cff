@@ -41,19 +41,3 @@ authors:
     email: "yuva.annabathula24@kmit.edu.in"
     orcid: "https://orcid.org/0009-0003-7401-1394"
     affiliation: "Department of Computer Science and Engineering (AI & ML), Keshav Memorial Institute of Technology (KMIT), Hyderabad, India; NeuroParadigm Pvt. Ltd., Hyderabad, India"
-preferred-citation:
-  type: article
-  title: "PACE-ASD: Pose-Aware Contiguous Event Saliency-Gated Transformer for Markerless Monocular Video-Based ASD Screening Research"
-  journal: "BMC Medical Informatics and Decision Making"
-  authors:
-    - family-names: "Puppala"
-      given-names: "Sireesha"
-    - family-names: "Kasi"
-      given-names: "Vamshi Mohan"
-    - family-names: "Tanuku"
-      given-names: "VVS Sai Tejesh"
-    - family-names: "Kota"
-      given-names: "Preetham"
-    - family-names: "Annabathula"
-      given-names: "Yuva Dhanvanth"
-  year: 2026
