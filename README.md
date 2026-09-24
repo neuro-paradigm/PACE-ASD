@@ -336,8 +336,6 @@ If you use PACE-ASD in your research, please cite:
   author  = {Puppala, Sireesha and {Kasi}, {Vamshi Mohan} and
              Tanuku, {VVS Sai Tejesh} and Kota, Preetham and
              Annabathula, {Yuva Dhanvanth}},
-  journal = {BMC Medical Informatics and Decision Making},
-  year    = {2026}
 }
 ```
 
