@@ -21,7 +21,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Documentation: `docs/installation.md`, `docs/usage.md`, `docs/architecture.md`,
   `docs/inference.md`, `docs/reproducibility.md`, `docs/software_comparison.md`
 - `CITATION.cff` with all 5 authors and ORCID identifiers
-- `LICENSE` (MIT)
+- `LICENSE` (Apache-2.0)
 - Inference config: `configs/inference.yaml`
 - Evaluation config: `configs/evaluation.yaml`
 - Dataset documentation: `data/README.md`

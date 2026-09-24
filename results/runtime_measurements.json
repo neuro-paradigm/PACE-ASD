@@ -1,0 +1,63 @@
+{
+  "environment": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "python_version": "3.11.9",
+    "pytorch_version": "2.1.2+cu121",
+    "cuda_available": true,
+    "cuda_device_name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "torch_cuda_version": "12.1"
+  },
+  "models": {
+    "A1": {
+      "total_parameters": 223107,
+      "trainable_parameters": 223106,
+      "checkpoint": "models/A1/fold1_seed42.pt",
+      "cpu_benchmark": {
+        "mean_ms": 7.1680709984502755,
+        "std_ms": 0.8215465002302337,
+        "median_ms": 7.154499995522201,
+        "min_ms": 5.454099999042228,
+        "max_ms": 8.97419999819249,
+        "p95_ms": 8.673285004624631,
+        "peak_gpu_mem_mb": null,
+        "n_runs": 100
+      },
+      "gpu_benchmark": {
+        "mean_ms": 3.7319479981670156,
+        "std_ms": 0.9545590397312087,
+        "median_ms": 3.497800003970042,
+        "min_ms": 2.5289999903179705,
+        "max_ms": 6.648900016443804,
+        "p95_ms": 5.684335004480089,
+        "peak_gpu_mem_mb": 13.5771484375,
+        "n_runs": 100
+      }
+    },
+    "A2": {
+      "total_parameters": 218402,
+      "trainable_parameters": 218401,
+      "checkpoint": "models/A2/fold1_seed42.pt",
+      "cpu_benchmark": {
+        "mean_ms": 7.467082000512164,
+        "std_ms": 0.901720102928688,
+        "median_ms": 7.224850007332861,
+        "min_ms": 6.207700003869832,
+        "max_ms": 10.167100001126528,
+        "p95_ms": 9.605010019731708,
+        "peak_gpu_mem_mb": null,
+        "n_runs": 100
+      },
+      "gpu_benchmark": {
+        "mean_ms": 2.6636909987428226,
+        "std_ms": 0.5967956831421676,
+        "median_ms": 2.435950009385124,
+        "min_ms": 2.060200000414625,
+        "max_ms": 4.8393000033684075,
+        "p95_ms": 3.924844991706777,
+        "peak_gpu_mem_mb": 13.5576171875,
+        "n_runs": 100
+      }
+    }
+  }
+}

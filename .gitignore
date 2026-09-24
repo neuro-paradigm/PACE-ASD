@@ -39,12 +39,14 @@ data/*.avi
 data/*.mp4
 data/raw/
 
-# Old journal submission working archives (local submission documents)
+# Journal submission working archives (local research paper materials)
 ISWA JOURNAL submission/
 ISWA JOURNAL submission*.zip
 ISWA_Submission_Package.zip
 iswa template.zip
 iswa_template_extracted/
+bmc submission/
+bmc submission*.zip
 *.aux
 *.log
 *.out
