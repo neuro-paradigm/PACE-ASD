@@ -180,7 +180,14 @@ All unit tests use synthetic data fixtures and run in <5 seconds without requiri
 python -m pytest tests/ -v
 ```
 
-### 3. Run Single-Sample Inference
+### 3. Interactive Jupyter Notebook Walkthrough
+For an interactive, step-by-step visual demonstration of kinematic extraction, model inference with restored Platt calibration, and Stage-1 Block-ESG event selection:
+```bash
+jupyter notebook examples/demo_inference.ipynb
+```
+The notebook executes inference on pre-extracted landmarks (`processed/features/asd_45.npy`) and plots trajectories, selected contiguous blocks, and anatomical/stream attributions inline.
+
+### 4. Run Single-Sample Inference (CLI)
 
 **From pre-extracted features (no MediaPipe required):**
 ```bash

@@ -4,10 +4,19 @@ This directory contains example inputs and expected outputs for the PACE-ASD inf
 
 ## Contents
 
+- `demo_inference.ipynb` — Interactive Jupyter notebook walkthrough showing feature loading, model inference, Platt calibration, and temporal evidence visualizations
 - `input/` — Place example video files or pre-extracted `.npy` files here
 - `expected_output/` — Reference outputs from a known checkpoint run
 
-## Quick Start Example
+## Interactive Jupyter Notebook Walkthrough
+
+For an interactive, step-by-step visual demonstration:
+```bash
+jupyter notebook examples/demo_inference.ipynb
+```
+The notebook executes inference on pre-extracted landmarks (`processed/features/asd_45.npy`) and interactively displays wireframe kinematics, Block-ESG event selections, and body-region/stream attributions inline without CLI invocation.
+
+## Quick Start Example (CLI)
 
 ### Using a pre-extracted .npy feature file (no video/MediaPipe required)
 
