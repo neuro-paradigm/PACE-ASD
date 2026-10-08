@@ -1,15 +1,12 @@
 import sys, yaml
 import numpy as np
 sys.path.insert(0, 'src')
-from interpretability import load_and_aggregate_runs, compute_population_profiles
+from interpretability import load_all_attention_records, compute_population_attention_profiles
 
-with open('configs/config.yaml') as f:
-    config = yaml.safe_load(f)
-
-runs = load_and_aggregate_runs('A1', config)
+runs = load_all_attention_records('results/attn', 'A1')
 print(f"Loaded runs: {len(runs)}")
 
-pop_test, cross_chk = compute_population_profiles(runs, 'test', n_frames=300)
+pop_test = compute_population_attention_profiles(runs, 'test_records', n_frames=300)
 
 for gname in ['TP', 'TN', 'FP', 'FN']:
     rep = pop_test[gname]['representative']

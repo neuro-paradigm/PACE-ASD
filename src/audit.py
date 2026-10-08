@@ -1,18 +1,33 @@
 """
 PACE-ASD — Dataset Audit (Section 1.1 of Protocol)
 
-Walks D:/dryad, counts subjects per group, verifies every expected
-raw video file is present. Writes audit_report.txt.
-Exits with code 1 if any regular subject is missing its video.avi.
+Walks the raw dataset, counts subjects per group, verifies every expected
+colour video is present, and finds byte-identical recordings (MD5 of the
+video files and, optionally, of the processed arrays). Writes a text report
+and a JSON list of duplicate groups. Exits with code 1 if any regular subject
+is missing its video.
 
 Usage:
-    python src/audit.py --raw_dir "D:/dryad"
-    python src/audit.py --raw_dir "D:/dryad" --out audit_report.txt
+    python src/audit.py --raw_dir data/raw/Dataset
+    python src/audit.py --raw_dir data/raw/Dataset --arrays processed/features --json processed/duplicates.json
 """
 
 import argparse
+import glob
+import hashlib
+import json
 import os
 import sys
+from collections import defaultdict
+
+
+def find_duplicates(paths: dict) -> list:
+    """Groups of keys whose files have identical MD5 checksums."""
+    by_hash = defaultdict(list)
+    for key, path in sorted(paths.items()):
+        with open(path, "rb") as f:
+            by_hash[hashlib.md5(f.read()).hexdigest()].append(key)
+    return [sorted(v) for v in by_hash.values() if len(v) > 1]
 
 
 # ── Expected structure ────────────────────────────────────────────────────────
@@ -137,6 +152,7 @@ def audit(raw_dir: str) -> dict:
                     result["videos"][clip_id] = os.path.join(case_path, avi)
 
     result["subjects"]["SEVERE"] = severe_subjects
+    result["duplicate_videos"] = find_duplicates(result["videos"])
     return result
 
 
@@ -175,6 +191,15 @@ def format_report(raw_dir: str, result: dict) -> str:
         "",
     ]
 
+    lines.append("── Byte-identical recordings ────────────────────────────────────────")
+    for key in ("duplicate_videos", "duplicate_arrays"):
+        if key in result:
+            groups = result[key]
+            lines.append(f"  {key.replace('_', ' ')}: {len(groups)} group(s)")
+            for g in groups:
+                lines.append(f"    {' = '.join(g)}")
+    lines.append("")
+
     if result["warnings"]:
         lines.append("── Warnings ─────────────────────────────────────────────────────────")
         for w in result["warnings"]:
@@ -196,13 +221,24 @@ def format_report(raw_dir: str, result: dict) -> str:
 
 def main():
     parser = argparse.ArgumentParser(description="PACE-ASD dataset audit")
-    parser.add_argument("--raw_dir", default="D:/dryad",
+    parser.add_argument("--raw_dir", default="data/raw/Dataset",
                         help="Path to the raw Dryad dataset root")
     parser.add_argument("--out", default="audit_report.txt",
                         help="Where to write the audit report")
+    parser.add_argument("--arrays", default=None,
+                        help="also compare processed arrays (*.npy) in this directory")
+    parser.add_argument("--json", default=None, help="write duplicate groups as JSON here")
     args = parser.parse_args()
 
     result = audit(args.raw_dir)
+    if args.arrays:
+        arrays = {os.path.splitext(os.path.basename(p))[0]: p
+                  for p in glob.glob(os.path.join(args.arrays, "*.npy"))}
+        result["duplicate_arrays"] = find_duplicates(arrays)
+    if args.json:
+        with open(args.json, "w") as f:
+            json.dump({k: result[k] for k in ("duplicate_videos", "duplicate_arrays")
+                       if k in result}, f, indent=1)
     report = format_report(args.raw_dir, result)
 
     print(report)

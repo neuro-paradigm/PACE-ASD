@@ -1,33 +1,33 @@
 """
-PACE-ASD — Python Inference API
+PACE-ASD — Python inference API.
 
-Provides PACEASDPredictor: a high-level interface for running PACE-ASD
-inference from Python code.
+PACEASDPredictor scores one recording with one checkpoint or an ensemble of
+checkpoints and returns, besides the probability, everything needed to check
+how it was obtained: the prepared landmark sequence and its kinematics, the
+blocks each ensemble member selected (in the frame numbering of the input),
+how often members agree on each block, and descriptor-level attribution
+shares.
 
-Example usage:
-    import sys
-    sys.path.insert(0, 'src')
+    import sys; sys.path.insert(0, "src")
     from inference_api import PACEASDPredictor
 
-    predictor = PACEASDPredictor(
-        checkpoint='models/A1/fold1_seed42.pt',
-        config='configs/inference.yaml',
-    )
+    predictor = PACEASDPredictor("models/release")          # directory, file or list
+    result = predictor.predict_npy("processed/features/asd_1.npy")
+    result = predictor.predict_video("walk.mp4")             # MediaPipe + OpenCV
+    print(result["probability"], result["probability_sd"])
 
-    # From pre-extracted .npy
-    result = predictor.predict_npy('processed/features/asd_1.npy')
-
-    # From raw video
-    result = predictor.predict_video('path/to/video.mp4')
-
-    print(result['calibrated_probability'])
-    print(result['body_region_attribution'])
+The input goes through exactly the preparation used in training
+(src/sequence.py): frames with implausible normalised coordinates are treated
+as undetected, and the sequence is shifted so its first detected frame is
+frame 0. Outputs report frames in the numbering of the input, with the shift
+recorded as `onset_frame`.
 """
 
-import json
+import glob
 import os
 import pickle
 import sys
+import time
 from pathlib import Path
 
 import numpy as np
@@ -38,246 +38,200 @@ SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 if SRC_DIR not in sys.path:
     sys.path.insert(0, SRC_DIR)
 
-from model import ASDMotionModel
-from calibration import PlattScaler
-from asymmetry import compute_bilateral_asymmetry
+from calibration import PlattScaler                       # noqa: E402
+from model import ASDMotionModel                          # noqa: E402
+from sequence import DEFAULT_MAX_ABS, prepare_sequence, valid_mask  # noqa: E402
+
+N_LANDMARKS = 33
+T_MAX = 300
+PACE_FLAGS = {"PACE": (True, True), "PACE-nogate": (False, True), "PACE-frames": (True, True),
+              "PACE-noattn": (True, False), "PACE-M4": (True, True), "PACE-nomask": (True, True),
+              "PACE-noalign": (True, True), "PACE-valloss": (True, True), "A1": (True, True),
+              "A2": (False, True), "A3": (True, True), "A4": (True, False)}
+REGIONS = {"head": list(range(0, 11)), "arms_hands": list(range(11, 23)),
+           "hips": [23, 24], "legs_feet": list(range(25, 33))}
+STREAMS = {"position": slice(0, 66), "velocity": slice(66, 132), "acceleration": slice(132, 198)}
 
 
-N_LANDMARKS    = 33
-T_MAX          = 300
-LEFT_HIP       = 23
-RIGHT_HIP      = 24
-LEFT_SHOULDER  = 11
-RIGHT_SHOULDER = 12
+def _scaler_from(obj):
+    if obj is None:
+        return None
+    if isinstance(obj, (bytes, bytearray)):
+        return pickle.loads(obj)
+    s = PlattScaler()
+    with torch.no_grad():
+        s.log_temperature.fill_(float(np.log(obj["temperature"])))
+        s.bias.fill_(float(obj["bias"]))
+    return s
 
-JOINT_NAMES = [
-    "nose", "left_eye_inner", "left_eye", "left_eye_outer",
-    "right_eye_inner", "right_eye", "right_eye_outer",
-    "left_ear", "right_ear", "left_mouth", "right_mouth",
-    "left_shoulder", "right_shoulder", "left_elbow", "right_elbow",
-    "left_wrist", "right_wrist", "left_pinky", "right_pinky",
-    "left_index", "right_index", "left_thumb", "right_thumb",
-    "left_hip", "right_hip", "left_knee", "right_knee",
-    "left_ankle", "right_ankle", "left_heel", "right_heel",
-    "left_foot_index", "right_foot_index",
-]
 
-BODY_REGIONS = {
-    "head":  list(range(0, 11)),
-    "arms":  list(range(11, 23)),
-    "torso": [23, 24],
-    "legs":  list(range(25, 33)),
-}
+def checkpoint_paths(spec) -> list:
+    if isinstance(spec, (list, tuple)):
+        return [str(p) for p in spec]
+    if os.path.isdir(spec):
+        return sorted(glob.glob(os.path.join(spec, "*.pt")))
+    return [str(spec)]
 
 
 class PACEASDPredictor:
     """
-    High-level inference interface for PACE-ASD.
-
     Args:
-        checkpoint: path to trained checkpoint (.pt file)
-        config:     path to config file (inference.yaml or config.yaml)
-        device:     'auto' | 'cpu' | 'cuda' (default: 'auto')
+        checkpoints: a .pt file, a directory of .pt files (ensemble) or a list.
+        config:      optional YAML; only `inference.threshold`, `inference.device`
+                     and the MediaPipe settings under `preprocessing` are read.
+        device:      'auto' | 'cpu' | 'cuda'
     """
 
-    def __init__(self, checkpoint: str, config: str, device: str = "auto"):
-        with open(config) as f:
-            self.cfg = yaml.safe_load(f)
-
+    def __init__(self, checkpoints=None, config: str | None = None, device: str = "auto",
+                 checkpoint=None):
+        checkpoints = checkpoints if checkpoints is not None else checkpoint
+        self.cfg = yaml.safe_load(open(config)) if config else {}
+        inf = self.cfg.get("inference", {})
         if device == "auto":
-            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        else:
-            self.device = torch.device(device)
+            device = inf.get("device", "auto")
+        if device == "auto":
+            device = "cuda" if torch.cuda.is_available() and torch.cuda.device_count() else "cpu"
+        self.device = torch.device(device)
+        self.threshold = float(inf.get("threshold", 0.5))
+        self.paths = checkpoint_paths(checkpoints)
+        if not self.paths:
+            raise FileNotFoundError(f"no checkpoint found at {checkpoints}")
+        self.members = [self._load(p) for p in self.paths]
+        cfg0 = self.members[0][0].cfg_used
+        self.max_abs = cfg0.get("data", {}).get("max_abs_coord", DEFAULT_MAX_ABS)
+        self.align = bool(cfg0.get("data", {}).get("align_onset",
+                                                   cfg0["model"].get("align_onset", False)))
 
-        self._load_model(checkpoint)
+    def _load(self, path):
+        ck = torch.load(path, map_location=self.device, weights_only=False)
+        cfg = ck["config"]
+        arm = ck.get("arm", self.cfg.get("inference", {}).get("model_variant", "A1"))
+        gate, transformer = PACE_FLAGS.get(arm, (True, True))
+        model = ASDMotionModel(cfg, use_gate=gate, use_transformer=transformer)
+        model.load_state_dict(ck["state_dict"])
+        model.to(self.device).eval()
+        model.cfg_used = cfg
+        return model, _scaler_from(ck.get("scaler"))
 
-    def _load_model(self, checkpoint_path: str) -> None:
-        ckpt = torch.load(checkpoint_path, map_location=self.device, weights_only=False)
-        model_cfg = ckpt.get("config", self.cfg)
+    # ── inputs ────────────────────────────────────────────────────────────────
 
-        inf_cfg = self.cfg.get("inference", {})
-        use_gate        = inf_cfg.get("use_gate", True)
-        use_transformer = inf_cfg.get("use_transformer", True)
-
-        self.model = ASDMotionModel(model_cfg, use_gate=use_gate,
-                                    use_transformer=use_transformer)
-        self.model.load_state_dict(ckpt["state_dict"])
-        self.model.to(self.device).eval()
-        self.ckpt_path = checkpoint_path
-        self.threshold = self.cfg.get("inference", {}).get("threshold", 0.5)
-
-        self.scaler = None
-        if "scaler" in ckpt and ckpt["scaler"] is not None:
-            try:
-                self.scaler = pickle.loads(ckpt["scaler"])
-            except Exception:
-                pass
-
-    def predict_npy(self, npy_path: str) -> dict:
-        """
-        Run inference on a pre-extracted .npy feature file.
-
-        Args:
-            npy_path: path to (300, 33, 2) float32 numpy file
-
-        Returns:
-            dict with prediction results
-        """
+    def predict_npy(self, npy_path: str, attribution: bool = True) -> dict:
         positions = np.load(npy_path).astype(np.float32)
         if positions.shape != (T_MAX, N_LANDMARKS, 2):
-            raise ValueError(f"Expected ({T_MAX}, {N_LANDMARKS}, 2), got {positions.shape}")
-        clip_id = Path(npy_path).stem
-        return self._run(positions, clip_id=clip_id, source=npy_path)
+            raise ValueError(f"expected ({T_MAX}, {N_LANDMARKS}, 2), got {positions.shape}")
+        return self.predict_array(positions, Path(npy_path).stem, npy_path, attribution=attribution)
 
-    def predict_video(self, video_path: str) -> dict:
-        """
-        Run inference on a raw video file (requires MediaPipe + OpenCV).
-
-        Args:
-            video_path: path to video file (.mp4, .avi, etc.)
-
-        Returns:
-            dict with prediction results
-        """
-        import warnings
-        import os as _os
-        _os.environ["GLOG_minloglevel"] = "2"
-        warnings.filterwarnings("ignore")
-        import mediapipe as mp
-        import cv2
-
+    def predict_video(self, video_path: str, attribution: bool = True) -> dict:
+        from preprocess import extract_keypoints_from_video, normalise, pad_or_truncate
         prep = self.cfg.get("preprocessing", {})
-        pose = mp.solutions.pose.Pose(
-            static_image_mode=False,
-            model_complexity=prep.get("mediapipe_model_complexity", 2),
-            smooth_landmarks=prep.get("mediapipe_smooth_landmarks", True),
-            enable_segmentation=False,
-            min_detection_confidence=prep.get("mediapipe_min_detection_confidence", 0.5),
-            min_tracking_confidence=prep.get("mediapipe_min_tracking_confidence", 0.5),
-        )
-        cap = cv2.VideoCapture(video_path)
-        if not cap.isOpened():
-            raise RuntimeError(f"Cannot open video: {video_path}")
+        t0 = time.perf_counter()
+        raw, meta = extract_keypoints_from_video(video_path, return_meta=True, **{
+            k: prep[k] for k in ("model_complexity", "smooth_landmarks",
+                                 "min_detection_confidence", "min_tracking_confidence")
+            if k in prep})
+        meta["pose_seconds"] = round(time.perf_counter() - t0, 3)
+        positions = pad_or_truncate(normalise(raw, meta["width"], meta["height"]))
+        meta["truncated_frames"] = max(0, len(raw) - T_MAX)
+        return self.predict_array(positions, Path(video_path).stem, video_path,
+                                  video=meta, attribution=attribution)
 
-        frames = []
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                break
-            rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            res = pose.process(rgb)
-            if res.pose_landmarks:
-                kp = np.array([[lm.x, lm.y] for lm in res.pose_landmarks.landmark],
-                               dtype=np.float32)
-            else:
-                kp = np.zeros((N_LANDMARKS, 2), dtype=np.float32)
-            frames.append(kp)
-        cap.release()
-        pose.close()
+    def predict(self, source: str, **kw) -> dict:
+        return self.predict_npy(source, **kw) if source.endswith(".npy") else \
+            self.predict_video(source, **kw)
 
-        if not frames:
-            raise RuntimeError("No frames extracted from video")
+    # ── core ──────────────────────────────────────────────────────────────────
 
-        raw = np.stack(frames, axis=0)  # (T, 33, 2)
-        # Normalize
-        kp = raw.copy()
-        for t in range(kp.shape[0]):
-            if not np.any(kp[t] != 0):
-                continue
-            mid_hip = (kp[t, LEFT_HIP] + kp[t, RIGHT_HIP]) / 2.0
-            kp[t] -= mid_hip
-            sd = max(float(np.linalg.norm(kp[t, LEFT_SHOULDER] - kp[t, RIGHT_SHOULDER])), 1e-5)
-            kp[t] /= sd
-        # Pad/truncate
-        T = kp.shape[0]
-        if T >= T_MAX:
-            positions = kp[:T_MAX]
-        else:
-            pad = np.zeros((T_MAX - T, N_LANDMARKS, 2), dtype=np.float32)
-            positions = np.concatenate([kp, pad], axis=0)
+    def prepared(self, positions: np.ndarray):
+        """Return (prepared sequence, onset frame in the input numbering)."""
+        cleaned = prepare_sequence(positions, self.max_abs, align=False)
+        vm = valid_mask(cleaned)
+        onset = int(np.argmax(vm)) if (vm.any() and self.align) else 0
+        return prepare_sequence(positions, self.max_abs, self.align), onset
 
-        clip_id = Path(video_path).stem
-        return self._run(positions, clip_id=clip_id, source=video_path)
+    def predict_array(self, positions: np.ndarray, clip_id: str = "clip", source: str = "",
+                      video: dict | None = None, attribution: bool = True) -> dict:
+        t0 = time.perf_counter()
+        seq, onset = self.prepared(positions)
+        x = torch.from_numpy(seq)[None].to(self.device)
+        vm = valid_mask(seq)
+        n_rejected = int(valid_mask(positions).sum() - valid_mask(
+            prepare_sequence(positions, self.max_abs, align=False)).sum())
 
-    # backward-compatible alias
-    def predict(self, source: str) -> dict:
-        """
-        Automatically detect source type and run inference.
-        Accepts .npy files or video files (.mp4, .avi, etc.).
-        """
-        if source.endswith(".npy"):
-            return self.predict_npy(source)
-        else:
-            return self.predict_video(source)
-
-    def _run(self, positions: np.ndarray, clip_id: str, source: str) -> dict:
-        """Core inference logic shared by predict_npy and predict_video."""
-        x = torch.from_numpy(positions).unsqueeze(0).to(self.device)  # (1, T, 33, 2)
-
-        # Forward pass
-        with torch.no_grad():
-            probs, logits = self.model(x)
-            raw_logit = float(logits[0].item())
-            raw_prob  = float(probs[0].item())
-
-        # Calibration
-        if self.scaler is not None:
-            cal_prob = float(self.scaler.calibrate(np.array([raw_logit]))[0])
-        else:
-            cal_prob = raw_prob
-
-        prediction = "ASD" if cal_prob >= self.threshold else "TD"
-
-        # Block-ESG events
-        selected_events = []
-        block_saliency  = None
-        if self.model.saliency_gate is not None:
+        probs, logits, selections = [], [], []
+        for model, scaler in self.members:
             with torch.no_grad():
-                _, raw_ind, raw_bs = self.model.get_attention_maps(x)
-            if raw_bs is not None:
-                block_saliency = raw_bs[0].cpu().numpy().tolist()
-            if raw_ind is not None:
-                ind_np = raw_ind[0].cpu().numpy()
-                L = self.model.saliency_gate.block_size
-                block_starts = sorted(set(int(i // L) * L for i in ind_np))
-                selected_events = [{"start_frame": s, "end_frame": s + L - 1}
-                                    for s in block_starts]
+                _, lg = model(x)
+            lg = float(lg[0])
+            logits.append(lg)
+            probs.append(float(scaler.calibrate(np.array([lg]))[0]) if scaler else
+                         float(1 / (1 + np.exp(-lg))))
+            if model.saliency_gate is not None:
+                with torch.no_grad():
+                    _, idx, scores = model.get_attention_maps(x)
+                L = model.saliency_gate.block_size
+                blocks = sorted({int(i) // L for i in idx[0].cpu().numpy()})
+                selections.append({"block_size": L, "blocks": blocks,
+                                   "scores": scores[0].cpu().numpy().tolist()})
+        model_seconds = time.perf_counter() - t0
 
-        # Attribution (gradient × input)
-        body_region_attr    = {}
-        kinematic_stream_attr = {}
-        joint_attribution   = []
-        try:
-            x_attr = torch.from_numpy(positions).unsqueeze(0).to(self.device)
-            x_attr.requires_grad_(True)
-            p2, l2 = self.model(x_attr)
-            l2.sum().backward()
-            if x_attr.grad is not None:
-                gi = (x_attr.grad * x_attr).squeeze(0).detach().cpu().numpy()  # (T, 33, 2)
-                importance = np.abs(gi).sum(axis=(0, 2))  # (33,)
-                total = importance.sum() + 1e-10
-                body_region_attr = {r: round(float(importance[j_list].sum() / total), 4)
-                                    for r, j_list in BODY_REGIONS.items()}
-                joint_attribution = [round(float(importance[j] / total), 6)
-                                     for j in range(N_LANDMARKS)]
-        except Exception:
-            pass
+        p = float(np.mean(probs))
+        out = {
+            "clip_id": clip_id, "source": source, "n_models": len(self.members),
+            "probability": round(p, 6),
+            "probability_sd": round(float(np.std(probs)), 6),
+            "member_probabilities": [round(v, 6) for v in probs],
+            "member_logits": [round(v, 6) for v in logits],
+            "threshold": self.threshold,
+            "above_threshold": bool(p >= self.threshold),
+            "n_detected_frames": int(valid_mask(positions).sum()),
+            "n_frames_rejected_implausible": n_rejected,
+            "onset_frame": onset,
+            "model_seconds": round(model_seconds, 4),
+            "checkpoints": [os.path.relpath(pp) for pp in self.paths],
+        }
+        if video:
+            out["video"] = video
+        if selections:
+            out["selection"] = self._selection_summary(selections, vm, onset)
+        if attribution:
+            out["attribution"] = self._attribution(x, vm)
+        out["_prepared"] = seq
+        return out
 
-        # Bilateral asymmetry
-        asymmetry = compute_bilateral_asymmetry(positions)
+    @staticmethod
+    def _selection_summary(selections, vm, onset):
+        L = selections[0]["block_size"]
+        n_blocks = int(np.ceil(len(vm) / L))
+        counts = np.zeros(n_blocks)
+        for s in selections:
+            counts[[b for b in s["blocks"] if b < n_blocks]] += 1
+        blocks = []
+        for b in range(n_blocks):
+            n_valid = int(vm[b * L:(b + 1) * L].sum())
+            if n_valid == 0 and counts[b] == 0:
+                continue
+            blocks.append({"block": b, "input_frames": [onset + b * L, onset + (b + 1) * L - 1],
+                           "valid_frames": n_valid,
+                           "selected_by_fraction_of_models": round(float(counts[b] / len(selections)), 4),
+                           "mean_gate_score": round(float(np.mean([s["scores"][b] for s in selections])), 4)})
+        n_valid_blocks = int(sum(1 for blk in blocks if blk["valid_frames"] > 0))
+        top_m = len(selections[0]["blocks"])
+        return {"block_size": L, "budget_blocks": top_m, "n_valid_blocks": n_valid_blocks,
+                "selection_is_trivial": n_valid_blocks <= top_m, "blocks": blocks,
+                "per_model": [s["blocks"] for s in selections]}
 
+    def _attribution(self, x, vm):
+        from attribution import descriptor_gradxinput
+        gx = np.mean([descriptor_gradxinput(m, x)[0] for m, _ in self.members], 0)[vm]   # (n, 198)
+        tot = gx.sum() + 1e-12
+        per_lm = gx.reshape(-1, 3, 33, 2).sum(axis=(0, 3))                             # (3, 33)
+        motion = per_lm[1:].sum(0)
         return {
-            "clip_id":                      clip_id,
-            "source":                       source,
-            "prediction":                   prediction,
-            "raw_probability":              round(raw_prob, 6),
-            "calibrated_probability":       round(cal_prob, 6),
-            "threshold":                    self.threshold,
-            "has_platt_scaler":             self.scaler is not None,
-            "selected_events":              selected_events,
-            "event_saliency":               block_saliency,
-            "body_region_attribution":      body_region_attr,
-            "kinematic_stream_attribution": kinematic_stream_attr,
-            "joint_attribution":            joint_attribution,
-            "bilateral_asymmetry":          asymmetry,
+            "stream_share": {k: round(float(gx[:, s].sum() / tot), 4) for k, s in STREAMS.items()},
+            "region_share_velocity_acceleration": {
+                k: round(float(motion[j].sum() / (motion.sum() + 1e-12)), 4) for k, j in REGIONS.items()},
+            "landmark_share": [round(float(v), 5) for v in per_lm.sum(0) / (per_lm.sum() + 1e-12)],
+            "note": ("Descriptor-level |gradient x input| averaged over ensemble members: the "
+                     "sensitivity of the trained models for this clip, not a measurement of "
+                     "the movement."),
         }

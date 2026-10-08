@@ -17,6 +17,8 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 
+from sequence import DEFAULT_MAX_ABS, prepare_sequence
+
 
 # ── Subject ID extraction ─────────────────────────────────────────────────────
 
@@ -56,58 +58,73 @@ def _flip_horizontal(seq: np.ndarray) -> np.ndarray:
     return seq
 
 
+def _time_warp(seq: np.ndarray, vm: np.ndarray, speed: float) -> np.ndarray:
+    """Resample the span from the first to the last valid frame by `speed`,
+    keeping its start frame. An output frame is valid only when both source
+    frames it interpolates between are valid, so detection gaps are carried
+    over instead of being blended into neighbouring poses."""
+    idx = np.flatnonzero(vm)
+    first, last = int(idx[0]), int(idx[-1])
+    span = last - first + 1
+    new_span = int(round(span * speed))
+    new_span = max(10, min(new_span, len(seq) - first))
+    src = np.linspace(first, last, new_span)
+    lo = np.floor(src).astype(int)
+    hi = np.minimum(lo + 1, last)
+    w = (src - lo).astype(np.float32)[:, None, None]
+    ok = vm[lo] & (vm[hi] | (w[:, 0, 0] == 0))
+    warped = (1.0 - w) * seq[lo] + w * seq[hi]
+    warped[~ok] = 0.0
+    out = np.zeros_like(seq)
+    out[first: first + new_span] = warped
+    return out
+
+
 def augment_sequence(seq: np.ndarray) -> np.ndarray:
     """
     Light augmentation applied during training only.
     seq: (T, 33, 2) float32
 
-    Augmentations:
-      1. Horizontal flip (50%)
-      2. Gentle scale variation x U(0.95, 1.05) (50%)
-      3. Subtle Gaussian coordinate noise sigma=0.002 on valid frames (50%)
-      4. Smooth temporal speed jitter via linear interpolation (30%)
+    Every operation acts on frames with a detected pose only, wherever they
+    lie in the array; undetected frames (leading, internal or trailing) stay
+    zero and the first valid frame keeps its position.
+      1. Horizontal reflection with left/right landmark exchange (p=0.5)
+      2. Global scaling by U(0.95, 1.05) (p=0.5)
+      3. Gaussian coordinate noise, sigma=0.002 (p=0.5)
+      4. Time warping of the valid span by U(0.92, 1.08) (p=0.3)
+      5. Zeroing of 1-3 random landmarks in every valid frame (p=0.3)
     """
-    non_zero_mask = np.any(seq != 0, axis=(1, 2))
-    actual_len = int(non_zero_mask.sum())
-    if actual_len < 5:
+    vm = np.abs(seq).sum(axis=(1, 2)) > 1e-4
+    n_valid = int(vm.sum())
+    if n_valid < 5:
         return seq
+    seq = seq.copy()
 
-    # 1. Horizontal flip
+    # 1. Horizontal reflection (zero frames are unchanged by it)
     if np.random.rand() < 0.5:
         seq = _flip_horizontal(seq)
 
-    # 2. Gentle scale
+    # 2. Global scale
     if np.random.rand() < 0.5:
-        scale = np.random.uniform(0.95, 1.05)
-        seq[:actual_len] = seq[:actual_len] * scale
+        seq[vm] *= np.random.uniform(0.95, 1.05)
 
-    # 3. Subtle coordinate noise
+    # 3. Coordinate noise
     if np.random.rand() < 0.5:
-        noise = np.random.normal(0.0, 0.002, size=(actual_len, 33, 2)).astype(np.float32)
-        seq[:actual_len] = seq[:actual_len] + noise
+        seq[vm] += np.random.normal(0.0, 0.002, size=(n_valid, 33, 2)).astype(np.float32)
 
-    # 4. Smooth temporal speed variation (linear interpolation)
-    if np.random.rand() < 0.3 and actual_len > 15:
-        speed = np.random.uniform(0.92, 1.08)
-        new_len = int(round(actual_len * speed))
-        new_len = max(10, min(new_len, len(seq)))
-        orig_indices = np.linspace(0, actual_len - 1, actual_len)
-        warp_indices = np.linspace(0, actual_len - 1, new_len)
-        warped = np.zeros((new_len, 33, 2), dtype=np.float32)
-        for j in range(33):
-            for c in range(2):
-                warped[:, j, c] = np.interp(warp_indices, orig_indices, seq[:actual_len, j, c])
-        # Place warped back into seq
-        seq_new = np.zeros_like(seq)
-        put_len = min(new_len, len(seq))
-        seq_new[:put_len] = warped[:put_len]
-        seq = seq_new
+    # 4. Time warp of the valid span
+    if np.random.rand() < 0.3 and n_valid > 15:
+        warped = _time_warp(seq, vm, np.random.uniform(0.92, 1.08))
+        vm_w = np.abs(warped).sum(axis=(1, 2)) > 1e-4
+        if vm_w.sum() >= 5:
+            seq, vm = warped, vm_w
 
-    # 5. Joint Dropout (30%): randomly drop 1-3 joints to prevent reliance on single landmark tracking noise
-    if np.random.rand() < 0.3 and actual_len > 5:
+    # 5. Landmark dropout: 1-3 landmarks zeroed in every valid frame
+    if np.random.rand() < 0.3:
         n_drop = np.random.randint(1, 4)
         drop_joints = np.random.choice(33, size=n_drop, replace=False)
-        seq[:actual_len, drop_joints] = 0.0
+        rows = np.flatnonzero(vm)
+        seq[np.ix_(rows, drop_joints)] = 0.0
 
     return seq
 
@@ -121,11 +138,14 @@ class ASDMotionDataset(Dataset):
     """
 
     def __init__(self, clip_ids: list, labels: list,
-                 features_dir: str, augment: bool = False):
+                 features_dir: str, augment: bool = False,
+                 max_abs: float | None = DEFAULT_MAX_ABS, align: bool = True):
         self.clip_ids     = clip_ids
         self.labels       = labels
         self.features_dir = features_dir
         self.augment      = augment
+        self.max_abs      = max_abs
+        self.align        = align
 
     def __len__(self) -> int:
         return len(self.clip_ids)
@@ -135,6 +155,7 @@ class ASDMotionDataset(Dataset):
         label   = self.labels[idx]
         path    = os.path.join(self.features_dir, f"{clip_id}.npy")
         seq     = np.load(path).astype(np.float32)   # (300, 33, 2)
+        seq     = prepare_sequence(seq, self.max_abs, self.align)
 
         if self.augment:
             seq = augment_sequence(seq)
@@ -159,10 +180,13 @@ class SubjectSampledDataset(Dataset):
 
     def __init__(self, clip_ids: list, labels: list, subject_ids: list,
                  features_dir: str, augment: bool = True,
-                 clips_per_subject: int = 1):
+                 clips_per_subject: int = 1,
+                 max_abs: float | None = DEFAULT_MAX_ABS, align: bool = True):
         self.features_dir      = features_dir
         self.augment           = augment
         self.clips_per_subject = clips_per_subject
+        self.max_abs           = max_abs
+        self.align             = align
 
         # Group clips by subject
         self.subject_clips: dict = defaultdict(list)
@@ -197,6 +221,7 @@ class SubjectSampledDataset(Dataset):
         clip_id, label = self.epoch_samples[idx]
         path = os.path.join(self.features_dir, f"{clip_id}.npy")
         seq  = np.load(path).astype(np.float32)
+        seq  = prepare_sequence(seq, self.max_abs, self.align)
 
         if self.augment:
             seq = augment_sequence(seq)

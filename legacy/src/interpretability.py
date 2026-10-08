@@ -512,11 +512,107 @@ def compute_joint_attribution(model, sequence: torch.Tensor,
     return joint_imp, region_imp, attr.cpu().numpy()
 
 
+_STREAM_SLICES = {"position": slice(0, 66), "velocity": slice(66, 132),
+                  "acceleration": slice(132, 198)}
+
+
+def descriptor_gradxinput(model, sequence: torch.Tensor) -> np.ndarray:
+    """|gradient x input| of the logit with respect to the 198-d per-frame
+    descriptor at the spatial encoder's first linear layer, (B, T, 198).
+    Frame positions are those of the sequence as the encoder sees it (after
+    onset alignment when the model aligns)."""
+    model.eval()
+    layer = model.spatial_encoder.input_proj[0]
+    store = {}
+
+    def _pre(mod, args):
+        f = args[0].detach().requires_grad_(True)
+        store["f"] = f
+        return (f,)
+
+    handle = layer.register_forward_pre_hook(_pre)
+    try:
+        model.zero_grad(set_to_none=True)
+        with torch.enable_grad():
+            _, logits = model(sequence)
+            logits.sum().backward()
+        f = store["f"]
+        gx = (f.grad * f).detach().abs()
+    finally:
+        handle.remove()
+        model.zero_grad(set_to_none=True)
+    B, T = sequence.shape[:2]
+    return gx.reshape(B, T, -1).cpu().numpy()
+
+
+def descriptor_attribution(model, sequence: torch.Tensor, target_class: int = 1) -> dict:
+    """
+    Gradient x input on the 198-d per-frame descriptor [position | velocity |
+    acceleration] that enters the spatial encoder's first linear layer.
+
+    Because the descriptor enters a linear layer, |gradient x input| for each
+    descriptor element does not depend on the fixed x10 / x5 scaling of the
+    velocity and acceleration streams. Only frames with a detected pose are
+    counted. The sign of the target does not change |gradient x input|.
+
+    Returns stream shares, body-region shares over all streams, body-region
+    shares over velocity + acceleration only (translation-invariant, so not
+    affected by mid-hip centring), and per-landmark importance (33,).
+    """
+    model.eval()
+    layer = model.spatial_encoder.input_proj[0]
+    store = {}
+
+    def _pre(mod, args):
+        f = args[0].detach().requires_grad_(True)
+        store["f"] = f
+        return (f,)
+
+    handle = layer.register_forward_pre_hook(_pre)
+    try:
+        model.zero_grad(set_to_none=True)
+        with torch.enable_grad():
+            _, logits = model(sequence)
+            (logits if target_class == 1 else -logits).sum().backward()
+        f = store["f"]
+        gx = (f.grad * f).detach().abs()                            # (B*T, 198)
+    finally:
+        handle.remove()
+        model.zero_grad(set_to_none=True)
+
+    valid = (sequence.detach().abs().sum(dim=(-2, -1)) > 1e-4).reshape(-1)
+    gx = gx[valid].cpu().numpy()
+    total = gx.sum() + 1e-12
+    streams = {k: float(gx[:, sl].sum() / total) for k, sl in _STREAM_SLICES.items()}
+    per_lm = gx.reshape(-1, 3, 33, 2).sum(axis=(0, 3))             # (3 streams, 33)
+    lm_all, lm_motion = per_lm.sum(0), per_lm[1:].sum(0)
+    regions_all = {r: float(lm_all[j].sum() / (lm_all.sum() + 1e-12))
+                   for r, j in BODY_REGIONS.items()}
+    regions_motion = {r: float(lm_motion[j].sum() / (lm_motion.sum() + 1e-12))
+                      for r, j in BODY_REGIONS.items()}
+    return {
+        "kinematic_stream_attribution": streams,
+        "body_region_attribution": regions_all,
+        "body_region_attribution_motion": regions_motion,
+        "joint_attribution": (lm_all / (lm_all.sum() + 1e-12)).tolist(),
+    }
+
+
 def compute_stream_attribution(model, sequence: torch.Tensor,
                                 target_class: int = 1) -> dict:
+    """Kinematic stream attribution (position, velocity, acceleration);
+    see descriptor_attribution()."""
+    return descriptor_attribution(model, sequence, target_class)["kinematic_stream_attribution"]
+
+
+def compute_stream_attribution_v10(model, sequence: torch.Tensor,
+                                   target_class: int = 1) -> dict:
     """
-    Kinematic stream attribution (position, velocity, acceleration).
-    Decomposes Gradient × Input attribution across the 3 explicit kinematic channels.
+    v1.0 stream attribution, kept only so that its output can be compared with
+    descriptor_attribution(). It multiplies the gradient with respect to the
+    *position* input by the velocity and acceleration tensors, which is not a
+    gradient x input decomposition over the streams; the result is dominated
+    by the x10 and x50 scale of those tensors. Do not use for new analyses.
     """
     model.eval()
     model.zero_grad(set_to_none=True)
@@ -571,8 +667,9 @@ def compute_cohort_kinematic_attributions(model, dataset, device: torch.device,
         lbl  = int(labels[0].item())
 
         try:
-            _, reg_imp, _ = compute_joint_attribution(model, seqs, target_class=lbl)
-            stream_wts    = compute_stream_attribution(model, seqs, target_class=lbl)
+            att        = descriptor_attribution(model, seqs, target_class=lbl)
+            reg_imp    = att["body_region_attribution"]
+            stream_wts = att["kinematic_stream_attribution"]
 
             target_reg = asd_regs if lbl == 1 else td_regs
             target_str = asd_strs if lbl == 1 else td_strs
@@ -780,7 +877,10 @@ def generate_explainability_report(attn_dir: str = "results/attn",
         stability = analyze_attention_stability(all_fold_data, split_key="test_records")
         stability_decomp = analyze_attention_stability_decomposed(all_fold_data, split_key="test_records")
         pop_test  = compute_population_attention_profiles(all_fold_data, split_key="test_records")
-        cross_chk = cross_check_gate_vs_transformer(all_fold_data, split_key="test_records")
+        cross_chk = cross_check_gate_vs_transformer(
+            all_fold_data, split_key="test_records",
+            block_size=(config or {}).get("model", {}).get("event_block_size", 15),
+        )
 
         # Option A: Population Kinematic Attributions across checkpoints
         kinematics_pop = compute_population_kinematic_attributions(

@@ -2,7 +2,7 @@
 import os
 import zipfile
 
-REPO_ROOT = r"d:\PACE-ASD"
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(REPO_ROOT, "release")
 os.makedirs(OUT_DIR, exist_ok=True)
 ZIP_PATH = os.path.join(OUT_DIR, "PACE-ASD-v1.0-reviewer.zip")

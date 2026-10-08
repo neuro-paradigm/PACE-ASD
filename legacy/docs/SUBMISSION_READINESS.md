@@ -1,5 +1,11 @@
 # PACE-ASD — BMC Medical Informatics Submission Readiness Audit
 
+> **Superseded (2026-10-08).** This audit describes version 1.0.0 and the BMC
+> submission. Several items marked PASS below were found incorrect in the v1.1
+> audit (padding handling, stream attribution, gate–attention cross-check,
+> example notebook). See `CHANGELOG.md` (1.1.0) and
+> `submission_frontiers/SUBMISSION_DOSSIER.md`.
+
 This document audits the PACE-ASD software repository against the software article submission requirements for *BMC Medical Informatics and Decision Making*.
 
 **Audit Date:** 2026-09-21  

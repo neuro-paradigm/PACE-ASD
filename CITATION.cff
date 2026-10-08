@@ -1,20 +1,18 @@
 cff-version: 1.2.0
 message: "If you use PACE-ASD in your research, please cite it using the metadata below."
-title: "PACE-ASD: Pose-Aware Contiguous Event Saliency-Gated Transformer for Markerless Monocular Video-Based ASD Screening Research"
-version: "1.0.0"
-date-released: "2026-09-21"
+title: "PACE-ASD: cross-validated modeling of whole-body movement in short videos"
+version: "1.2.0"
+date-released: "2026-10-08"
 repository-code: "https://github.com/neuro-paradigm/PACE-ASD"
 license: "Apache-2.0"
 keywords:
-  - autism spectrum disorder
-  - ASD screening
   - pose estimation
+  - gait
+  - movement analysis
+  - cross-validation
+  - shortcut learning
   - MediaPipe
-  - transformer
-  - event saliency
-  - markerless motion analysis
-  - pediatric motor analysis
-  - deep learning
+  - autism research
 authors:
   - family-names: "Puppala"
     given-names: "Sireesha"

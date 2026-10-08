@@ -43,3 +43,19 @@ def test_normalization_dtype():
     kp[:, 11] = [0.3, 0.3]; kp[:, 12] = [0.7, 0.3]
     out = normalise(kp)
     assert out.dtype == np.float32
+
+
+def test_pixel_normalisation_is_invariant_to_cropping():
+    """The same body in two differently cropped frames gives the same array when
+    coordinates are converted to pixels; per-axis normalisation does not."""
+    import numpy as np
+    from preprocess import normalise
+    rng = np.random.default_rng(0)
+    px = rng.uniform(300, 700, (5, 33, 2))                  # pixel positions in a 1080 x 1920 frame
+    full = px / np.array([1080, 1920])
+    crop_px = px - np.array([200, 400])                      # same body, frame cropped to 760 x 1300
+    crop = crop_px / np.array([760, 1300])
+    a = normalise(full.astype(np.float32), 1080, 1920)
+    b = normalise(crop.astype(np.float32), 760, 1300)
+    np.testing.assert_allclose(a, b, atol=1e-4)
+    assert np.abs(normalise(full.astype(np.float32)) - normalise(crop.astype(np.float32))).max() > 1e-2

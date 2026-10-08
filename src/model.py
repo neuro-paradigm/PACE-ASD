@@ -1,5 +1,5 @@
 """
-PACE-ASD — Model Architecture (Protocol Section 3)
+PACE-ASD — Model Architecture
 
 Pipeline:
   SpatialEncoder (per-frame residual MLP with LayerNorm)
@@ -7,13 +7,26 @@ Pipeline:
       → EventSaliencyGate / Block-ESG  [disabled when use_gate=False]
         → TemporalEventTransformer     [disabled when use_transformer=False]
           → Classifier head
-            → (Platt calibration temperature at inference)
+            → (logistic recalibration, src/calibration.py)
 
-Ablation variant flags on ASDMotionModel:
-  use_gate        : A2 sets False  (all 300 frames to Transformer)
-  block_size=1    : A3 frame-granularity gate
-  top_m=120       : A3 paired with block_size=1
-  use_transformer : A4 sets False  (linear head on ESG output)
+Ablation flags on ASDMotionModel:
+  use_gate        : False passes all frames to the Transformer
+  block_size=1    : frame-granularity gate (with top_m=120)
+  use_transformer : False replaces the Transformer by masked mean pooling
+
+Frame validity (config keys under `model`):
+  align_onset  : shift each sequence so its first detected frame is frame 0
+                 before encoding; positions are then counted from the first
+                 detection rather than from the start of the array.
+  mask_padding : propagate the frame-validity mask through every stage —
+                 GroupNorm statistics over valid frames, invalid frames
+                 re-zeroed after the convolutions, block validity and block
+                 means from the mask, key-padding mask in attention and masked
+                 pooling. With both keys true the logit does not depend on
+                 how many undetected frames precede the first detection or
+                 follow the last one (tests/test_padding_invariance.py).
+  Both default to False so that checkpoints whose stored configuration lacks
+  the keys load with the behaviour they were trained with.
 """
 
 import math
@@ -135,14 +148,39 @@ class MicrokineticEncoder(nn.Module):
         )
         self.spatial_drop = nn.Dropout2d(dropout)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # x: (B, T, spatial_dim)
+    @staticmethod
+    def _masked_branch(branch: nn.Sequential, xt: torch.Tensor,
+                       mask: torch.Tensor) -> torch.Tensor:
+        """Conv -> GroupNorm (statistics over valid frames only) -> LeakyReLU."""
+        conv, gn, act = branch[0], branch[1], branch[2]
+        h = conv(xt)                                      # (B, C, T)
+        B, C, T = h.shape
+        G = gn.num_groups
+        m = mask[:, None, None, :].to(h.dtype)            # (B, 1, 1, T)
+        hg = h.view(B, G, C // G, T)
+        n = (m.sum(dim=-1, keepdim=True) * (C // G)).clamp(min=1.0)
+        mean = (hg * m).sum(dim=(2, 3), keepdim=True) / n
+        var = (((hg - mean) ** 2) * m).sum(dim=(2, 3), keepdim=True) / n
+        hg = (hg - mean) / torch.sqrt(var + gn.eps)
+        h = hg.view(B, C, T) * gn.weight[None, :, None] + gn.bias[None, :, None]
+        return act(h) * mask[:, None, :].to(h.dtype)
+
+    def forward(self, x: torch.Tensor,
+                mask: torch.Tensor | None = None) -> torch.Tensor:
+        # x: (B, T, spatial_dim); mask: (B, T) bool, True = valid frame
         xt  = x.transpose(1, 2)                          # (B, C, T)
-        out = torch.cat([
-            self.branch_k1(xt),
-            self.branch_k3(xt),
-            self.branch_k5(xt),
-        ], dim=1)                                         # (B, 3C, T)
+        if mask is None:
+            out = torch.cat([
+                self.branch_k1(xt),
+                self.branch_k3(xt),
+                self.branch_k5(xt),
+            ], dim=1)                                     # (B, 3C, T)
+        else:
+            out = torch.cat([
+                self._masked_branch(self.branch_k1, xt, mask),
+                self._masked_branch(self.branch_k3, xt, mask),
+                self._masked_branch(self.branch_k5, xt, mask),
+            ], dim=1)
         out = self.spatial_drop(out.unsqueeze(2)).squeeze(2)
         return out.transpose(1, 2)                        # (B, T, 3C)
 
@@ -152,14 +190,10 @@ class MicrokineticEncoder(nn.Module):
 class EventSaliencyGate(nn.Module):
     """
     Allocates a fixed temporal token budget (K = top_m * block_size, default 8*15=120 frames)
-    by selecting the top-M most relevant contiguous blocks of L frames each. Padded blocks
-    are masked so padding frames are never prioritized.
-
-    Mechanism note on dataset dynamics:
-    Given the corpus's clip-length distribution (median 124 valid frames, n=110),
-    a budget of 120 frames functions as near-complete retention / modest trimming
-    for roughly half the cohort (clips <= 120 frames), while performing genuine
-    sparse selection (discarding a substantial fraction of frames) for the longer clips.
+    by selecting the top-M highest-scoring contiguous blocks of L frames each. With a
+    frame mask, blocks without a valid frame are selected only when fewer than M valid
+    blocks exist. When a clip has at most M valid blocks, every valid block is kept and
+    the gate acts only through the sigmoid weights.
 
     Input : (B, T, D)
     Output: selected_frames (B, M*L, D)
@@ -176,8 +210,15 @@ class EventSaliencyGate(nn.Module):
             nn.Linear(input_dim // 2, 1),
         )
         self._last_block_scores: torch.Tensor | None = None
+        self._last_valid_blocks: torch.Tensor | None = None
+        self._last_token_mask: torch.Tensor | None = None
 
-    def forward(self, x: torch.Tensor):
+    def forward(self, x: torch.Tensor, frame_mask: torch.Tensor | None = None):
+        """
+        frame_mask: optional (B, T) bool, True = valid frame. When given, block
+        validity and block means use valid frames only, and the token mask of
+        the selection is stored in self._last_token_mask (True = valid token).
+        """
         B, T, D  = x.shape
         L, M     = self.block_size, self.top_m
 
@@ -185,18 +226,27 @@ class EventSaliencyGate(nn.Module):
         if T % L != 0:
             pad_len = L - (T % L)
             x       = F.pad(x, (0, 0, 0, pad_len))
+            if frame_mask is not None:
+                frame_mask = F.pad(frame_mask, (0, pad_len), value=False)
         T_pad = x.shape[1]
         N     = T_pad // L                              # number of candidate blocks
 
         blocks     = x.view(B, N, L, D)                # (B, N, L, D)
-        block_repr = blocks.mean(dim=2)                 # (B, N, D)
 
-        # Mask blocks that are completely empty / padded
-        block_activity = blocks.abs().sum(dim=(2, 3))   # (B, N)
-        valid_block_mask = block_activity > 1e-4        # (B, N)
+        if frame_mask is None:
+            block_repr = blocks.mean(dim=2)             # (B, N, D)
+            # Mask blocks that are completely empty / padded
+            block_activity = blocks.abs().sum(dim=(2, 3))   # (B, N)
+            valid_block_mask = block_activity > 1e-4        # (B, N)
+        else:
+            fm = frame_mask.view(B, N, L)
+            n_valid = fm.sum(dim=2, keepdim=True).clamp(min=1).to(x.dtype)
+            block_repr = (blocks * fm.unsqueeze(-1).to(x.dtype)).sum(dim=2) / n_valid
+            valid_block_mask = fm.any(dim=2)                # (B, N)
 
         raw_scores = self.gate(block_repr).squeeze(-1)  # (B, N)
         self._last_block_scores = raw_scores.detach()
+        self._last_valid_blocks = valid_block_mask.detach()
 
         # Prioritize valid movement blocks by masking out padding
         masked_scores = raw_scores.masked_fill(~valid_block_mask, -1e9)
@@ -221,10 +271,24 @@ class EventSaliencyGate(nn.Module):
         frame_offsets   = torch.arange(L, device=x.device).view(1, 1, L)    # (1,1,L)
         sel_indices     = (offsets.unsqueeze(-1) + frame_offsets).reshape(B, -1)
 
+        if frame_mask is not None:
+            # Padded frames inside selected blocks (and whole padded blocks,
+            # selected only when fewer than M valid blocks exist) are flagged
+            # so the Transformer can ignore them.
+            self._last_token_mask = torch.gather(frame_mask, 1, sel_indices)
+        else:
+            self._last_token_mask = None
+
         return sel_frames, sel_indices
 
     def get_block_scores(self) -> torch.Tensor | None:
         return self._last_block_scores
+
+    def get_valid_blocks(self) -> torch.Tensor | None:
+        return self._last_valid_blocks
+
+    def get_token_mask(self) -> torch.Tensor | None:
+        return self._last_token_mask
 
 
 # ── D. Temporal Event Transformer ────────────────────────────────────────────
@@ -278,26 +342,50 @@ class TemporalEventTransformer(nn.Module):
         self.out_proj    = nn.Linear(input_dim, output_dim)
         self.norm        = nn.LayerNorm(output_dim)
 
-    def forward(self, x: torch.Tensor, indices: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor, indices: torch.Tensor,
+                token_mask: torch.Tensor | None = None) -> torch.Tensor:
+        """token_mask: optional (B, K) bool, True = valid token."""
         x = self.input_proj(x) + self.pos_enc(indices)
-        x = self.transformer(x)
-        x = self.pool_drop(x.mean(dim=1))
+        if token_mask is None:
+            x = self.transformer(x)
+            x = x.mean(dim=1)
+        else:
+            x = self.transformer(x, src_key_padding_mask=~token_mask)
+            w = token_mask.unsqueeze(-1).to(x.dtype)
+            x = (x * w).sum(dim=1) / w.sum(dim=1).clamp(min=1.0)
+        x = self.pool_drop(x)
         return self.norm(self.out_proj(x))
 
-    def get_attention_maps(self, x: torch.Tensor,
-                           indices: torch.Tensor) -> torch.Tensor:
+    def get_attention_maps(self, x: torch.Tensor, indices: torch.Tensor,
+                           token_mask: torch.Tensor | None = None) -> torch.Tensor:
         """Return attention weights from the final transformer layer."""
+        kpm = None if token_mask is None else ~token_mask
         x = self.input_proj(x) + self.pos_enc(indices)
         for layer in self.transformer.layers[:-1]:
-            x = layer(x)
+            x = layer(x, src_key_padding_mask=kpm)
         last = self.transformer.layers[-1]
         x_n  = last.norm1(x)
-        _, attn = last.self_attn(x_n, x_n, x_n,
+        _, attn = last.self_attn(x_n, x_n, x_n, key_padding_mask=kpm,
                                  need_weights=True, average_attn_weights=True)
         return attn
 
 
 # ── E. Full PACE-ASD Model ────────────────────────────────────────────────────
+
+def align_onset(x: torch.Tensor) -> torch.Tensor:
+    """Shift each sequence in (B, T, J, C) so that its first frame with a
+    detected pose is frame 0; vacated frames at the end are zero."""
+    B, T = x.shape[:2]
+    valid = x.abs().sum(dim=(-2, -1)) > 1e-4                 # (B, T)
+    first = torch.where(valid.any(dim=1), valid.float().argmax(dim=1),
+                        torch.zeros(B, dtype=torch.long, device=x.device))
+    if not bool((first > 0).any()):
+        return x
+    src = torch.arange(T, device=x.device).unsqueeze(0) + first.unsqueeze(1)   # (B, T)
+    keep = (src < T).to(x.dtype)
+    idx = src.clamp(max=T - 1)[:, :, None, None].expand(-1, -1, *x.shape[2:])
+    return torch.gather(x, 1, idx) * keep[:, :, None, None]
+
 
 class ASDMotionModel(nn.Module):
     """
@@ -322,6 +410,8 @@ class ASDMotionModel(nn.Module):
         dropout      = mc["dropout"]
         self.use_gate        = use_gate
         self.use_transformer = use_transformer
+        self.mask_padding    = bool(mc.get("mask_padding", False))
+        self.align_onset     = bool(mc.get("align_onset", False))
 
         self.spatial_encoder = SpatialEncoder(
             spatial_dim=spatial_dim, dropout=dropout,
@@ -378,25 +468,17 @@ class ASDMotionModel(nn.Module):
             probs  : (B,) sigmoid probabilities
             logits : (B,) raw logits
         """
-        # A. Spatial encoding
-        spatial = self.spatial_encoder(x)            # (B, T, spatial_dim)
-
-        # B. Multi-scale temporal encoding
-        micro   = self.microkinetic_encoder(spatial)  # (B, T, micro_dim)
-
-        # C. Event selection
-        if self.use_gate:
-            tokens, indices = self.saliency_gate(micro)  # (B, M*L, micro_dim)
-        else:
-            tokens  = micro
-            B, T, _ = micro.shape
-            indices = torch.arange(T, device=x.device).unsqueeze(0).expand(B, -1)
+        tokens, indices, token_mask = self._encode_and_select(x)
 
         # D. Temporal aggregation
         if self.use_transformer:
-            global_repr = self.temporal_transformer(tokens, indices)  # (B, spatial_dim)
-        else:
+            global_repr = self.temporal_transformer(tokens, indices, token_mask)  # (B, spatial_dim)
+        elif token_mask is None:
             global_repr = self.no_tf_proj(tokens.mean(dim=1))
+        else:
+            w = token_mask.unsqueeze(-1).to(tokens.dtype)
+            pooled = (tokens * w).sum(dim=1) / w.sum(dim=1).clamp(min=1.0)
+            global_repr = self.no_tf_proj(pooled)
 
         # E. Classification
         logits = self.classifier(global_repr).squeeze(-1)   # (B,)
@@ -406,23 +488,45 @@ class ASDMotionModel(nn.Module):
 
         return torch.sigmoid(logits), logits
 
+    def _encode_and_select(self, x: torch.Tensor):
+        """Stages A-C. Returns (tokens, indices, token_mask); token_mask is
+        None unless mask_padding is enabled (True = valid token)."""
+        if self.align_onset:
+            x = align_onset(x)
+        frame_mask = None
+        if self.mask_padding:
+            frame_mask = x.abs().sum(dim=(-2, -1)) > 1e-4   # (B, T)
+            # A sequence with no detected frame at all (possible at inference)
+            # would leave every attention key masked; it is processed
+            # unmasked instead.
+            frame_mask = frame_mask | ~frame_mask.any(dim=1, keepdim=True)
+
+        # A. Spatial encoding
+        spatial = self.spatial_encoder(x)            # (B, T, spatial_dim)
+
+        # B. Multi-scale temporal encoding
+        micro   = self.microkinetic_encoder(spatial, frame_mask)  # (B, T, micro_dim)
+
+        # C. Event selection
+        if self.use_gate:
+            tokens, indices = self.saliency_gate(micro, frame_mask)  # (B, M*L, micro_dim)
+            token_mask = self.saliency_gate.get_token_mask()
+        else:
+            tokens  = micro
+            B, T, _ = micro.shape
+            indices = torch.arange(T, device=x.device).unsqueeze(0).expand(B, -1)
+            token_mask = frame_mask
+        return tokens, indices, token_mask
+
     def get_attention_maps(self, x: torch.Tensor):
         """Extract attention weights and saliency scores."""
         with torch.no_grad():
-            spatial = self.spatial_encoder(x)
-            micro   = self.microkinetic_encoder(spatial)
-
-            if self.use_gate:
-                tokens, indices = self.saliency_gate(micro)
-                block_scores    = self.saliency_gate.get_block_scores()
-            else:
-                B, T, _ = micro.shape
-                tokens  = micro
-                indices = torch.arange(T, device=x.device).unsqueeze(0).expand(B, -1)
-                block_scores = None
+            tokens, indices, token_mask = self._encode_and_select(x)
+            block_scores = self.saliency_gate.get_block_scores() if self.use_gate else None
 
             if self.use_transformer:
-                attn = self.temporal_transformer.get_attention_maps(tokens, indices)
+                attn = self.temporal_transformer.get_attention_maps(
+                    tokens, indices, token_mask)
             else:
                 attn = None
 

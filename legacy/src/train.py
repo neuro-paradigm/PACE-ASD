@@ -280,10 +280,17 @@ def train_one_fold(fold_idx: int, train_ids, train_labels, train_subjects,
                    val_ids, val_labels, val_subjects,
                    test_ids, test_labels, test_subjects,
                    config: dict, seed: int, model_kwargs: dict,
-                   device: torch.device, save_dir: str, reports_dir: str):
+                   device: torch.device, save_dir: str, reports_dir: str,
+                   make_reports: bool = True, save_attention: bool = True):
     """
     Train one fold for one seed.
     Returns (epoch_history, best_val_metrics, test_metrics, scaler, model_path).
+
+    test_metrics additionally carries the subject-level test predictions under
+    "subject_ids", "probs", "logits" and "labels" so that ensembles and
+    subject-level bootstrap intervals can be recomputed from saved outputs.
+    make_reports / save_attention only switch off the PDF and attention-pickle
+    side outputs; training, selection and calibration are unchanged.
     """
     tc           = config["training"]
     features_dir = os.path.join(config["data"]["processed_dir"], "features")
@@ -479,26 +486,27 @@ def train_one_fold(fold_idx: int, train_ids, train_labels, train_subjects,
     
     val_attn_records = []
     test_attn_records = []
-    try:
-        from interpretability import extract_all_attention, save_fold_attention
-        val_attn_records = extract_all_attention(model, val_ds, device, scaler=scaler)
-        test_attn_records = extract_all_attention(model, test_ds, device, scaler=scaler)
-        cur_model_id = config.get("_current_model_id", "A1")
-        save_fold_attention(
-            val_records=val_attn_records,
-            test_records=test_attn_records,
-            model_id=cur_model_id,
-            fold_idx=fold_idx,
-            seed=seed,
-            results_dir=config["output"].get("results_dir", "results"),
-            model_config=config.get("model", {}),
-        )
-    except Exception as e:
-        err_log_dir = os.path.join(config["output"].get("results_dir", "results"), "attn")
-        os.makedirs(err_log_dir, exist_ok=True)
-        with open(os.path.join(err_log_dir, "extraction_errors.log"), "a", encoding="utf-8") as f_err:
-            f_err.write(f"Fold {fold_idx}, Seed {seed}: {e}\n")
-        print(f"  [WARN] Attention extraction failed: {e}")
+    if save_attention:
+        try:
+            from interpretability import extract_all_attention, save_fold_attention
+            val_attn_records = extract_all_attention(model, val_ds, device, scaler=scaler)
+            test_attn_records = extract_all_attention(model, test_ds, device, scaler=scaler)
+            cur_model_id = config.get("_current_model_id", "A1")
+            save_fold_attention(
+                val_records=val_attn_records,
+                test_records=test_attn_records,
+                model_id=cur_model_id,
+                fold_idx=fold_idx,
+                seed=seed,
+                results_dir=config["output"].get("results_dir", "results"),
+                model_config=config.get("model", {}),
+            )
+        except Exception as e:
+            err_log_dir = os.path.join(config["output"].get("results_dir", "results"), "attn")
+            os.makedirs(err_log_dir, exist_ok=True)
+            with open(os.path.join(err_log_dir, "extraction_errors.log"), "a", encoding="utf-8") as f_err:
+                f_err.write(f"Fold {fold_idx}, Seed {seed}: {e}\n")
+            print(f"  [WARN] Attention extraction failed: {e}")
 
     # ── Fold PDF report (TRAIN side — val curves, val CM/ROC, cohort attention) ──
     # Test evaluation
@@ -509,10 +517,17 @@ def train_one_fold(fold_idx: int, train_ids, train_labels, train_subjects,
     test_logits, _, test_labels_raw, _ = run_inference(
         model, test_loader, criterion, device, desc=f"F{fold_idx} test",
     )
-    test_preds, test_probs, test_labels_subj, _ = subject_level_eval(
+    test_preds, test_probs, test_labels_subj, test_logits_subj = subject_level_eval(
         test_logits, test_labels_raw, test_subjects, scaler=scaler,
     )
     test_metrics = compute_all_metrics(test_labels_subj, test_preds, test_probs)
+    test_metrics["subject_ids"] = list(dict.fromkeys(test_subjects))
+    test_metrics["probs"]       = [float(p) for p in test_probs]
+    test_metrics["logits"]      = [float(v) for v in test_logits_subj]
+    test_metrics["labels"]      = [int(v) for v in test_labels_subj]
+
+    if not make_reports:
+        return history, val_metrics_cal, test_metrics, scaler, model_path
 
     # Test CM + ROC
     test_cm = compute_confusion_matrix(test_labels_subj, test_preds)

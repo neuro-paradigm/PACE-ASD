@@ -1,70 +1,12 @@
-# PACE-ASD — Troubleshooting Guide
+# Troubleshooting
 
-## Common Issues & Solutions
-
-### 1. `ModuleNotFoundError: No module named 'src'` or `No module named 'model'`
-
-**Cause:** Python cannot find the `src/` directory.
-**Solution:** Run scripts from the repository root, or ensure `src/` is in `PYTHONPATH`:
-```bash
-# Windows
-set PYTHONPATH=%PYTHONPATH%;%CD%\src
-
-# Linux/macOS
-export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-```
-All scripts in `scripts/` automatically add `src/` to `sys.path`.
-
----
-
-### 2. MediaPipe Fails or Video Decoding Errors
-
-**Symptom:** `RuntimeError: Cannot open video` or MediaPipe import error.
-**Cause:** OpenCV cannot read the video codec, or MediaPipe binary issue.
-**Solution:**
-- If you have pre-extracted `.npy` files, use `--input_npy` instead:
-  ```bash
-  python scripts/infer.py --input_npy processed/features/asd_1.npy --checkpoint ...
-  ```
-- Ensure video is in standard H.264 or MPEG-4 format.
-- For MediaPipe on Windows, ensure Microsoft Visual C++ Redistributable 2015–2022 is installed.
-
----
-
-### 3. Out of Memory (OOM) During Training
-
-**Cause:** Batch size too large for available GPU RAM.
-**Solution:** Reduce `batch_size` in `configs/config.yaml`:
-```yaml
-training:
-  batch_size: 4  # was 8
-```
-
----
-
-### 4. Checkpoint Loading Errors
-
-**Symptom:** `KeyError: 'state_dict'` or architecture mismatch.
-**Cause:** The checkpoint was saved with a different model variant configuration.
-**Solution:** Ensure the model variant matches:
-- Full PACE-ASD: `use_gate=True, use_transformer=True` (A1)
-- No-Gate: `use_gate=False, use_transformer=True` (A2)
-- Frame-Gate: `event_block_size=1, event_top_m=120` (A3)
-- No-Transformer: `use_gate=True, use_transformer=False` (A4)
-
----
-
-### 5. `weights_only` Security Warning in PyTorch 2.4+
-
-**Symptom:** `FutureWarning: You are using `torch.load` with `weights_only=False`...`
-**Explanation:** Checkpoints contain the pickled `PlattScaler` object along with the model `state_dict`. `weights_only=False` is required to deserialize the calibration scaler. Only load checkpoints from trusted sources.
-
----
-
-### 6. Tests Fail Due to Missing Modules
-
-**Solution:** Ensure all requirements are installed:
-```bash
-pip install -r requirements.txt
-pip install pytest pytest-cov
-```
+| Symptom | Cause | Remedy |
+|---|---|---|
+| `ModuleNotFoundError: cv2` or `cv2.__version__` missing after installing | both `opencv-python` and `opencv-contrib-python` installed, or one removed after the other | `pip uninstall -y opencv-python opencv-contrib-python` then `pip install opencv-contrib-python==4.11.0.86` |
+| MediaPipe downloads a model on first use | `model_complexity: 2` uses `pose_landmark_heavy.tflite`, which is not in the wheel | allow the download once, or use a machine with network access to populate the package directory |
+| Training of TCN or CTR-GCN is very slow on the GPU | deterministic cuDNN kernels for dilated convolutions | already handled: `DilatedTemporalConv` computes dilated convolutions as undilated ones over interleaved subsequences |
+| `RuntimeError: Attempting to deserialize object on CUDA device` | checkpoint saved on GPU, loaded on a machine without one | pass `device="cpu"` (`--device cpu` in `scripts/infer.py`) |
+| A run stopped part-way | interruption or a locked file on Windows | rerun the same command; finished outer folds (`results/cv/runs/<arm>/r*_k*.json`) are skipped |
+| `selection_is_trivial: true` in `selected_events.json` | the recording has no more valid blocks than the budget | expected for short recordings; nothing is selected, every valid block is used |
+| Many frames reported as rejected | normalised coordinates beyond 10 shoulder widths (shoulders nearly coincide in the image, e.g. the person turned sideways) | inspect the video; the frames are treated as undetected |
+| Groups differ in frame size, frame rate, duration or onset | recording or preparation differs between groups | tabulate `processed/video_metadata.csv` by group before training; see the controls in `scripts/run_feature_models.py` |

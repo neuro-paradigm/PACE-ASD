@@ -1,135 +1,65 @@
-# PACE-ASD — Usage Guide
+# Usage
 
-## Quick Reference
-
-| Task | Command |
-|---|---|
-| Inference (.npy) | `python scripts/infer.py --input_npy processed/features/asd_1.npy --checkpoint models/A1/fold1_seed42.pt --config configs/inference.yaml --output outputs/result` |
-| Inference (video) | `python scripts/infer.py --input video.mp4 --checkpoint models/A1/fold1_seed42.pt --config configs/inference.yaml --output outputs/result` |
-| Evaluate model | `python scripts/evaluate.py --model_id A1` |
-| Case study | `python scripts/generate_case_study.py --clip_id asd_1 --checkpoint models/A1/fold1_seed42.pt` |
-| Train (single) | `python src/train.py --config configs/config.yaml --model_id A1 --seed 42 --fold 0` |
-| Train (full) | `python src/ablation.py --config configs/config.yaml` |
-| Preprocess | `python src/preprocess.py --raw_dir /path/to/dryad --out_dir processed` |
-| Tests | `python -m pytest tests/ -v` |
-| Verify env | `python src/verify.py` |
-
-## Inference
-
-### From Pre-Extracted Features
+## Scoring recordings
 
 ```bash
-python scripts/infer.py \
-  --input_npy processed/features/asd_1.npy \
-  --checkpoint models/A1/fold1_seed42.pt \
-  --config configs/inference.yaml \
-  --output outputs/asd1_result
+python scripts/infer.py --input walk.mp4 --checkpoint models/release --output outputs/walk
+python scripts/infer.py --input_npy processed/features/asd_1.npy --checkpoint models/release
 ```
-
-This does NOT require MediaPipe or raw videos.
-
-### From Raw Video
-
-```bash
-python scripts/infer.py \
-  --input path/to/video.mp4 \
-  --checkpoint models/A1/fold1_seed42.pt \
-  --config configs/inference.yaml \
-  --output outputs/video_result
-```
-
-This runs MediaPipe Pose extraction followed by the full PACE-ASD pipeline.
-
-### Python API
 
 ```python
-import sys
-sys.path.insert(0, 'src')
+import sys; sys.path.insert(0, "src")
 from inference_api import PACEASDPredictor
 
-predictor = PACEASDPredictor(
-    checkpoint='models/A1/fold1_seed42.pt',
-    config='configs/inference.yaml',
-)
-
-# From .npy file
-result = predictor.predict_npy('processed/features/asd_1.npy')
-
-# From video file
-result = predictor.predict_video('path/to/video.mp4')
-
-# Auto-detect source type
-result = predictor.predict('processed/features/asd_1.npy')
-
-print(f"Calibrated P(ASD): {result['calibrated_probability']:.3f}")
-print(f"Prediction: {result['prediction']}")
-print(f"Body-region attribution: {result['body_region_attribution']}")
+pred = PACEASDPredictor("models/release", device="cpu")   # directory, file or list of files
+res = pred.predict_video("walk.mp4")                      # or predict_npy / predict_array
+print(res["probability"], res["probability_sd"])
+print(res["video"]["fps"], res["video"]["pose_seconds"])
+for blk in res["selection"]["blocks"]:
+    print(blk["input_frames"], blk["selected_by_fraction_of_models"])
 ```
 
-## Evaluation
+See `docs/inference.md` for every output field.
 
-### Reproduce Published Results
+## Preparing a dataset
 
 ```bash
-# Evaluate A1 across all fold/seed combinations
-python scripts/evaluate.py --model_id A1
-
-# Evaluate specific fold and seed
-python scripts/evaluate.py --model_id A1 --fold 1 --seed 42
-
-# Evaluate all ablation arms
-for MODEL in A1 A2 A3 A4; do
-  python scripts/evaluate.py --model_id $MODEL
-done
+python src/preprocess.py --raw_dir data/raw/Dataset --out_dir processed --workers 6
+python src/audit.py --raw_dir data/raw/Dataset --arrays processed/features --json processed/duplicates.json
 ```
 
-### Reproduce Paper Statistics
+For another dataset, adapt `build_video_catalogue` in `src/preprocess.py` (one
+entry per video with `clip_id`, `subject_id`, `label`, `group`, `video_path`)
+and write `processed/labels.csv`. `scripts/run_cv.py`'s `cohort()` defines which
+recordings form the evaluation cohort.
+
+## Evaluating a configuration
 
 ```bash
-# Compute summary table
-python scripts/compute_stats.py
-
-# Run paired Wilcoxon tests (A1 vs. all baselines)
-python scripts/wilcoxon_test.py --results_dir results
+python scripts/run_cv.py --arm PACE --save_checkpoints               # one arm
+python scripts/run_cv.py --arm PACE --workers 3 --worker_id 0         # split across processes
+python scripts/run_cv.py --arm TCN --set training.lr=0.001 --tag TCN@1e-3
+python scripts/run_feature_models.py
+python scripts/analyze_cv.py
+python scripts/analyze_mechanisms.py --sections shortcuts confounds selection
 ```
 
-## Training
+Arms are defined in `src/protocol.py` (`ARMS`). Each outer fold is written as
+`results/cv/runs/<tag>/r<repeat>_k<fold>.json` and contains the test children,
+their labels, each inner model's recalibrated probabilities and logits for the
+original input and the three test-time variants, and training details. Runs
+skip folds whose file exists, so an interrupted run is resumed by repeating the
+command.
 
-### Single Fold (Quick Sanity Check)
+## Checking a selection mechanism
 
 ```bash
-python src/train.py \
-  --config configs/config.yaml \
-  --model_id A1 \
-  --seed 42 \
-  --fold 0
+python scripts/synthetic_events.py --amplitudes 0.05 0.1 --jobs 3
+python scripts/synthetic_events.py --summarize
 ```
 
-### Full 20-Seed Ablation
-
-```bash
-# All PACE-ASD variants (A1–A4), 20 seeds, 3 folds each
-python src/ablation.py --config configs/config.yaml --models A1 A2 A3 A4
-
-# Add baseline comparisons
-python src/ablation.py --config configs/config.yaml
-```
-
-### Dataset Required for Training
-
-Training requires the raw Dryad dataset. See `data/README.md` for instructions.
-Preprocessed `.npy` files in `processed/features/` are sufficient for evaluation and inference.
-
-## Case Study
-
-```bash
-python scripts/generate_case_study.py \
-  --clip_id asd_1 \
-  --checkpoint models/A1/fold1_seed42.pt \
-  --config configs/inference.yaml \
-  --output outputs/case_study_asd1
-```
-
-## Output Files
-
-See `docs/inference.md` for complete output file documentation.
+Copies of every recording with and without a planted event are classified in
+cross-validation grouped by recording; the summary reports detection AUC, how
+much of the event the selected blocks cover against random selection, whether
+the top block hits the event, and attribution shares, for trained and randomly
+initialised networks.

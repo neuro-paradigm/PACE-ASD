@@ -23,7 +23,7 @@ inference:
 preprocessing:
   max_frames: 300
   num_landmarks: 33
-  fps: 30
+  fps: 60
   mediapipe_model_complexity: 2
   mediapipe_smooth_landmarks: true
   mediapipe_min_detection_confidence: 0.5

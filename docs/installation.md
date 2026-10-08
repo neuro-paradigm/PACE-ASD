@@ -1,97 +1,38 @@
-# PACE-ASD — Installation Guide
+# Installation
 
-## System Requirements
-
-| Requirement | Minimum | Recommended |
-|---|---|---|
-| Python | 3.11 | 3.11.x |
-| OS | Windows 10 / Ubuntu 20.04 | Windows 11 / Ubuntu 22.04 |
-| RAM | 8 GB | 16 GB |
-| GPU (training) | — | NVIDIA CUDA 12.1+ |
-| GPU (inference) | Not required | Optional |
-| Storage | 2 GB (code + checkpoints) | 10 GB (+ raw dataset) |
-
-## Step 1: Clone the Repository
+PACE-ASD needs Python 3.11. Inference and the test suite run on the processor;
+a CUDA graphics card shortens training.
 
 ```bash
 git clone https://github.com/neuro-paradigm/PACE-ASD.git
 cd PACE-ASD
-```
-
-## Step 2: Create a Virtual Environment
-
-### Windows
-```bash
 python -m venv .venv
-.venv\Scripts\activate
+source .venv/bin/activate              # Windows: .venv\Scripts\activate
 ```
 
-### Linux/macOS
+PyTorch first, for your platform:
+
 ```bash
-python3.11 -m venv .venv
-source .venv/bin/activate
+# CPU (Linux, Windows)
+pip install torch==2.1.2 torchvision==0.16.2 --index-url https://download.pytorch.org/whl/cpu
+# macOS (Apple silicon or Intel)
+pip install torch==2.1.2 torchvision==0.16.2
+# CUDA 12.1
+pip install torch==2.1.2+cu121 torchvision==0.16.2+cu121 --index-url https://download.pytorch.org/whl/cu121
 ```
 
-## Step 3: Install Dependencies
+Then the pinned dependencies and the tests:
 
-### CPU-only (inference, testing, evaluation — no GPU required)
 ```bash
 pip install -r requirements.txt
+python -m pytest tests -q
 ```
 
-> **Note:** The `requirements.txt` installs the CPU version of PyTorch by default.
-> See below for GPU installation.
+MediaPipe installs `opencv-contrib-python`, which provides `cv2`; do not also
+install `opencv-python`, which would shadow it with a different version. On
+first use with `model_complexity: 2`, MediaPipe downloads its heavy pose model
+(`pose_landmark_heavy.tflite`) into its package directory.
 
-### GPU (CUDA 12.1 — required for training from scratch)
-```bash
-pip install torch==2.1.2+cu121 torchvision==0.16.2+cu121 \
-  --index-url https://download.pytorch.org/whl/cu121
-pip install -r requirements.txt
-```
-
-## Step 4: Verify Installation
-
-```bash
-python src/verify.py
-```
-
-Expected output:
-```
-  OK  torch 2.1.2  CUDA=False  device=CPU
-  OK  numpy=1.26.4  sklearn=1.3.2  cv2=4.8.1.78
-  OK  model A1  shape=torch.Size([2])  device=cpu
-  OK  model A2  shape=torch.Size([2])  device=cpu
-  OK  model A3  shape=torch.Size([2])  device=cpu
-  OK  model A4  shape=torch.Size([2])  device=cpu
-  OK  metrics  acc=0.80  sens=1.00  spec=0.67
-  OK  calibration  T=1.0000
-  OK  dataset helpers + augmentation
-  OK  baselines (LSTM, Conv1D-BiLSTM, LR, SVM, RF, XGBoost)
-  OK  syntax: preprocess, train, ablation, report, interpretability
-
-  ALL CHECKS PASSED (7/7)
-```
-
-## Step 5: Run Tests
-
-```bash
-python -m pytest tests/ -v
-```
-
-All tests use synthetic data — no dataset files needed.
-
-## MediaPipe Note
-
-MediaPipe is required **only** for processing raw `.mp4`/`.avi` video files.
-If you are using pre-extracted `.npy` feature files (provided in `processed/features/`),
-MediaPipe is **not** needed for inference, evaluation, or testing.
-
-### Known MediaPipe Issues
-
-- **Windows ARM/M-series Mac:** MediaPipe 0.10.x may not support ARM architecture natively.
-- **Python 3.12+:** MediaPipe 0.10.14 requires Python ≤ 3.11.
-- **GPU conflict:** If CUDA libraries conflict with MediaPipe, use `CUDA_VISIBLE_DEVICES=-1` when running preprocessing.
-
-## Troubleshooting
-
-See `docs/troubleshooting.md` for common issues.
+Tested platforms: Windows 11 (Python 3.11.9, CUDA 12.1), Ubuntu 26.04 under
+WSL2 (Python 3.11.17, CPU), and the Ubuntu 22.04, Windows Server 2022 and macOS 14
+runners of the GitHub Actions workflow in `.github/workflows/tests.yml`.

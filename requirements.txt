@@ -1,21 +1,21 @@
-# PACE-ASD — Python Dependencies
-# Python 3.11 | Windows 11 / Ubuntu 22.04
+# PACE-ASD — Python dependencies (Python 3.11)
 #
 # Installation:
 #   pip install -r requirements.txt
 #
-# Note on PyTorch:
-#   CPU-only:   pip install torch==2.1.2 torchvision==0.16.2
+# PyTorch:
+#   CPU only:   pip install torch==2.1.2 torchvision==0.16.2 --index-url https://download.pytorch.org/whl/cpu
 #   CUDA 12.1:  pip install torch==2.1.2+cu121 torchvision==0.16.2+cu121 \
 #                 --index-url https://download.pytorch.org/whl/cu121
 #
-# All inference and testing functionality works on CPU.
-# GPU is recommended for training (see docs/installation.md).
+# Inference and the test suite run on CPU. A GPU shortens training.
+# MediaPipe depends on opencv-contrib-python, which provides the cv2 module;
+# it is pinned here to the version used for every reported result.
 
 torch==2.1.2
 torchvision==0.16.2
 mediapipe==0.10.14
-opencv-python==4.8.1.78
+opencv-contrib-python==4.11.0.86
 numpy==1.26.4
 scipy==1.11.4
 scikit-learn==1.3.2

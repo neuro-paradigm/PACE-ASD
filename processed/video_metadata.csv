@@ -1,0 +1,111 @@
+clip_id,subject_id,label,video,fps,width,height,frame_count_header,seconds,frames_read,frames_detected
+asd_1,asd_1,1,Autism/children with ASD/1/video/video.avi,60.0,1080,1920,129,41.078,129,129
+asd_2,asd_2,1,Autism/children with ASD/2/video/video.avi,60.0,1080,1920,245,81.19,245,245
+asd_3,asd_3,1,Autism/children with ASD/3/video/video.avi,60.0,1080,1920,200,65.754,200,200
+asd_4,asd_4,1,Autism/children with ASD/4/video/video.avi,60.0,1080,1920,111,35.082,111,111
+asd_5,asd_5,1,Autism/children with ASD/5/video/video.avi,60.0,1080,1920,287,95.51,287,287
+asd_6,asd_6,1,Autism/children with ASD/6/video/video.avi,60.0,1080,1920,192,61.598,192,187
+asd_7,asd_7,1,Autism/children with ASD/7/video/video.avi,60.0,1080,1920,270,93.139,270,268
+asd_8,asd_8,1,Autism/children with ASD/8/video/video.avi,60.0,1080,1920,405,140.529,405,402
+asd_9,asd_9,1,Autism/children with ASD/9/video/video.avi,60.0,868,1704,142,48.686,142,142
+asd_10,asd_10,1,Autism/children with ASD/10/video/video.avi,60.0,1080,1920,149,51.845,149,149
+asd_11,asd_11,1,Autism/children with ASD/11/video/video.avi,60.0,1080,1920,119,41.672,119,119
+asd_12,asd_12,1,Autism/children with ASD/12/video/video.avi,60.0,1080,1920,111,38.866,111,111
+asd_13,asd_13,1,Autism/children with ASD/13/video/video.avi,60.0,1080,1920,203,71.514,203,200
+asd_14,asd_14,1,Autism/children with ASD/14/video/video.avi,60.0,1080,1920,89,32.5,89,89
+asd_15,asd_15,1,Autism/children with ASD/15/video/video.avi,60.0,1080,1920,59,21.959,59,59
+asd_16,asd_16,1,Autism/children with ASD/16/video/video.avi,60.0,1080,1920,215,76.767,215,199
+asd_17,asd_17,1,Autism/children with ASD/17/video/video.avi,60.0,1080,1920,84,31.207,84,84
+asd_18,asd_18,1,Autism/children with ASD/18/video/video.avi,60.0,780,1712,120,38.417,120,97
+asd_19,asd_19,1,Autism/children with ASD/19/video/video.avi,60.0,1080,1920,275,95.655,275,273
+asd_20,asd_20,1,Autism/children with ASD/20/video/video.avi,60.0,884,1884,45,15.783,45,45
+asd_21,asd_21,1,Autism/children with ASD/21/video/video.avi,60.0,880,1400,209,71.338,209,209
+asd_22,asd_22,1,Autism/children with ASD/22/video/video.avi,60.0,1064,1408,71,25.008,71,71
+asd_23,asd_23,1,Autism/children with ASD/23/video/video.avi,60.0,388,984,158,50.007,158,123
+asd_24,asd_24,1,Autism/children with ASD/24/video/video.avi,60.0,584,1392,119,36.05,119,55
+asd_25,asd_25,1,Autism/children with ASD/25/video/video.avi,60.0,752,1728,102,35.194,102,102
+asd_26,asd_26,1,Autism/children with ASD/26/video/video.avi,60.0,1080,1920,208,73.685,208,208
+asd_27,asd_27,1,Autism/children with ASD/27/video/video.avi,60.0,1080,1920,211,75.35,211,210
+asd_28,asd_28,1,Autism/children with ASD/28/video/video.avi,60.0,1080,1920,84,26.836,84,69
+asd_29,asd_29,1,Autism/children with ASD/29/video/video.avi,60.0,1080,1920,100,36.795,100,84
+asd_30,asd_30,1,Autism/children with ASD/30/video/video.avi,60.0,1080,1920,140,48.08,140,125
+asd_31,asd_31,1,Autism/children with ASD/31/video/video.avi,60.0,1080,1920,471,160.249,471,470
+asd_32,asd_32,1,Autism/children with ASD/32/video/video.avi,60.0,1080,1920,98,17.883,98,28
+asd_33,asd_33,1,Autism/children with ASD/33/video/video.avi,60.0,1080,1920,184,38.043,184,80
+asd_34,asd_34,1,Autism/children with ASD/34/video/video.avi,60.0,868,1704,132,45.546,132,132
+asd_35,asd_35,1,Autism/children with ASD/35/video/video.avi,60.0,1080,1920,283,96.964,283,283
+asd_36,asd_36,1,Autism/children with ASD/36/video/video.avi,60.0,868,1292,147,44.309,147,124
+asd_37,asd_37,1,Autism/children with ASD/37/video/video.avi,60.0,1080,1920,125,43.497,125,125
+asd_38,asd_38,1,Autism/children with ASD/38/video/video.avi,60.0,1080,1920,289,94.31,289,273
+asd_39,asd_39,1,Autism/children with ASD/39/video/video.avi,60.0,960,1912,127,43.47,127,127
+asd_40,asd_40,1,Autism/children with ASD/40/video/video.avi,60.0,1080,1920,95,32.541,95,95
+asd_41,asd_41,1,Autism/children with ASD/41/video/video.avi,60.0,1080,1920,97,33.356,97,97
+asd_42,asd_42,1,Autism/children with ASD/42/video/video.avi,60.0,840,1612,92,30.714,92,92
+asd_43,asd_43,1,Autism/children with ASD/43/video/video.avi,60.0,1080,1920,254,71.472,254,155
+asd_44,asd_44,1,Autism/children with ASD/44/video/video.avi,60.0,840,1812,239,82.209,239,179
+asd_45,asd_45,1,Autism/children with ASD/45/video/video.avi,60.0,948,1784,96,32.69,96,93
+asd_46,asd_46,1,Autism/children with ASD/46/video/video.avi,60.0,1080,1920,158,53.87,158,158
+asd_47,asd_47,1,Autism/children with ASD/47/video/video.avi,60.0,1016,1760,70,24.061,70,70
+asd_48,asd_48,1,Autism/children with ASD/48/video/video.avi,60.0,1080,1920,52,17.951,52,52
+asd_49,asd_49,1,Autism/children with ASD/49/video/video.avi,60.0,1080,1920,181,60.791,181,181
+asd_50,asd_50,1,Autism/children with ASD/50/video/video.avi,60.0,1080,1920,192,65.207,192,192
+td_1,td_1,0,Typical/1/video/video.avi,60.0,736,1680,89,28.03,89,83
+td_2,td_2,0,Typical/2/video/video1.avi,60.0,656,1380,88,29.046,88,88
+td_3,td_3,0,Typical/3/video/video.avi,60.0,700,1300,144,46.829,144,144
+td_4,td_4,0,Typical/4/video/video.avi,60.0,692,1172,73,24.326,73,73
+td_5,td_5,0,Typical/5/video/video.avi,60.0,664,1108,118,35.919,118,105
+td_6,td_6,0,Typical/6/video/video.avi,60.0,676,1580,148,47.829,148,146
+td_7,td_7,0,Typical/7/video/video.avi,60.0,816,1432,148,48.072,148,148
+td_8,td_8,0,Typical/8/video/video.avi,60.0,748,1512,118,38.471,118,117
+td_9,td_9,0,Typical/9/video/video.avi,60.0,628,1428,168,47.069,168,159
+td_10,td_10,0,Typical/10/video/video.avi,60.0,660,1356,173,45.503,173,170
+td_11,td_11,0,Typical/11/video/video.avi,60.0,680,1328,183,46.023,183,175
+td_12,td_12,0,Typical/12/video/video.avi,60.0,716,1540,110,25.548,110,107
+td_13,td_13,0,Typical/13/video/video.avi,60.0,648,1412,71,20.055,71,69
+td_14,td_14,0,Typical/14/video/video.avi,60.0,740,1376,96,20.773,96,96
+td_15,td_15,0,Typical/15/video/video.avi,60.0,664,1496,112,25.655,112,112
+td_16,td_16,0,Typical/16/video/video.avi,60.0,828,1572,148,30.887,148,107
+td_17,td_17,0,Typical/17/video/video.avi,60.0,784,1632,78,21.761,78,78
+td_18,td_18,0,Typical/18/video/video.avi,60.0,892,1772,137,42.257,137,133
+td_19,td_19,0,Typical/19/video/video.avi,60.0,904,1428,125,38.302,125,125
+td_20,td_20,0,Typical/20/video/video.avi,60.0,712,1572,119,29.241,119,82
+td_21,td_21,0,Typical/21/video/video.avi,60.0,812,1476,116,33.394,116,94
+td_22,td_22,0,Typical/22/video/video.avi,60.0,664,1108,118,36.248,118,105
+td_23,td_23,0,Typical/23/video/video.avi,60.0,692,1172,73,24.182,73,73
+td_24,td_24,0,Typical/24/video/video.avi,60.0,816,1432,148,50.759,148,148
+td_25,td_25,0,Typical/25/video/video.avi,60.0,700,1424,144,49.765,144,144
+td_26,td_26,0,Typical/26/video/video.avi,60.0,764,1444,137,47.509,137,134
+td_27,td_27,0,Typical/27/video/video.avi,60.0,784,1476,104,37.687,104,104
+td_28,td_28,0,Typical/28/video/video.avi,60.0,748,1248,148,52.482,148,117
+td_29,td_29,0,Typical/29/video/video.avi,60.0,664,1408,220,69.606,220,188
+td_30,td_30,0,Typical/30/video/video.avi,60.0,888,1528,119,39.956,119,119
+td_31,td_31,0,Typical/31/video/video.avi,60.0,836,1788,88,29.24,88,88
+td_32,td_32,0,Typical/32/video/video.avi,60.0,740,1888,119,39.256,119,119
+td_33,td_33,0,Typical/33/video/video.avi,60.0,800,1772,89,25.547,89,72
+td_34,td_34,0,Typical/34/video/video.avi,60.0,656,1672,124,35.11,124,97
+td_35,td_35,0,Typical/35/video/video.avi,60.0,720,1816,119,25.494,119,62
+td_36,td_36,0,Typical/36/video/video.avi,60.0,760,1604,69,22.816,69,68
+td_37,td_37,0,Typical/37/video/video.avi,60.0,768,1640,92,25.188,92,92
+td_38,td_38,0,Typical/38/video/video.avi,60.0,768,1584,79,18.804,79,76
+td_39,td_39,0,Typical/39/video/video.avi,60.0,784,1632,78,18.116,78,78
+td_40,td_40,0,Typical/40/video/video.avi,60.0,844,1612,113,13.848,113,109
+td_41,td_41,0,Typical/41/video/video.avi,60.0,856,1756,135,12.699,135,97
+td_42,td_42,0,Typical/42/video/video.avi,60.0,760,1672,94,7.666,94,56
+td_43,td_43,0,Typical/43/video/video.avi,60.0,856,1728,114,14.684,114,114
+td_44,td_44,0,Typical/44/video/video.avi,60.0,860,1724,111,13.912,111,103
+td_45,td_45,0,Typical/45/video/video.avi,60.0,716,1616,124,9.035,124,62
+td_46,td_46,0,Typical/46/video/video.avi,60.0,776,1812,96,17.72,96,96
+td_47,td_47,0,Typical/47/video/video.avi,60.0,792,1864,103,29.49,103,103
+td_48,td_48,0,Typical/48/video/video.avi,60.0,936,1692,114,33.247,114,114
+td_49,td_49,0,Typical/49/video/video.avi,60.0,828,1840,144,45.362,144,144
+td_50,td_50,0,Typical/50/video/video.avi,60.0,764,1444,137,42.268,137,134
+severe_case1_v1,severe_case1,1,Autism/Severe level of ASD/case1/video.avi,60.0,1080,1920,119,38.547,119,119
+severe_case2_v1,severe_case2,1,Autism/Severe level of ASD/case2/video.avi,60.0,1080,1920,265,81.17,265,257
+severe_case2_v2,severe_case2,1,Autism/Severe level of ASD/case2/video2.avi,60.0,1080,1920,521,127.55,521,519
+severe_case3_v1,severe_case3,1,Autism/Severe level of ASD/case3/video.avi,60.0,1080,1920,180,58.299,180,177
+severe_case4_v1,severe_case4,1,Autism/Severe level of ASD/case4/video.avi,60.0,1080,1920,205,62.575,205,204
+severe_case5_v1,severe_case5,1,Autism/Severe level of ASD/case5/video1.avi,60.0,1080,1920,179,56.204,179,178
+severe_case6_v1,severe_case6,1,Autism/Severe level of ASD/case6/video.avi,60.0,1076,1860,157,48.86,157,156
+severe_case7_v1,severe_case7,1,Autism/Severe level of ASD/case7/video.avi,60.0,1080,1920,248,45.231,248,203
+severe_case8_v1,severe_case8,1,Autism/Severe level of ASD/case8/video.avi,30.0,764,1604,36,11.199,36,36
+severe_case9_v1,severe_case9,1,Autism/Severe level of ASD/case9/video.avi,60.0,1080,1920,113,26.017,113,113

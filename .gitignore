@@ -62,9 +62,37 @@ results/attn/
 results/*.pdf
 results/*_repro.json
 
-# Checkpoints:
-# Ignore large baseline model checkpoints (>1.2 GB) and ablation models.
-# Only track primary PACE-ASD (A1) checkpoints for review reproducibility.
+# Checkpoints: only the released ensemble is tracked; cross-validation
+# checkpoints (models/cv/) are archived with the release.
 models/*
-!models/A1/
-!models/A1/*.pt
+!models/release/
+
+# Local working material that is not part of the software
+submission_frontiers/
+*.zip
+paper guidelines.txt
+results_v11/
+results_v10_regen/
+models_v11/
+models_v10_regen/
+legacy/scripts/analysis_v11.py
+legacy/scripts/run_protocol_v11.py
+legacy/scripts/update_readme_results.py
+legacy/configs/config_v11.yaml
+
+# earlier protocol by-products
+results_v11/attn/
+results_v10_regen/attn/
+reports_v11/
+logs_v11_train.txt
+logs_v10_regen.txt
+
+# Raw dataset (download from Dryad; never committed)
+Dataset-2/
+Dataset-2.rar
+data/raw/
+
+# Cross-validation by-products (checkpoints are archived separately)
+models/cv/
+results/cv/logs/
+results/cv/*_queue.log
