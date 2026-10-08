@@ -1,5 +1,5 @@
 """
-PACE-ASD — sequence preparation shared by every model, baseline and analysis.
+PACE — sequence preparation shared by every model, baseline and analysis.
 
 Stored arrays are (T, 33, 2) float32: mid-hip centred, shoulder-scaled image
 coordinates, with all-zero frames where no pose was detected or after the end

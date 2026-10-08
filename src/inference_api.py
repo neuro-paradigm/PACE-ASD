@@ -1,7 +1,7 @@
 """
-PACE-ASD — Python inference API.
+PACE — Python inference API.
 
-PACEASDPredictor scores one recording with one checkpoint or an ensemble of
+PACEPredictor scores one recording with one checkpoint or an ensemble of
 checkpoints and returns, besides the probability, everything needed to check
 how it was obtained: the prepared landmark sequence and its kinematics, the
 blocks each ensemble member selected (in the frame numbering of the input),
@@ -9,9 +9,9 @@ how often members agree on each block, and descriptor-level attribution
 shares.
 
     import sys; sys.path.insert(0, "src")
-    from inference_api import PACEASDPredictor
+    from inference_api import PACEPredictor
 
-    predictor = PACEASDPredictor("models/release")          # directory, file or list
+    predictor = PACEPredictor("models/release")          # directory, file or list
     result = predictor.predict_npy("processed/features/asd_1.npy")
     result = predictor.predict_video("walk.mp4")             # MediaPipe + OpenCV
     print(result["probability"], result["probability_sd"])
@@ -82,7 +82,7 @@ def checkpoint_paths(spec) -> list:
     return [str(spec)]
 
 
-class PACEASDPredictor:
+class PACEPredictor:
     """
     Args:
         checkpoints: a .pt file, a directory of .pt files (ensemble) or a list.
@@ -244,3 +244,7 @@ class PACEASDPredictor:
                      "sensitivity of the trained models for this clip, not a measurement of "
                      "the movement."),
         }
+
+
+# Name used before release 1.2.0; kept so that existing code keeps working.
+PACEASDPredictor = PACEPredictor

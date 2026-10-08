@@ -1,6 +1,6 @@
 # Installation
 
-PACE-ASD needs Python 3.11. Inference and the test suite run on the processor;
+PACE needs Python 3.11. Inference and the test suite run on the processor;
 a CUDA graphics card shortens training.
 
 ```bash

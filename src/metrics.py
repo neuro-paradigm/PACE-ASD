@@ -1,5 +1,5 @@
 """
-PACE-ASD — Metrics Computation (Protocol Section 7)
+PACE — Metrics Computation (Protocol Section 7)
 
 Functions:
   compute_all_metrics       — accuracy, AUC, F1, sensitivity, specificity, ECE

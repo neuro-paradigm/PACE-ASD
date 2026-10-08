@@ -1,11 +1,11 @@
-# PACE-ASD Data Directory
+# PACE Data Directory
 
 This directory is used for raw dataset files during preprocessing.
 **Raw participant videos are NOT distributed with this repository** due to data sharing restrictions.
 
 ## Dataset Source
 
-PACE-ASD uses the publicly available **Dryad ASD Kinematic Dataset**:
+PACE uses the publicly available **Dryad ASD Kinematic Dataset**:
 
 > Aljubouri, A. A., Hadi, I., & Rajihy, Y. (2020). *Three Dimensional Dataset Combining Gait and Full Body Movement of Children with Autism Spectrum Disorders Collected by Kinect v2 Camera.* Dryad Digital Repository.  
 > DOI: [10.5061/dryad.s7h44j150](https://doi.org/10.5061/dryad.s7h44j150)  

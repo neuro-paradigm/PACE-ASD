@@ -1,5 +1,5 @@
 """
-PACE-ASD — every number reported from the nested cross-validation.
+PACE — every number reported from the nested cross-validation.
 
 Reads results/cv/runs/<model>/r*_k*.json (written by run_cv.py and
 run_feature_models.py) and writes results/cv/summary.json.

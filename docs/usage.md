@@ -9,9 +9,9 @@ python scripts/infer.py --input_npy processed/features/asd_1.npy --checkpoint mo
 
 ```python
 import sys; sys.path.insert(0, "src")
-from inference_api import PACEASDPredictor
+from inference_api import PACEPredictor
 
-pred = PACEASDPredictor("models/release", device="cpu")   # directory, file or list of files
+pred = PACEPredictor("models/release", device="cpu")   # directory, file or list of files
 res = pred.predict_video("walk.mp4")                      # or predict_npy / predict_array
 print(res["probability"], res["probability_sd"])
 print(res["video"]["fps"], res["video"]["pose_seconds"])

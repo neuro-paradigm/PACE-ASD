@@ -1,5 +1,5 @@
 """
-PACE-ASD — Dataset Audit (Section 1.1 of Protocol)
+PACE — Dataset Audit (Section 1.1 of Protocol)
 
 Walks the raw dataset, counts subjects per group, verifies every expected
 colour video is present, and finds byte-identical recordings (MD5 of the
@@ -159,7 +159,7 @@ def audit(raw_dir: str) -> dict:
 def format_report(raw_dir: str, result: dict) -> str:
     lines = [
         "=" * 70,
-        "PACE-ASD Dataset Audit Report",
+        "PACE Dataset Audit Report",
         f"Raw directory : {raw_dir}",
         "=" * 70,
         "",
@@ -220,7 +220,7 @@ def format_report(raw_dir: str, result: dict) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PACE-ASD dataset audit")
+    parser = argparse.ArgumentParser(description="PACE dataset audit")
     parser.add_argument("--raw_dir", default="data/raw/Dataset",
                         help="Path to the raw Dryad dataset root")
     parser.add_argument("--out", default="audit_report.txt",

@@ -1,8 +1,8 @@
-# PACE-ASD — reference configuration.
+# PACE — reference configuration.
 # Every setting below was fixed before the cross-validation reported in the
 # accompanying article was run; none was tuned on its results.
 data:
-  raw_dir: null            # set with --raw_dir or PACE_ASD_RAW_DIR
+  raw_dir: null            # set with --raw_dir or PACE_RAW_DIR
   processed_dir: processed
   fps: 60                  # frame rate of the source videos (PREPROCESS_SPEC.md)
   max_frames: 300

@@ -1,12 +1,12 @@
 """
-PACE-ASD — every cross-validation run reported in the article, as one queue.
+PACE — every cross-validation run reported in the article, as one queue.
 
 Stages (run in order; each stage can be resumed):
   pilot     learning-rate pilot for the comparison architectures: repetition 0,
             first inner fold only, lr in {5e-5, 3e-4, 1e-3}; the rate with the
             highest mean inner-validation AUC is used for that architecture.
-            PACE-ASD keeps the reference learning rate (5e-5).
-  pace      PACE-ASD, its ablation arms and the validity-only control,
+            PACE keeps the reference learning rate (5e-5).
+  pace      PACE, its ablation arms and the validity-only control,
             5 x 5-fold nested cross-validation.
   comparison  the comparison architectures with their pilot learning rates,
             same partition.

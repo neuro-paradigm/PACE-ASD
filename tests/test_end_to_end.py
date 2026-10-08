@@ -50,12 +50,12 @@ def clip(n=120, lead=0, seed=1):
 
 
 def test_api_single_and_ensemble(cfg, tmp_path):
-    from inference_api import PACEASDPredictor
+    from inference_api import PACEPredictor
     p1 = make_checkpoint(cfg, str(tmp_path / "m1.pt"), 0)
     p2 = make_checkpoint(cfg, str(tmp_path / "m2.pt"), 1, pickled_scaler=True)
     npy = str(tmp_path / "c.npy"); np.save(npy, clip())
-    single = PACEASDPredictor(p1, device="cpu").predict_npy(npy)
-    ens = PACEASDPredictor(str(tmp_path), device="cpu").predict_npy(npy)
+    single = PACEPredictor(p1, device="cpu").predict_npy(npy)
+    ens = PACEPredictor(str(tmp_path), device="cpu").predict_npy(npy)
     assert ens["n_models"] == 2 and single["n_models"] == 1
     assert 0 <= ens["probability"] <= 1
     assert np.isclose(ens["probability"], np.mean(ens["member_probabilities"]), atol=1e-6)
@@ -67,8 +67,8 @@ def test_api_single_and_ensemble(cfg, tmp_path):
 
 
 def test_api_reports_onset_and_is_invariant_to_it(cfg, tmp_path):
-    from inference_api import PACEASDPredictor
-    pred = PACEASDPredictor(make_checkpoint(cfg, str(tmp_path / "m.pt")), device="cpu")
+    from inference_api import PACEPredictor
+    pred = PACEPredictor(make_checkpoint(cfg, str(tmp_path / "m.pt")), device="cpu")
     a = pred.predict_array(clip(lead=0), attribution=False)
     b = pred.predict_array(clip(lead=40), attribution=False)
     assert b["onset_frame"] == 40 and a["onset_frame"] == 0
@@ -79,8 +79,8 @@ def test_api_reports_onset_and_is_invariant_to_it(cfg, tmp_path):
 
 
 def test_api_rejects_implausible_frames(cfg, tmp_path):
-    from inference_api import PACEASDPredictor
-    pred = PACEASDPredictor(make_checkpoint(cfg, str(tmp_path / "m.pt")), device="cpu")
+    from inference_api import PACEPredictor
+    pred = PACEPredictor(make_checkpoint(cfg, str(tmp_path / "m.pt")), device="cpu")
     a = clip()
     a[10, 0, 0] = 50.0
     r = pred.predict_array(a, attribution=False)
@@ -116,10 +116,10 @@ def test_cli_writes_all_outputs(cfg, tmp_path):
 
 def test_legacy_checkpoint_without_validity_keys_loads(cfg, tmp_path):
     """Checkpoints whose configuration predates the validity keys load and run."""
-    from inference_api import PACEASDPredictor
+    from inference_api import PACEPredictor
     legacy = copy.deepcopy(cfg)
     legacy["model"].pop("mask_padding"); legacy["model"].pop("align_onset"); legacy.pop("data")
-    r = PACEASDPredictor(make_checkpoint(legacy, str(tmp_path / "old.pt"), pickled_scaler=True),
+    r = PACEPredictor(make_checkpoint(legacy, str(tmp_path / "old.pt"), pickled_scaler=True),
                          device="cpu").predict_array(clip(), attribution=False)
     assert 0 <= r["probability"] <= 1 and r["onset_frame"] == 0
 

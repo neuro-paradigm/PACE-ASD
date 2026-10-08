@@ -1,5 +1,5 @@
 """
-PACE-ASD — worked example: score one stored recording with the released
+PACE — worked example: score one stored recording with the released
 ensemble and print what each output means.
 
     python examples/example_inference.py [clip_id]
@@ -19,7 +19,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 os.chdir(ROOT)
 
-from inference_api import PACEASDPredictor   # noqa: E402
+from inference_api import PACEPredictor   # noqa: E402
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
     ap.add_argument("clip_id", nargs="?", default="asd_1")
     a = ap.parse_args()
     npy = f"processed/features/{a.clip_id}.npy"
-    pred = PACEASDPredictor("models/release", device="cpu")
+    pred = PACEPredictor("models/release", device="cpu")
     r = pred.predict_npy(npy)
 
     print(f"recording {a.clip_id}: {r['n_detected_frames']} detected frames, "

@@ -3,12 +3,12 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.backends.legacy:build"
 
 [project]
-name = "pace-asd"
+name = "pace-movement"
 version = "1.2.0"
-description = "PACE-ASD: cross-validated modeling of whole-body movement in short videos, with controls for recording artifacts"
+description = "PACE: cross-validated modeling of whole-body movement in short videos, with controls for recording artifacts"
 readme = "README.md"
 requires-python = ">=3.11"
-keywords = ["pose estimation", "gait", "movement", "cross-validation", "transformer", "autism research"]
+keywords = ["pose estimation", "gait", "movement", "cross-validation", "transformer", "research software"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",

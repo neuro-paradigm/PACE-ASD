@@ -1,4 +1,4 @@
-# PACE-ASD — Python dependencies (Python 3.11)
+# PACE — Python dependencies (Python 3.11)
 #
 # Installation:
 #   pip install -r requirements.txt

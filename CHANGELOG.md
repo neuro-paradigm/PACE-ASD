@@ -1,9 +1,44 @@
 # CHANGELOG
 
-All notable changes to PACE-ASD are documented in this file.
+All notable changes to PACE (released as PACE-ASD before 1.2.0) are documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [1.2.0] — 2026-10
+
+### Second revision (October 2026)
+- **Name.** The software is now called PACE (pose-aware contiguous-event
+  modeling); the repository URL is unchanged. `PACEPredictor` replaces
+  `PACEASDPredictor`, which remains as an alias. `PACE_RAW_DIR` is read before
+  `PACE_ASD_RAW_DIR`. Inference is described as applying research models to new
+  recordings, not as scoring them.
+- **Pre-specified criteria.** `docs/validation_criteria.md` fixes the pass/fail
+  criteria and settings of the second-revision analyses; it was committed before
+  any of them was run. `scripts/evaluate_criteria.py` applies the criteria to
+  the stored results (`results/criteria.json`).
+- **Gate training modes** (`model.gate_train_mode`: `anneal`, `gumbel`,
+  `perturbed`) and a motion-energy heuristic gate (`model.gate_scores: motion`);
+  evaluation is unchanged (hard top-M), and the defaults reproduce earlier
+  checkpoints. Tests in `tests/test_gate_training_modes.py`.
+- **Planted events**: `flap` (oscillation without a raise) and `freeze` (arrest
+  of movement keeping the tracking noise) event types; three reference
+  detectors (hand height, motion energy, 6-Hz matched filter) with block-level
+  localization; amplitudes chosen by a rule fixed in advance
+  (`--reference-grid`, `results/synthetic/reference_grid.json`).
+- **Controls**: image properties of the videos and landmark jitter
+  (`src/recording_features.py`); depth-camera skeletons of the same walks
+  (`src/depth_skeleton.py`, standard library only); confound regression of the
+  gait descriptors on age and sex (`Gait-LR-adjusted`). New feature-model
+  configurations `Scene`, `Jitter`, `Gait-LR-adjusted`, `Depth-LR`, `Depth-RF`,
+  `Depth-recording` (`scripts/run_feature_models.py --raw_dir`).
+- **Analyses** (`scripts/analyze_mechanisms.py`): `selection_nulls` (agreement of
+  untrained networks, the motion heuristic and models of different
+  repetitions), `movement` (descriptors within the cropped videos adjusted for
+  age and sex, from smoothed and length-equalized trajectories; jitter; image
+  properties; representativeness of the cropped autistic children), `depth`
+  (depth descriptors, recording properties including time of day, agreement
+  with the video descriptors); the subset analyses include cropped videos of
+  boys in the shared age range.
+
 
 ### Changed
 - **Coordinates in pixel units.** `src/preprocess.py` converts MediaPipe's

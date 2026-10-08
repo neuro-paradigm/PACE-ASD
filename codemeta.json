@@ -1,11 +1,11 @@
 {
   "@context": "https://w3id.org/codemeta/3.0",
   "@type": "SoftwareSourceCode",
-  "name": "PACE-ASD",
+  "name": "PACE",
   "description": "Research software for cross-validated modeling of whole-body movement in short videos: MediaPipe landmark extraction in pixel units, shared sequence preparation (plausibility check, onset alignment), a contiguous-event network with frame-validity masking, five comparison architectures, gait-descriptor classifiers, repeated nested subject-level cross-validation with stored out-of-fold predictions, recording-artifact controls, a planted-event benchmark, and inference with checkpoint ensembles. Not a medical device.",
   "version": "1.2.0",
   "softwareVersion": "1.2.0",
-  "dateModified": "2026-10-08",
+  "dateModified": "2026-10-09",
   "license": "https://spdx.org/licenses/Apache-2.0",
   "codeRepository": "https://github.com/neuro-paradigm/PACE-ASD",
   "identifier": "https://github.com/neuro-paradigm/PACE-ASD/releases/tag/v1.2.0",
@@ -48,12 +48,6 @@
   "author": [
     {
       "@type": "Person",
-      "givenName": "Sireesha",
-      "familyName": "Puppala",
-      "@id": "https://orcid.org/0009-0008-3984-9665"
-    },
-    {
-      "@type": "Person",
       "givenName": "Vamshi Mohan",
       "familyName": "Kasi",
       "@id": "https://orcid.org/0009-0005-7715-8388"
@@ -75,6 +69,12 @@
       "givenName": "Yuva Dhanvanth",
       "familyName": "Annabathula",
       "@id": "https://orcid.org/0009-0003-7401-1394"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Sireesha",
+      "familyName": "Puppala",
+      "@id": "https://orcid.org/0009-0008-3984-9665"
     }
   ],
   "readme": "https://github.com/neuro-paradigm/PACE-ASD/blob/main/README.md"

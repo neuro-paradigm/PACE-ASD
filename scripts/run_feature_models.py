@@ -1,5 +1,5 @@
 """
-PACE-ASD — feature-based classifiers and negative controls under the same
+PACE — feature-based classifiers and negative controls under the same
 repeated nested cross-validation partition as the neural networks.
 
   Gait-LR, Gait-SVM, Gait-RF, Gait-XGB
@@ -26,8 +26,24 @@ repeated nested cross-validation partition as the neural networks.
       its own frame dimension) instead of pixel units; measures how much that
       normalisation changes the result.
 
+Second revision (settings fixed in docs/validation_criteria.md, B4-B5):
+  Jitter
+      landmark jitter (src/recording_features.py), overall and by region.
+  Scene
+      image properties of the videos (luminance, contrast, saturation,
+      sharpness, border luminance, face-region sharpness, bit rate, the
+      child's shoulder width relative to the frame height).
+  Gait-LR-adjusted
+      the gait descriptors residualized on age and sex by a linear regression
+      fitted on the training children of each fold (confound regression),
+      then the Gait-LR pipeline.
+  Depth-LR, Depth-RF, Depth-recording
+      descriptors of the depth-camera skeletons (src/depth_skeleton.py) and
+      the properties of those recordings (frames, distance, frame-interval
+      irregularity, time of day).
+
 Usage:
-    python scripts/run_feature_models.py
+    python scripts/run_feature_models.py --raw_dir <deposit folder>
 """
 
 import argparse
@@ -57,13 +73,81 @@ os.chdir(ROOT)
 from gait_features import FEATURE_NAMES, feature_matrix      # noqa: E402
 from run_cv import make_partition, model_seed, stored_array  # noqa: E402
 from sequence import MASK_FEATURES, mask_summary, prepare_sequence, valid_mask  # noqa: E402
+import depth_skeleton                                        # noqa: E402
+from recording_features import JITTER_NAMES, SCENE_NAMES, jitter_features, scene_features  # noqa: E402
+
+from sklearn.base import BaseEstimator, TransformerMixin    # noqa: E402
 
 warnings.filterwarnings("ignore")
 
 
-def pipeline(clf):
-    return Pipeline([("impute", SimpleImputer(strategy="median")),
-                     ("scale", StandardScaler()), ("clf", clf)])
+class ConfoundRegression(BaseEstimator, TransformerMixin):
+    """Residualize every feature on the last `n_confounds` columns with a
+    linear regression fitted on the training data only, and drop those
+    columns (confound regression; Snoek et al., 2019)."""
+
+    def __init__(self, n_confounds=2):
+        self.n_confounds = n_confounds
+
+    def _split(self, X):
+        k = self.n_confounds
+        return X[:, :-k], np.c_[np.ones(len(X)), X[:, -k:]]
+
+    def fit(self, X, y=None):
+        F, C = self._split(X)
+        self.beta_ = np.linalg.lstsq(C, F, rcond=None)[0]
+        return self
+
+    def transform(self, X):
+        F, C = self._split(X)
+        return F - C @ self.beta_
+
+
+def pipeline(clf, confounds=0):
+    steps = [("impute", SimpleImputer(strategy="median"))]
+    if confounds:
+        steps.append(("confounds", ConfoundRegression(confounds)))
+    return Pipeline(steps + [("scale", StandardScaler()), ("clf", clf)])
+
+
+def scene_table(S, vid, raw_dir, cache):
+    """Scene/camera features of every video, cached in `cache`."""
+    if os.path.isfile(cache):
+        tab = json.load(open(cache))
+        if set(S) <= set(tab):
+            return tab
+    if not raw_dir or not os.path.isdir(raw_dir):
+        raise SystemExit("--raw_dir (the deposit's Dataset folder) is needed for the scene features")
+    tab = {}
+    for s in S:
+        kp = np.load(os.path.join("processed", "keypoints", f"{s}.npy"))
+        tab[s] = scene_features(os.path.join(raw_dir, vid.loc[s, "video"]), kp, float(vid.loc[s, "fps"]))
+        print(f"[scene] {s} {tab[s]}", flush=True)
+    json.dump(tab, open(cache, "w"), indent=1)
+    return tab
+
+
+def depth_path(raw_dir, s):
+    group, n = s.split("_")
+    folder = "Autism/children with ASD" if group == "asd" else "Typical"
+    return os.path.join(raw_dir, folder, n, "video", "8.xlsx")
+
+
+def depth_table(S, raw_dir, cache):
+    """Descriptors and recording properties of the depth-camera skeletons."""
+    if os.path.isfile(cache):
+        tab = json.load(open(cache))
+        if set(S) <= set(tab):
+            return tab
+    if not raw_dir or not os.path.isdir(raw_dir):
+        raise SystemExit("--raw_dir (the deposit's Dataset folder) is needed for the depth skeletons")
+    tab = {}
+    for s in S:
+        t, X = depth_skeleton.read_skeleton(depth_path(raw_dir, s))
+        tab[s] = {"features": depth_skeleton.skeleton_features(t, X),
+                  "recording": depth_skeleton.recording_features(t, X)}
+    json.dump(tab, open(cache, "w"), indent=1)
+    return tab
 
 
 def models(seed):
@@ -83,6 +167,15 @@ def models(seed):
         "Frame-format": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "format"),
         "Gait-LR-imagenorm": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "gait_image"),
         "Covariates": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "covariates"),
+        # second revision
+        "Jitter": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "jitter"),
+        "Scene": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "scene"),
+        "Gait-LR-adjusted": (pipeline(LogisticRegression(max_iter=5000), confounds=2), lr_grid,
+                             "gait_demo"),
+        "Depth-LR": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "depth"),
+        "Depth-RF": (pipeline(RandomForestClassifier(n_estimators=500, random_state=seed, n_jobs=4)),
+                     {"clf__max_depth": [2, 4, None], "clf__min_samples_leaf": [1, 3, 5]}, "depth"),
+        "Depth-recording": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "depth_recording"),
     }
 
 
@@ -90,6 +183,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/config.yaml")
     ap.add_argument("--repeats", type=int, default=None)
+    ap.add_argument("--raw_dir", default=os.environ.get("PACE_RAW_DIR", os.environ.get("PACE_ASD_RAW_DIR", os.path.join("Dataset-2", "Dataset"))))
+    ap.add_argument("--models", nargs="*", default=None, help="subset of models to run")
     args = ap.parse_args()
     cfg = yaml.safe_load(open(args.config))
     part = make_partition(cfg)
@@ -118,6 +213,19 @@ def main():
                                  cfg["data"]["max_abs_coord"], True) for s in S}
     feats["gait_image"] = dict(zip(S, feature_matrix([image[s] for s in S])))
     os.makedirs(cfg["output"]["cv_dir"], exist_ok=True)
+    wanted = set(args.models) if args.models else None
+    need = lambda kind: wanted is None or any(models(0)[m][2] == kind for m in wanted)
+    feats["jitter"] = {s: np.array([jitter_features(prep[s])[k] for k in JITTER_NAMES]) for s in S}
+    feats["gait_demo"] = {s: np.concatenate([feats["gait"][s], feats["demo"][s]]) for s in S}
+    if need("scene"):
+        scene = scene_table(S, vid, args.raw_dir, os.path.join(cfg["output"]["cv_dir"], "scene_features.json"))
+        feats["scene"] = {s: np.array([scene[s][k] for k in SCENE_NAMES]) for s in S}
+    if need("depth") or need("depth_recording"):
+        depth = depth_table(S, args.raw_dir, os.path.join(cfg["output"]["cv_dir"], "depth_features.json"))
+        feats["depth"] = {s: np.array([depth[s]["features"][k] for k in depth_skeleton.FEATURE_NAMES])
+                          for s in S}
+        feats["depth_recording"] = {s: np.array([depth[s]["recording"][k]
+                                                 for k in depth_skeleton.RECORDING_NAMES]) for s in S}
     with open(os.path.join(cfg["output"]["cv_dir"], "gait_features.json"), "w") as f:
         json.dump({"names": FEATURE_NAMES,
                    "values": {s: [None if np.isnan(v) else float(v) for v in feats["gait"][s]]
@@ -132,6 +240,8 @@ def main():
             inner = [([pos[s] for s in f["train"]], [pos[s] for s in f["val"]]) for f in fold["inner"]]
             ytr = np.array([lab[s] for s in train]); yte = np.array([lab[s] for s in test])
             for name, (est, grid, kind) in models(model_seed(r, k, 0)).items():
+                if wanted is not None and name not in wanted:
+                    continue
                 out_dir = os.path.join(cfg["output"]["cv_dir"], "runs", name)
                 os.makedirs(out_dir, exist_ok=True)
                 path = os.path.join(out_dir, f"r{r}_k{k}.json")

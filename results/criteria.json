@@ -1,0 +1,1824 @@
+{
+ "V1_V2": {
+  "timing": "R",
+  "comparisons": {
+   "PACE-nogate": {
+    "diff": 0.007703703703703657,
+    "bootstrap_ci": [
+     -0.017337037037036908,
+     0.0327481481481481
+    ],
+    "corrected_t_ci": [
+     -0.03868757118376943,
+     0.07276164525784354
+    ],
+    "pace_better": false
+   },
+   "PACE-frames": {
+    "diff": -0.0016296296296296475,
+    "bootstrap_ci": [
+     -0.015559259259259356,
+     0.010962962962962845
+    ],
+    "corrected_t_ci": [
+     -0.03932571730058246,
+     0.03339979137465654
+    ],
+    "pace_better": false
+   },
+   "PACE-noattn": {
+    "diff": 0.021629629629629665,
+    "bootstrap_ci": [
+     -0.013481481481481433,
+     0.06341111111111082
+    ],
+    "corrected_t_ci": [
+     -0.06945571447953938,
+     0.07241867744250235
+    ],
+    "pace_better": false
+   },
+   "PACE-M4": {
+    "diff": -0.007259259259259299,
+    "bootstrap_ci": [
+     -0.029037037037037083,
+     0.01229629629629636
+    ],
+    "corrected_t_ci": [
+     -0.05519205282393775,
+     0.028525386157271133
+    ],
+    "pace_better": false
+   },
+   "PACE-nomask": {
+    "diff": 0.00637037037037036,
+    "bootstrap_ci": [
+     -0.020000000000000018,
+     0.03496296296296286
+    ],
+    "corrected_t_ci": [
+     -0.04542464401119783,
+     0.05431353290008676
+    ],
+    "pace_better": false
+   },
+   "PACE-noalign": {
+    "diff": 0.003259259259259295,
+    "bootstrap_ci": [
+     -0.01363703703703728,
+     0.017633333333333345
+    ],
+    "corrected_t_ci": [
+     -0.0319581533782148,
+     0.037884079304140734
+    ],
+    "pace_better": false
+   },
+   "PACE-imagenorm": {
+    "diff": 0.029037037037037083,
+    "bootstrap_ci": [
+     -0.00918888888888878,
+     0.0682962962962963
+    ],
+    "corrected_t_ci": [
+     -0.062412634513438925,
+     0.1261163382171426
+    ],
+    "pace_better": false
+   },
+   "PACE-valloss": {
+    "diff": -0.005037037037037062,
+    "bootstrap_ci": [
+     -0.015855555555555706,
+     0.005629629629629651
+    ],
+    "corrected_t_ci": [
+     -0.02483129515397797,
+     0.024831295153977955
+    ],
+    "pace_better": false
+   },
+   "Gait-RF": {
+    "diff": 0.014518518518518597,
+    "bootstrap_ci": [
+     -0.040155555555555555,
+     0.07127037037037029
+    ],
+    "corrected_t_ci": [
+     -0.0620114757995209,
+     0.09756703135507647
+    ],
+    "pace_better": false
+   },
+   "BiGRU": {
+    "diff": 0.009185185185185074,
+    "bootstrap_ci": [
+     -0.044596296296296224,
+     0.06637037037037041
+    ],
+    "corrected_t_ci": [
+     -0.07420976903163375,
+     0.08309865792052264
+    ],
+    "pace_better": false
+   }
+  },
+  "any_component_improves": false,
+  "outperforms_simpler": false
+ },
+ "V3": {
+  "movement_evidence_cropped": {
+   "timing": "R",
+   "PACE": {
+    "diff": 0.2953086419753086,
+    "ci95": [
+     0.15998765432098747,
+     0.43162962962962953
+    ],
+    "passes": true
+   },
+   "Gait-LR": {
+    "diff": 0.3012345679012346,
+    "ci95": [
+     0.1570370370370372,
+     0.44345679012345685
+    ],
+    "passes": true
+   },
+   "Gait-RF": {
+    "diff": 0.31160493827160496,
+    "ci95": [
+     0.17679012345679024,
+     0.4439506172839506
+    ],
+    "passes": true
+   },
+   "CTR-GCN": {
+    "diff": 0.30814814814814817,
+    "ci95": [
+     0.1728395061728395,
+     0.4464444444444445
+    ],
+    "passes": true
+   },
+   "Gait-LR-adjusted": {
+    "diff": 0.2775308641975308,
+    "ci95": [
+     0.1254197530864198,
+     0.4296296296296296
+    ],
+    "passes": true
+   }
+  },
+  "scene_jitter_controls": {
+   "timing": "P",
+   "Scene": {
+    "auc_cropped": 0.9412345679012345,
+    "ci95": [
+     0.8562345679012346,
+     0.9965432098765432
+    ],
+    "blocks_movement_claim": true
+   },
+   "Jitter": {
+    "auc_cropped": 0.6049382716049383,
+    "ci95": [
+     0.44443209876543205,
+     0.7467160493827161
+    ],
+    "blocks_movement_claim": false
+   }
+  },
+  "robust_descriptors": {
+   "timing": "P",
+   "names": [
+    "step_width_var",
+    "arm_swing",
+    "wrist_height",
+    "elbow_rom",
+    "elbow_flexion",
+    "knee_rom",
+    "knee_flexion",
+    "trunk_sway",
+    "head_sway"
+   ]
+  },
+  "representativeness": {
+   "timing": "P",
+   "auc_uncropped_vs_cropped_autistic": 0.7363809523809524,
+   "possibly_unrepresentative": true
+  },
+  "depth_corroboration": {
+   "timing": "P",
+   "model": "Depth-RF",
+   "auc_cropped": 0.8486419753086419,
+   "ci95": [
+    0.7212283950617283,
+    0.9437160493827159
+   ],
+   "recording_auc_cropped": 0.6814814814814815,
+   "corroborates": true
+  }
+ },
+ "V4": {
+  "1.0": {
+   "event": "raise",
+   "amplitude": 1.0,
+   "informative": true,
+   "reference_auc": {
+    "D1": 0.8218282548476454,
+    "D2": 0.5031024930747923,
+    "D3": 0.6188919667590028
+   },
+   "reference_top1": {
+    "D1": 0.8,
+    "D2": 0.47368421052631576,
+    "D3": 0.5578947368421052
+   },
+   "configs": {
+    "anneal-M2": {
+     "timing": "P",
+     "auc_mean": 0.8160664819944599,
+     "auc_folds": [
+      0.9916897506925207,
+      0.4986149584487535,
+      0.8310249307479224,
+      0.9113573407202216,
+      0.847645429362881
+     ],
+     "detection": false,
+     "fold_dependent": true,
+     "top1": 0.8105263157894737,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 9.576848535407965e-10,
+     "localization": true,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 12,
+      "b_only": 11,
+      "p": 1.0
+     },
+     "vs_motion_gate": {
+      "a_only": 42,
+      "b_only": 6,
+      "p": 1.0087482138487759e-07
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 5,
+      "b_only": 10,
+      "p": 0.30175781249999994
+     },
+     "beats_frames": false
+    },
+    "blocks-M2": {
+     "timing": "R",
+     "auc_mean": 0.7451523545706371,
+     "auc_folds": [
+      0.997229916897507,
+      0.49307479224376727,
+      0.7977839335180056,
+      0.9141274238227146,
+      0.5235457063711911
+     ],
+     "detection": false,
+     "fold_dependent": true,
+     "top1": 0.631578947368421,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 0.011009294186961662,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 11,
+      "b_only": 27,
+      "p": 0.013852965261321515
+     },
+     "vs_motion_gate": {
+      "a_only": 33,
+      "b_only": 14,
+      "p": 0.007942726509483574
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 5,
+      "b_only": 27,
+      "p": 0.00011307420209050179
+     },
+     "beats_frames": false
+    },
+    "blocks-M8": {
+     "timing": "R",
+     "auc_mean": 0.8653739612188367,
+     "auc_folds": [
+      1.0,
+      0.775623268698061,
+      0.8199445983379502,
+      0.9833795013850415,
+      0.7479224376731303
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.8631578947368421,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 3.112336736680241e-13,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 12,
+      "b_only": 6,
+      "p": 0.237884521484375
+     },
+     "vs_motion_gate": {
+      "a_only": 44,
+      "b_only": 3,
+      "p": 2.4647306418046355e-10
+     },
+     "adds_over_heuristics": false
+    },
+    "frames-K30": {
+     "timing": "R",
+     "auc_mean": 0.9036011080332409,
+     "auc_folds": [
+      0.9944598337950139,
+      0.8005540166204985,
+      0.9418282548476453,
+      0.9362880886426592,
+      0.8448753462603877
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.8631578947368421,
+     "top1_chance": 0.27480311131506,
+     "top1_sign_p": 1.0415027802504138e-13,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 13,
+      "b_only": 7,
+      "p": 0.26317596435546875
+     },
+     "vs_motion_gate": {
+      "a_only": 48,
+      "b_only": 7,
+      "p": 1.3087586125948292e-08
+     },
+     "adds_over_heuristics": false
+    },
+    "gumbel-M2": {
+     "timing": "P",
+     "auc_mean": 0.7983379501385042,
+     "auc_folds": [
+      0.9861495844875345,
+      0.5429362880886426,
+      0.8116343490304709,
+      0.8254847645429363,
+      0.8254847645429363
+     ],
+     "detection": false,
+     "fold_dependent": true,
+     "top1": 0.7263157894736842,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.2629094608595288e-05,
+     "localization": true,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 11,
+      "b_only": 18,
+      "p": 0.26493089646101
+     },
+     "vs_motion_gate": {
+      "a_only": 35,
+      "b_only": 7,
+      "p": 1.5097200957825409e-05
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 4,
+      "b_only": 17,
+      "p": 0.007197380065917969
+     },
+     "beats_frames": false
+    },
+    "motion-M2": {
+     "timing": "P",
+     "auc_mean": 0.7833795013850414,
+     "auc_folds": [
+      0.85595567867036,
+      0.7562326869806093,
+      0.6869806094182827,
+      0.7728531855955678,
+      0.8448753462603877
+     ],
+     "detection": false,
+     "fold_dependent": true,
+     "top1": 0.43157894736842106,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 0.9517174013511477,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 6,
+      "b_only": 41,
+      "p": 1.7716986633331544e-07
+     },
+     "adds_over_heuristics": false
+    },
+    "nogate": {
+     "timing": "R",
+     "auc_mean": 0.8360110803324101,
+     "auc_folds": [
+      0.9833795013850415,
+      0.7590027700831025,
+      0.7950138504155125,
+      0.9141274238227147,
+      0.7285318559556787
+     ],
+     "detection": true,
+     "fold_dependent": false
+    },
+    "perturbed-M2": {
+     "timing": "P",
+     "auc_mean": 0.7213296398891966,
+     "auc_folds": [
+      0.9889196675900277,
+      0.5180055401662049,
+      0.8421052631578947,
+      0.3961218836565097,
+      0.8614958448753463
+     ],
+     "detection": false,
+     "fold_dependent": true,
+     "top1": 0.5894736842105263,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 0.07308851432357631,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 10,
+      "b_only": 30,
+      "p": 0.0022214337732293643
+     },
+     "vs_motion_gate": {
+      "a_only": 28,
+      "b_only": 13,
+      "p": 0.027533155829587486
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 5,
+      "b_only": 31,
+      "p": 1.2913485988974571e-05
+     },
+     "beats_frames": false
+    }
+   }
+  },
+  "1.5": {
+   "event": "raise",
+   "amplitude": 1.5,
+   "informative": true,
+   "reference_auc": {
+    "D1": 0.87601108033241,
+    "D2": 0.5070914127423822,
+    "D3": 0.6749030470914128
+   },
+   "reference_top1": {
+    "D1": 0.8842105263157894,
+    "D2": 0.4842105263157895,
+    "D3": 0.6
+   },
+   "configs": {
+    "anneal-M2": {
+     "timing": "P",
+     "auc_mean": 0.8980609418282548,
+     "auc_folds": [
+      1.0,
+      0.8698060941828254,
+      0.8476454293628809,
+      0.9085872576177285,
+      0.8642659279778393
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.8947368421052632,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 9.242561115423584e-16,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 9,
+      "b_only": 8,
+      "p": 1.0
+     },
+     "vs_motion_gate": {
+      "a_only": 46,
+      "b_only": 4,
+      "p": 4.461782054931973e-10
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 2,
+      "b_only": 3,
+      "p": 1.0
+     },
+     "beats_frames": false
+    },
+    "blocks-M2": {
+     "timing": "R",
+     "auc_mean": 0.8293628808864266,
+     "auc_folds": [
+      1.0,
+      0.5013850415512465,
+      0.8753462603878116,
+      0.9113573407202216,
+      0.8587257617728531
+     ],
+     "detection": false,
+     "fold_dependent": true,
+     "top1": 0.7894736842105263,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.4600724384857279e-08,
+     "localization": true,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 8,
+      "b_only": 17,
+      "p": 0.10775214433670044
+     },
+     "vs_motion_gate": {
+      "a_only": 38,
+      "b_only": 6,
+      "p": 9.430375484953402e-07
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 2,
+      "b_only": 13,
+      "p": 0.00738525390625
+     },
+     "beats_frames": false
+    },
+    "blocks-M8": {
+     "timing": "R",
+     "auc_mean": 0.8869806094182824,
+     "auc_folds": [
+      1.0,
+      0.8670360110803323,
+      0.8337950138504154,
+      0.9168975069252078,
+      0.817174515235457
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9157894736842105,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.1322472292532247e-17,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 9,
+      "b_only": 6,
+      "p": 0.6072387695312499
+     },
+     "vs_motion_gate": {
+      "a_only": 47,
+      "b_only": 3,
+      "p": 3.708322537931963e-11
+     },
+     "adds_over_heuristics": false
+    },
+    "frames-K30": {
+     "timing": "R",
+     "auc_mean": 0.8903047091412741,
+     "auc_folds": [
+      0.9944598337950139,
+      0.8421052631578947,
+      0.8504155124653738,
+      0.9390581717451524,
+      0.8254847645429363
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9052631578947369,
+     "top1_chance": 0.27480311131506,
+     "top1_sign_p": 3.3031782862928615e-17,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 10,
+      "b_only": 8,
+      "p": 0.8145294189453125
+     },
+     "vs_motion_gate": {
+      "a_only": 47,
+      "b_only": 4,
+      "p": 2.4163071543625847e-10
+     },
+     "adds_over_heuristics": false
+    },
+    "gumbel-M2": {
+     "timing": "P",
+     "auc_mean": 0.9013850415512465,
+     "auc_folds": [
+      1.0,
+      0.8282548476454293,
+      0.8753462603878116,
+      0.9362880886426592,
+      0.8670360110803323
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9052631578947369,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.0844307221272652e-16,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 9,
+      "b_only": 7,
+      "p": 0.803619384765625
+     },
+     "vs_motion_gate": {
+      "a_only": 47,
+      "b_only": 4,
+      "p": 2.4163071543625847e-10
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 3,
+      "b_only": 3,
+      "p": 1.0
+     },
+     "beats_frames": false
+    },
+    "motion-M2": {
+     "timing": "P",
+     "auc_mean": 0.8537396121883656,
+     "auc_folds": [
+      0.9695290858725761,
+      0.7950138504155123,
+      0.8337950138504155,
+      0.8365650969529086,
+      0.8337950138504155
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.45263157894736844,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 0.8934234995155462,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 5,
+      "b_only": 46,
+      "p": 2.3280151140170346e-09
+     },
+     "adds_over_heuristics": false
+    },
+    "nogate": {
+     "timing": "R",
+     "auc_mean": 0.8808864265927978,
+     "auc_folds": [
+      1.0,
+      0.8448753462603877,
+      0.8365650969529086,
+      0.9556786703601108,
+      0.7673130193905817
+     ],
+     "detection": true,
+     "fold_dependent": false
+    },
+    "perturbed-M2": {
+     "timing": "P",
+     "auc_mean": 0.9102493074792244,
+     "auc_folds": [
+      1.0,
+      0.8864265927977839,
+      0.925207756232687,
+      0.8670360110803325,
+      0.8725761772853187
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9263157894736842,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.039114653923442e-18,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 10,
+      "b_only": 6,
+      "p": 0.454498291015625
+     },
+     "vs_motion_gate": {
+      "a_only": 49,
+      "b_only": 4,
+      "p": 7.053979622639872e-11
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 3,
+      "b_only": 1,
+      "p": 0.625
+     },
+     "beats_frames": false
+    }
+   }
+  },
+  "2.0": {
+   "event": "raise",
+   "amplitude": 2.0,
+   "informative": true,
+   "reference_auc": {
+    "D1": 0.9264265927977838,
+    "D2": 0.508808864265928,
+    "D3": 0.7273130193905817
+   },
+   "reference_top1": {
+    "D1": 0.9263157894736842,
+    "D2": 0.5052631578947369,
+    "D3": 0.5789473684210527
+   },
+   "configs": {
+    "anneal-M2": {
+     "timing": "P",
+     "auc_mean": 0.923545706371191,
+     "auc_folds": [
+      1.0,
+      0.8781163434903047,
+      0.8421052631578947,
+      0.9556786703601108,
+      0.9418282548476454
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9473684210526315,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 5.556120879627186e-21,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 6,
+      "b_only": 4,
+      "p": 0.75390625
+     },
+     "vs_motion_gate": {
+      "a_only": 47,
+      "b_only": 3,
+      "p": 3.708322537931963e-11
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 2,
+      "b_only": 1,
+      "p": 1.0
+     },
+     "beats_frames": false
+    },
+    "blocks-M2": {
+     "timing": "R",
+     "auc_mean": 0.9246537396121883,
+     "auc_folds": [
+      1.0,
+      0.8725761772853186,
+      0.9085872576177285,
+      0.925207756232687,
+      0.9168975069252078
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9263157894736842,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.039114653923442e-18,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 6,
+      "b_only": 6,
+      "p": 1.0
+     },
+     "vs_motion_gate": {
+      "a_only": 46,
+      "b_only": 4,
+      "p": 4.461782054931973e-10
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 2,
+      "b_only": 3,
+      "p": 1.0
+     },
+     "beats_frames": false
+    },
+    "blocks-M8": {
+     "timing": "R",
+     "auc_mean": 0.9063711911357342,
+     "auc_folds": [
+      1.0,
+      0.8393351800554016,
+      0.853185595567867,
+      0.9362880886426592,
+      0.9030470914127424
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9263157894736842,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.039114653923442e-18,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 6,
+      "b_only": 6,
+      "p": 1.0
+     },
+     "vs_motion_gate": {
+      "a_only": 45,
+      "b_only": 3,
+      "p": 1.312585595769633e-10
+     },
+     "adds_over_heuristics": false
+    },
+    "frames-K30": {
+     "timing": "R",
+     "auc_mean": 0.9362880886426593,
+     "auc_folds": [
+      1.0,
+      0.8587257617728532,
+      0.9224376731301939,
+      0.9612188365650969,
+      0.9390581717451524
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9368421052631579,
+     "top1_chance": 0.27480311131506,
+     "top1_sign_p": 2.3485962452618894e-20,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 6,
+      "b_only": 5,
+      "p": 1.0
+     },
+     "vs_motion_gate": {
+      "a_only": 46,
+      "b_only": 3,
+      "p": 6.981082378842984e-11
+     },
+     "adds_over_heuristics": false
+    },
+    "gumbel-M2": {
+     "timing": "P",
+     "auc_mean": 0.9229916897506925,
+     "auc_folds": [
+      1.0,
+      0.894736842105263,
+      0.925207756232687,
+      0.8753462603878116,
+      0.9196675900277008
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9263157894736842,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.039114653923442e-18,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 6,
+      "b_only": 6,
+      "p": 1.0
+     },
+     "vs_motion_gate": {
+      "a_only": 45,
+      "b_only": 3,
+      "p": 1.312585595769633e-10
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 2,
+      "b_only": 3,
+      "p": 1.0
+     },
+     "beats_frames": false
+    },
+    "motion-M2": {
+     "timing": "P",
+     "auc_mean": 0.9069252077562326,
+     "auc_folds": [
+      1.0,
+      0.9113573407202216,
+      0.8642659279778393,
+      0.8753462603878116,
+      0.8836565096952909
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.4842105263157895,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 0.7329700691326969,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 3,
+      "b_only": 45,
+      "p": 1.312585595769633e-10
+     },
+     "adds_over_heuristics": false
+    },
+    "nogate": {
+     "timing": "R",
+     "auc_mean": 0.8997229916897507,
+     "auc_folds": [
+      1.0,
+      0.8421052631578947,
+      0.9002770083102493,
+      0.9473684210526315,
+      0.8088642659279779
+     ],
+     "detection": true,
+     "fold_dependent": false
+    },
+    "perturbed-M2": {
+     "timing": "P",
+     "auc_mean": 0.9307479224376731,
+     "auc_folds": [
+      1.0,
+      0.8919667590027701,
+      0.9335180055401662,
+      0.9141274238227147,
+      0.9141274238227146
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9263157894736842,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.039114653923442e-18,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 6,
+      "b_only": 6,
+      "p": 1.0
+     },
+     "vs_motion_gate": {
+      "a_only": 46,
+      "b_only": 4,
+      "p": 4.461782054931973e-10
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 2,
+      "b_only": 3,
+      "p": 1.0
+     },
+     "beats_frames": false
+    }
+   }
+  },
+  "3.0": {
+   "event": "raise",
+   "amplitude": 3.0,
+   "informative": false,
+   "reference_auc": {
+    "D1": 0.9683102493074792,
+    "D2": 0.5165096952908588,
+    "D3": 0.8331855955678671
+   },
+   "reference_top1": {
+    "D1": 0.9789473684210527,
+    "D2": 0.5157894736842106,
+    "D3": 0.6421052631578947
+   },
+   "configs": {
+    "anneal-M2": {
+     "timing": "P",
+     "auc_mean": 0.9634349030470913,
+     "auc_folds": [
+      1.0,
+      0.9806094182825484,
+      0.9916897506925207,
+      0.8614958448753463,
+      0.9833795013850415
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.968421052631579,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.3544476685380618e-23,
+     "localization": true,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 1,
+      "b_only": 2,
+      "p": 1.0
+     },
+     "vs_motion_gate": {
+      "a_only": 46,
+      "b_only": 2,
+      "p": 8.363087999896379e-12
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 3,
+      "b_only": 1,
+      "p": 0.625
+     },
+     "beats_frames": false
+    },
+    "blocks-M2": {
+     "timing": "R",
+     "auc_mean": 0.9340720221606649,
+     "auc_folds": [
+      1.0,
+      0.9030470914127423,
+      0.9113573407202216,
+      0.9002770083102493,
+      0.9556786703601108
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9578947368421052,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 3.083623704588809e-22,
+     "localization": true,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 1,
+      "b_only": 3,
+      "p": 0.625
+     },
+     "vs_motion_gate": {
+      "a_only": 45,
+      "b_only": 2,
+      "p": 1.6044054973463062e-11
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 2,
+      "b_only": 1,
+      "p": 1.0
+     },
+     "beats_frames": false
+    },
+    "blocks-M8": {
+     "timing": "R",
+     "auc_mean": 0.9290858725761773,
+     "auc_folds": [
+      1.0,
+      0.8947368421052632,
+      0.9667590027700832,
+      0.8421052631578947,
+      0.9418282548476454
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9578947368421052,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 3.083623704588809e-22,
+     "localization": true,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 1,
+      "b_only": 3,
+      "p": 0.625
+     },
+     "vs_motion_gate": {
+      "a_only": 45,
+      "b_only": 2,
+      "p": 1.6044054973463062e-11
+     },
+     "adds_over_heuristics": false
+    },
+    "frames-K30": {
+     "timing": "R",
+     "auc_mean": 0.9506925207756233,
+     "auc_folds": [
+      1.0,
+      0.9224376731301939,
+      0.9778393351800554,
+      0.9030470914127423,
+      0.9501385041551246
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9473684210526315,
+     "top1_chance": 0.27480311131506,
+     "top1_sign_p": 1.546597524307582e-21,
+     "localization": true,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 1,
+      "b_only": 4,
+      "p": 0.375
+     },
+     "vs_motion_gate": {
+      "a_only": 44,
+      "b_only": 2,
+      "p": 3.0752289603697136e-11
+     },
+     "adds_over_heuristics": false
+    },
+    "gumbel-M2": {
+     "timing": "P",
+     "auc_mean": 0.9617728531855956,
+     "auc_folds": [
+      1.0,
+      0.9889196675900277,
+      0.9778393351800554,
+      0.9058171745152354,
+      0.9362880886426592
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9578947368421052,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 3.083623704588809e-22,
+     "localization": true,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 1,
+      "b_only": 3,
+      "p": 0.625
+     },
+     "vs_motion_gate": {
+      "a_only": 45,
+      "b_only": 2,
+      "p": 1.6044054973463062e-11
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 2,
+      "b_only": 1,
+      "p": 1.0
+     },
+     "beats_frames": false
+    },
+    "motion-M2": {
+     "timing": "P",
+     "auc_mean": 0.916343490304709,
+     "auc_folds": [
+      1.0,
+      0.8670360110803323,
+      0.9362880886426593,
+      0.8670360110803325,
+      0.9113573407202216
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.5052631578947369,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 0.582076932684257,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 1,
+      "b_only": 46,
+      "p": 6.821210263296962e-13
+     },
+     "adds_over_heuristics": false
+    },
+    "nogate": {
+     "timing": "R",
+     "auc_mean": 0.9285318559556786,
+     "auc_folds": [
+      1.0,
+      0.853185595567867,
+      0.8975069252077562,
+      0.9418282548476453,
+      0.9501385041551246
+     ],
+     "detection": true,
+     "fold_dependent": false
+    },
+    "perturbed-M2": {
+     "timing": "P",
+     "auc_mean": 0.9484764542936288,
+     "auc_folds": [
+      1.0,
+      0.9418282548476453,
+      0.9806094182825486,
+      0.8947368421052632,
+      0.925207756232687
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.968421052631579,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.3544476685380618e-23,
+     "localization": true,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 1,
+      "b_only": 2,
+      "p": 1.0
+     },
+     "vs_motion_gate": {
+      "a_only": 45,
+      "b_only": 1,
+      "p": 1.3358203432289883e-12
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 2,
+      "b_only": 0,
+      "p": 0.5
+     },
+     "beats_frames": false
+    }
+   }
+  },
+  "flap0.6": {
+   "event": "flap",
+   "amplitude": 0.6,
+   "informative": true,
+   "reference_auc": {
+    "D1": 0.5284764542936289,
+    "D2": 0.5106371191135735,
+    "D3": 0.736398891966759
+   },
+   "reference_top1": {
+    "D1": 0.3684210526315789,
+    "D2": 0.5052631578947369,
+    "D3": 0.8
+   },
+   "configs": {
+    "anneal-M2": {
+     "timing": "P",
+     "auc_mean": 0.9401662049861497,
+     "auc_folds": [
+      1.0,
+      0.9002770083102493,
+      0.9030470914127423,
+      0.997229916897507,
+      0.9002770083102493
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9052631578947369,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.0844307221272652e-16,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 17,
+      "b_only": 7,
+      "p": 0.06391465663909912
+     },
+     "vs_motion_gate": {
+      "a_only": 43,
+      "b_only": 3,
+      "p": 4.6219383875722997e-10
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 1,
+      "b_only": 3,
+      "p": 0.625
+     },
+     "beats_frames": false
+    },
+    "blocks-M2": {
+     "timing": "P",
+     "auc_mean": 0.9318559556786704,
+     "auc_folds": [
+      1.0,
+      0.85595567867036,
+      0.9196675900277008,
+      0.997229916897507,
+      0.886426592797784
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.7684210526315789,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.7412388358003398e-07,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 14,
+      "b_only": 17,
+      "p": 0.720100131817162
+     },
+     "vs_motion_gate": {
+      "a_only": 39,
+      "b_only": 12,
+      "p": 0.0001980394513374506
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 2,
+      "b_only": 17,
+      "p": 0.000728607177734375
+     },
+     "beats_frames": false
+    },
+    "frames-K30": {
+     "timing": "P",
+     "auc_mean": 0.9318559556786704,
+     "auc_folds": [
+      1.0,
+      0.89196675900277,
+      0.9556786703601108,
+      0.9335180055401662,
+      0.8781163434903047
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9263157894736842,
+     "top1_chance": 0.27480311131506,
+     "top1_sign_p": 3.0242931654114843e-19,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 17,
+      "b_only": 5,
+      "p": 0.01690053939819336
+     },
+     "vs_motion_gate": {
+      "a_only": 44,
+      "b_only": 2,
+      "p": 3.0752289603697136e-11
+     },
+     "adds_over_heuristics": true
+    },
+    "motion-M2": {
+     "timing": "P",
+     "auc_mean": 0.9185595567867036,
+     "auc_folds": [
+      1.0,
+      0.8836565096952909,
+      0.9058171745152354,
+      0.9196675900277008,
+      0.8836565096952909
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.4842105263157895,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 0.7329700691326969,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 4,
+      "b_only": 34,
+      "p": 6.038535502739251e-07
+     },
+     "adds_over_heuristics": false
+    },
+    "nogate": {
+     "timing": "P",
+     "auc_mean": 0.8952908587257618,
+     "auc_folds": [
+      1.0,
+      0.7396121883656509,
+      0.9473684210526316,
+      0.9501385041551246,
+      0.8393351800554016
+     ],
+     "detection": true,
+     "fold_dependent": false
+    }
+   }
+  },
+  "flap1.0": {
+   "event": "flap",
+   "amplitude": 1.0,
+   "informative": true,
+   "reference_auc": {
+    "D1": 0.5462603878116343,
+    "D2": 0.5211634349030471,
+    "D3": 0.880443213296399
+   },
+   "reference_top1": {
+    "D1": 0.42105263157894735,
+    "D2": 0.5473684210526316,
+    "D3": 0.9052631578947369
+   },
+   "configs": {
+    "anneal-M2": {
+     "timing": "P",
+     "auc_mean": 0.9534626038781162,
+     "auc_folds": [
+      1.0,
+      0.8836565096952909,
+      0.9806094182825484,
+      0.9667590027700832,
+      0.9362880886426592
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9263157894736842,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 1.039114653923442e-18,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 8,
+      "b_only": 6,
+      "p": 0.79052734375
+     },
+     "vs_motion_gate": {
+      "a_only": 39,
+      "b_only": 2,
+      "p": 7.839844329282641e-10
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 2,
+      "b_only": 2,
+      "p": 1.0
+     },
+     "beats_frames": false
+    },
+    "blocks-M2": {
+     "timing": "P",
+     "auc_mean": 0.9445983379501385,
+     "auc_folds": [
+      1.0,
+      0.853185595567867,
+      0.9473684210526316,
+      0.997229916897507,
+      0.925207756232687
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.8947368421052632,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 9.242561115423584e-16,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 8,
+      "b_only": 9,
+      "p": 1.0
+     },
+     "vs_motion_gate": {
+      "a_only": 38,
+      "b_only": 4,
+      "p": 5.65314621780999e-08
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 1,
+      "b_only": 4,
+      "p": 0.375
+     },
+     "beats_frames": false
+    },
+    "frames-K30": {
+     "timing": "P",
+     "auc_mean": 0.9185595567867034,
+     "auc_folds": [
+      1.0,
+      0.853185595567867,
+      0.9113573407202216,
+      0.9529085872576177,
+      0.8753462603878116
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.9263157894736842,
+     "top1_chance": 0.27480311131506,
+     "top1_sign_p": 3.0242931654114843e-19,
+     "localization": true,
+     "passes": true,
+     "vs_best_detector": {
+      "a_only": 8,
+      "b_only": 6,
+      "p": 0.79052734375
+     },
+     "vs_motion_gate": {
+      "a_only": 39,
+      "b_only": 2,
+      "p": 7.839844329282641e-10
+     },
+     "adds_over_heuristics": false
+    },
+    "motion-M2": {
+     "timing": "P",
+     "auc_mean": 0.9207756232686981,
+     "auc_folds": [
+      1.0,
+      0.8919667590027701,
+      0.8864265927977839,
+      0.9445983379501385,
+      0.8808864265927977
+     ],
+     "detection": true,
+     "fold_dependent": false,
+     "top1": 0.5368421052631579,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 0.33926600682666264,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 2,
+      "b_only": 37,
+      "p": 2.841261448338628e-09
+     },
+     "adds_over_heuristics": false
+    },
+    "nogate": {
+     "timing": "P",
+     "auc_mean": 0.9235457063711913,
+     "auc_folds": [
+      1.0,
+      0.8310249307479225,
+      0.9141274238227147,
+      0.9861495844875346,
+      0.8864265927977839
+     ],
+     "detection": true,
+     "fold_dependent": false
+    }
+   }
+  },
+  "freeze1.0": {
+   "event": "freeze",
+   "amplitude": 1.0,
+   "informative": false,
+   "reference_auc": {
+    "D1": 0.5090858725761773,
+    "D2": 0.4986703601108033,
+    "D3": 0.4970637119113574
+   },
+   "reference_top1": {
+    "D1": 0.28421052631578947,
+    "D2": 0.42105263157894735,
+    "D3": 0.4
+   },
+   "configs": {
+    "anneal-M2": {
+     "timing": "P",
+     "auc_mean": 0.5002770083102492,
+     "auc_folds": [
+      0.5180055401662049,
+      0.4792243767313019,
+      0.5069252077562327,
+      0.49307479224376727,
+      0.5041551246537396
+     ],
+     "detection": false,
+     "fold_dependent": false,
+     "top1": 0.3368421052631579,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 0.9998171021615186,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 23,
+      "b_only": 18,
+      "p": 0.5327092552361137
+     },
+     "vs_motion_gate": {
+      "a_only": 16,
+      "b_only": 21,
+      "p": 0.5113757815852296
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 16,
+      "b_only": 12,
+      "p": 0.5715881884098053
+     },
+     "beats_frames": false
+    },
+    "blocks-M2": {
+     "timing": "P",
+     "auc_mean": 0.5119113573407202,
+     "auc_folds": [
+      0.4792243767313019,
+      0.5235457063711911,
+      0.5124653739612188,
+      0.5207756232686981,
+      0.5235457063711911
+     ],
+     "detection": false,
+     "fold_dependent": false,
+     "top1": 0.3684210526315789,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 0.9982690732542788,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 27,
+      "b_only": 19,
+      "p": 0.3019956131896606
+     },
+     "vs_motion_gate": {
+      "a_only": 14,
+      "b_only": 16,
+      "p": 0.8555355519056321
+     },
+     "adds_over_heuristics": false,
+     "vs_frames": {
+      "a_only": 18,
+      "b_only": 11,
+      "p": 0.26493089646101
+     },
+     "beats_frames": false
+    },
+    "frames-K30": {
+     "timing": "P",
+     "auc_mean": 0.5052631578947369,
+     "auc_folds": [
+      0.46537396121883656,
+      0.5457063711911357,
+      0.5124653739612188,
+      0.5041551246537396,
+      0.4986149584487534
+     ],
+     "detection": false,
+     "fold_dependent": false,
+     "top1": 0.29473684210526313,
+     "top1_chance": 0.27480311131506,
+     "top1_sign_p": 0.9999844296917044,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 21,
+      "b_only": 20,
+      "p": 1.0
+     },
+     "vs_motion_gate": {
+      "a_only": 10,
+      "b_only": 19,
+      "p": 0.13604594767093658
+     },
+     "adds_over_heuristics": false
+    },
+    "motion-M2": {
+     "timing": "P",
+     "auc_mean": 0.5213296398891967,
+     "auc_folds": [
+      0.5124653739612188,
+      0.5152354570637119,
+      0.48199445983379496,
+      0.5650969529085872,
+      0.5318559556786704
+     ],
+     "detection": false,
+     "fold_dependent": false,
+     "top1": 0.3894736842105263,
+     "top1_chance": 0.37177016793971346,
+     "top1_sign_p": 0.9937996986010312,
+     "localization": false,
+     "passes": false,
+     "vs_best_detector": {
+      "a_only": 25,
+      "b_only": 15,
+      "p": 0.1538599441628321
+     },
+     "adds_over_heuristics": false
+    },
+    "nogate": {
+     "timing": "P",
+     "auc_mean": 0.5130193905817174,
+     "auc_folds": [
+      0.5318559556786704,
+      0.5152354570637119,
+      0.5124653739612188,
+      0.5041551246537397,
+      0.5013850415512465
+     ],
+     "detection": false,
+     "fold_dependent": false
+    }
+   }
+  },
+  "chosen_remedy": "anneal-M2"
+ },
+ "V5": {
+  "PACE": {
+   "chance_criterion": {
+    "timing": "R",
+    "jaccard": 0.677740663011981,
+    "chance": 0.5382624694950611,
+    "passes": true
+   },
+   "mostly_trivial": {
+    "timing": "R",
+    "n_trivial": 52,
+    "n": 95,
+    "flag": true
+   },
+   "learned": {
+    "timing": "P",
+    "trained": 0.677740663011981,
+    "random_init": 0.5417250707948383,
+    "excess": 0.1360155922171426,
+    "p": 2.5378435902655778e-08,
+    "passes": true
+   },
+   "motion_equivalent": {
+    "timing": "P",
+    "trained_vs_motion": 0.4992439659106326,
+    "trained": 0.677740663011981,
+    "flag": false
+   }
+  },
+  "PACE-M4": {
+   "chance_criterion": {
+    "timing": "R",
+    "jaccard": 0.49820105820105826,
+    "chance": 0.3480302954753787,
+    "passes": true
+   },
+   "mostly_trivial": {
+    "timing": "R",
+    "n_trivial": 5,
+    "n": 95,
+    "flag": false
+   },
+   "learned": {
+    "timing": "P",
+    "trained": 0.49820105820105826,
+    "random_init": 0.3448295120517343,
+    "excess": 0.15337154614932394,
+    "p": 9.606155635070649e-14,
+    "passes": true
+   },
+   "motion_equivalent": {
+    "timing": "P",
+    "trained_vs_motion": 0.2939917695473251,
+    "trained": 0.49820105820105826,
+    "flag": false
+   }
+  },
+  "PACE-frames": {
+   "chance_criterion": {
+    "timing": "R",
+    "jaccard": 0.6605989283532502,
+    "chance": 0.5857632947713376,
+    "passes": true
+   },
+   "mostly_trivial": {
+    "timing": "R",
+    "n_trivial": 56,
+    "n": 95,
+    "flag": true
+   },
+   "learned": {
+    "timing": "P",
+    "trained": 0.6605989283532502,
+    "random_init": 0.585802743552666,
+    "excess": 0.07479618480058423,
+    "p": 1.1168594937771559e-09,
+    "passes": true
+   },
+   "motion_equivalent": {
+    "timing": "P",
+    "trained_vs_motion": 0.5551156380104089,
+    "trained": 0.6605989283532502,
+    "flag": false
+   }
+  }
+ },
+ "V6": {
+  "timing": "R",
+  "planted": {
+   "1.0": {
+    "trained_ratio": 1.7356327060573542,
+    "random_ratio": 0.9618867052847304,
+    "passes": true
+   },
+   "1.5": {
+    "trained_ratio": 2.314829911238245,
+    "random_ratio": 0.9675175258057416,
+    "passes": true
+   },
+   "2.0": {
+    "trained_ratio": 2.7046050837039135,
+    "random_ratio": 0.9374870924829234,
+    "passes": true
+   },
+   "3.0": {
+    "trained_ratio": 2.7958131609895593,
+    "random_ratio": 0.9401844168660304,
+    "passes": true
+   },
+   "flap0.6": {
+    "trained_ratio": 2.2471114851735905,
+    "random_ratio": 1.1302805515956889,
+    "passes": true
+   },
+   "flap1.0": {
+    "trained_ratio": 2.3994846025992724,
+    "random_ratio": 1.1035729370417775,
+    "passes": true
+   },
+   "freeze1.0": {
+    "trained_ratio": 0.9793060680670518,
+    "random_ratio": 0.9834751993807583,
+    "passes": false
+   }
+  },
+  "real": {
+   "max_share_difference": 0.05401444329572702,
+   "profile_rho": 0.7357174688057041,
+   "passes": false
+  }
+ }
+}

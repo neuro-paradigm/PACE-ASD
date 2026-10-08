@@ -1,5 +1,5 @@
 """
-PACE-ASD — Preprocessing (video -> landmark arrays)
+PACE — Preprocessing (video -> landmark arrays)
 
 For every video:
   1. MediaPipe Pose on every frame -> raw keypoints (T_video, 33, 2): image
@@ -213,7 +213,7 @@ def _work(entry):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="PACE-ASD preprocessing")
+    ap = argparse.ArgumentParser(description="PACE preprocessing")
     ap.add_argument("--raw_dir", default="data/raw/Dataset")
     ap.add_argument("--out_dir", default="processed")
     ap.add_argument("--dry_run", action="store_true")

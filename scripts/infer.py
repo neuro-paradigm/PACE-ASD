@@ -1,5 +1,5 @@
 """
-PACE-ASD — command-line inference on one recording.
+PACE — command-line inference on one recording.
 
     python scripts/infer.py --input walk.mp4 --checkpoint models/release --output outputs/walk
     python scripts/infer.py --input_npy processed/features/asd_1.npy --checkpoint models/release
@@ -26,7 +26,7 @@ import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 
-from inference_api import PACEASDPredictor          # noqa: E402
+from inference_api import PACEPredictor          # noqa: E402
 from sequence import valid_mask                     # noqa: E402
 
 
@@ -79,7 +79,7 @@ def save_figures(out_dir, seq, vel, acc, vm, result):
 
 def run(a) -> dict:
     ck = a.checkpoint[0] if len(a.checkpoint) == 1 else a.checkpoint
-    pred = PACEASDPredictor(ck, a.config, device=a.device)
+    pred = PACEPredictor(ck, a.config, device=a.device)
     res = (pred.predict_video(a.input, attribution=not a.no_attribution) if a.input
            else pred.predict_npy(a.input_npy, attribution=not a.no_attribution))
     seq = res.pop("_prepared")
@@ -100,7 +100,7 @@ def run(a) -> dict:
 
 
 def main():
-    ap = argparse.ArgumentParser(description="PACE-ASD inference on one recording")
+    ap = argparse.ArgumentParser(description="PACE inference on one recording")
     src = ap.add_mutually_exclusive_group(required=True)
     src.add_argument("--input", help="video file (.mp4, .avi, ...)")
     src.add_argument("--input_npy", help="stored landmark array (300, 33, 2)")

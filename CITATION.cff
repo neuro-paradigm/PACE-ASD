@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "If you use PACE-ASD in your research, please cite it using the metadata below."
-title: "PACE-ASD: cross-validated modeling of whole-body movement in short videos"
+message: "If you use PACE in your research, please cite it using the metadata below."
+title: "PACE: cross-validated modeling of whole-body movement in short videos"
 version: "1.2.0"
 date-released: "2026-10-08"
 repository-code: "https://github.com/neuro-paradigm/PACE-ASD"
@@ -14,11 +14,6 @@ keywords:
   - MediaPipe
   - autism research
 authors:
-  - family-names: "Puppala"
-    given-names: "Sireesha"
-    email: "sireesha@neuroparadigm.in"
-    orcid: "https://orcid.org/0009-0008-3984-9665"
-    affiliation: "Department of Computer Science and Engineering, Keshav Memorial Institute of Technology (KMIT), Hyderabad, India; NeuroParadigm Pvt. Ltd., Hyderabad, India"
   - family-names: "Kasi"
     given-names: "Vamshi Mohan"
     email: "vamshimohan_kasi24@kmit.edu.in"
@@ -39,3 +34,8 @@ authors:
     email: "yuva.annabathula24@kmit.edu.in"
     orcid: "https://orcid.org/0009-0003-7401-1394"
     affiliation: "Department of Computer Science and Engineering (AI & ML), Keshav Memorial Institute of Technology (KMIT), Hyderabad, India; NeuroParadigm Pvt. Ltd., Hyderabad, India"
+  - family-names: "Puppala"
+    given-names: "Sireesha"
+    email: "sireesha@neuroparadigm.in"
+    orcid: "https://orcid.org/0009-0008-3984-9665"
+    affiliation: "Department of Computer Science and Engineering, Keshav Memorial Institute of Technology (KMIT), Hyderabad, India; NeuroParadigm Pvt. Ltd., Hyderabad, India"

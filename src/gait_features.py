@@ -1,5 +1,5 @@
 """
-PACE-ASD — hand-crafted gait and upper-body movement descriptors.
+PACE — hand-crafted gait and upper-body movement descriptors.
 
 Computed from a prepared sequence (mid-hip centred, shoulder-scaled image
 coordinates; x to the right, y downwards; the child walks towards the

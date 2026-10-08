@@ -1,5 +1,5 @@
 """
-PACE-ASD — repeated nested subject-level cross-validation.
+PACE — repeated nested subject-level cross-validation.
 
 Outer loop: R repetitions of stratified K-fold cross-validation over all
 children of the cohort (one clip per child). Inner loop: the outer-training

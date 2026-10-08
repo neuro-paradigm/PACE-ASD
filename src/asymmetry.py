@@ -1,5 +1,5 @@
 """
-PACE-ASD — Bilateral Movement Asymmetry Utility
+PACE — Bilateral Movement Asymmetry Utility
 
 Provides descriptive bilateral movement asymmetry measures derived from
 left/right MediaPipe Pose landmark pairs.

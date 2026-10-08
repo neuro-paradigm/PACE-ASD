@@ -1,5 +1,5 @@
 """
-PACE-ASD — Test fixtures and shared utilities.
+PACE — Test fixtures and shared utilities.
 All tests use synthetic data only. No dataset files required.
 """
 

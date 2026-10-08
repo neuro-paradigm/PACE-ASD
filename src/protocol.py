@@ -1,10 +1,10 @@
 """
-PACE-ASD — training and evaluation of one model under the nested protocol.
+PACE — training and evaluation of one model under the nested protocol.
 
 `fit_model` trains one network on the inner-training children of an outer
 fold, selects the epoch on the inner-validation children, fits the logistic
 recalibration on the same validation children and returns everything needed
-to score the outer-test children. The recipe is identical for PACE-ASD, its
+to score the outer-test children. The recipe is identical for PACE, its
 ablation arms and the comparison architectures:
 
   AdamW, cosine decay over at most `epochs`, batch size `batch_size`,
@@ -48,7 +48,7 @@ def _pace(gate=True, transformer=True, **patch):
 
 
 ARMS = {
-    # PACE-ASD and its ablations
+    # PACE and its ablations
     "PACE":            _pace(),
     "PACE-nogate":     _pace(gate=False),
     "PACE-frames":     _pace(**{"model.event_block_size": 1, "model.event_top_m": 120}),

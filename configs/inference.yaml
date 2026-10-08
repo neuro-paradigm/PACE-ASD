@@ -1,4 +1,4 @@
-# PACE-ASD Inference Configuration
+# PACE Inference Configuration
 # Used by scripts/infer.py
 
 model:
@@ -12,7 +12,7 @@ model:
 
 # Inference-only settings
 inference:
-  model_variant: A1          # A1 (Full PACE-ASD) | A2 (No-Gate) | A3 (Frame-Gate) | A4 (No-Transformer)
+  model_variant: A1          # A1 (Full PACE) | A2 (No-Gate) | A3 (Frame-Gate) | A4 (No-Transformer)
   device: auto               # auto | cpu | cuda
   threshold: 0.5             # Decision threshold for binary prediction
   calibrate: true            # Apply Platt calibration (requires scaler saved in checkpoint)

@@ -1,5 +1,5 @@
 """
-PACE-ASD — train the released reference ensemble on every child of the cohort.
+PACE — train the released reference ensemble on every child of the cohort.
 
 The children are split into three stratified folds; for each fold and each of
 five seeds, one model is trained on the other two folds, its epoch is selected

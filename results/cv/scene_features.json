@@ -1,0 +1,952 @@
+{
+ "asd_1": {
+  "luminance": 120.41590881347656,
+  "contrast": 52.01032257080078,
+  "saturation": 76.15556115711064,
+  "sharpness": 40.98522186279297,
+  "border_luminance": 121.03902435302734,
+  "face_sharpness": 3.3877265453338623,
+  "bitrate_kbps": 18650.388837209306,
+  "shoulder_px_rel_height": 0.06979044101174496
+ },
+ "asd_10": {
+  "luminance": 121.77271270751953,
+  "contrast": 57.14350509643555,
+  "saturation": 77.43624289480452,
+  "sharpness": 47.925148010253906,
+  "border_luminance": 133.43417358398438,
+  "face_sharpness": 3.969043254852295,
+  "bitrate_kbps": 14819.519999999999,
+  "shoulder_px_rel_height": 0.07825466290942168
+ },
+ "asd_11": {
+  "luminance": 139.7119903564453,
+  "contrast": 57.943267822265625,
+  "saturation": 68.79815662776491,
+  "sharpness": 50.451480865478516,
+  "border_luminance": 145.30596923828125,
+  "face_sharpness": 4.268365383148193,
+  "bitrate_kbps": 15944.66420168067,
+  "shoulder_px_rel_height": 0.056360254357551806
+ },
+ "asd_12": {
+  "luminance": 123.41104888916016,
+  "contrast": 52.97415542602539,
+  "saturation": 76.57508572048611,
+  "sharpness": 55.40642166137695,
+  "border_luminance": 130.8313751220703,
+  "face_sharpness": 5.856057643890381,
+  "bitrate_kbps": 16240.908108108108,
+  "shoulder_px_rel_height": 0.0759606081546568
+ },
+ "asd_13": {
+  "luminance": 133.0742950439453,
+  "contrast": 55.14882278442383,
+  "saturation": 75.60187575782628,
+  "sharpness": 74.56266021728516,
+  "border_luminance": 139.0812225341797,
+  "face_sharpness": 5.930673599243164,
+  "bitrate_kbps": 15640.263251231529,
+  "shoulder_px_rel_height": 0.07942067382468276
+ },
+ "asd_14": {
+  "luminance": 124.00444793701172,
+  "contrast": 54.36628723144531,
+  "saturation": 75.75088161222565,
+  "sharpness": 49.08573913574219,
+  "border_luminance": 131.0816650390625,
+  "face_sharpness": 3.6319262981414795,
+  "bitrate_kbps": 14647.809438202246,
+  "shoulder_px_rel_height": 0.07599200755033969
+ },
+ "asd_15": {
+  "luminance": 119.2513656616211,
+  "contrast": 50.80295944213867,
+  "saturation": 73.41909175668724,
+  "sharpness": 36.862483978271484,
+  "border_luminance": 121.77669525146484,
+  "face_sharpness": 3.9847264289855957,
+  "bitrate_kbps": 14239.582372881356,
+  "shoulder_px_rel_height": 0.06983568457027421
+ },
+ "asd_16": {
+  "luminance": 123.30322265625,
+  "contrast": 49.84584045410156,
+  "saturation": 74.01950145991162,
+  "sharpness": 50.559776306152344,
+  "border_luminance": 127.84302520751953,
+  "face_sharpness": 9.678983688354492,
+  "bitrate_kbps": 16329.416930232557,
+  "shoulder_px_rel_height": 0.06083569409592994
+ },
+ "asd_17": {
+  "luminance": 104.42555236816406,
+  "contrast": 62.83279800415039,
+  "saturation": 71.1856432720336,
+  "sharpness": 56.763694763183594,
+  "border_luminance": 112.10531616210938,
+  "face_sharpness": 4.1656494140625,
+  "bitrate_kbps": 22412.297142857144,
+  "shoulder_px_rel_height": 0.07771729479694026
+ },
+ "asd_18": {
+  "luminance": 123.3349380493164,
+  "contrast": 53.56117630004883,
+  "saturation": 62.90101564372154,
+  "sharpness": 119.15775299072266,
+  "border_luminance": 133.79461669921875,
+  "face_sharpness": 83.85240173339844,
+  "bitrate_kbps": 22207.48,
+  "shoulder_px_rel_height": 0.10320738535130138
+ },
+ "asd_19": {
+  "luminance": 133.98435974121094,
+  "contrast": 55.914459228515625,
+  "saturation": 63.93411232707781,
+  "sharpness": 37.36569595336914,
+  "border_luminance": 123.48426055908203,
+  "face_sharpness": 154.82662963867188,
+  "bitrate_kbps": 14361.034472727273,
+  "shoulder_px_rel_height": 0.06254690688169101
+ },
+ "asd_2": {
+  "luminance": 124.0571517944336,
+  "contrast": 56.82303237915039,
+  "saturation": 78.12588198302468,
+  "sharpness": 55.21858215332031,
+  "border_luminance": 133.26654052734375,
+  "face_sharpness": 3.942192792892456,
+  "bitrate_kbps": 17664.317387755105,
+  "shoulder_px_rel_height": 0.07852146229986472
+ },
+ "asd_20": {
+  "luminance": 134.5084228515625,
+  "contrast": 37.37675857543945,
+  "saturation": 80.47436413810992,
+  "sharpness": 46.73733901977539,
+  "border_luminance": 133.25547790527344,
+  "face_sharpness": 11.975345611572266,
+  "bitrate_kbps": 18308.842666666667,
+  "shoulder_px_rel_height": 0.05117367717221907
+ },
+ "asd_21": {
+  "luminance": 80.0834732055664,
+  "contrast": 26.33866310119629,
+  "saturation": 52.09707444341374,
+  "sharpness": 190.66078186035156,
+  "border_luminance": 87.14646911621094,
+  "face_sharpness": 3.201016664505005,
+  "bitrate_kbps": 24649.263157894737,
+  "shoulder_px_rel_height": 0.06773329967128583
+ },
+ "asd_22": {
+  "luminance": 123.73043060302734,
+  "contrast": 40.293853759765625,
+  "saturation": 78.75308922163363,
+  "sharpness": 91.2087173461914,
+  "border_luminance": 126.10213470458984,
+  "face_sharpness": 60.60195541381836,
+  "bitrate_kbps": 18176.545352112676,
+  "shoulder_px_rel_height": 0.0923374715571792
+ },
+ "asd_23": {
+  "luminance": 70.05543518066406,
+  "contrast": 37.36096954345703,
+  "saturation": 95.64317449029839,
+  "sharpness": 61.639244079589844,
+  "border_luminance": 77.80096435546875,
+  "face_sharpness": 19.494844436645508,
+  "bitrate_kbps": 5276.530632911392,
+  "shoulder_px_rel_height": 0.022219885120786695
+ },
+ "asd_24": {
+  "luminance": 101.0370864868164,
+  "contrast": 44.90304946899414,
+  "saturation": 60.095867961246256,
+  "sharpness": 22.054183959960938,
+  "border_luminance": 105.091552734375,
+  "face_sharpness": 66.6048812866211,
+  "bitrate_kbps": 6153.39025210084,
+  "shoulder_px_rel_height": 0.021455960895303317
+ },
+ "asd_25": {
+  "luminance": 85.91679382324219,
+  "contrast": 42.44453430175781,
+  "saturation": 64.87078362022261,
+  "sharpness": 28.086509704589844,
+  "border_luminance": 90.70795440673828,
+  "face_sharpness": 58.44272232055664,
+  "bitrate_kbps": 12944.969411764707,
+  "shoulder_px_rel_height": 0.1288362450673804
+ },
+ "asd_26": {
+  "luminance": 96.47076416015625,
+  "contrast": 60.49479675292969,
+  "saturation": 82.19885660089655,
+  "sharpness": 38.08510971069336,
+  "border_luminance": 111.04544830322266,
+  "face_sharpness": 55.277103424072266,
+  "bitrate_kbps": 14138.413846153846,
+  "shoulder_px_rel_height": 0.15970609731951374
+ },
+ "asd_27": {
+  "luminance": 105.89228057861328,
+  "contrast": 61.19924545288086,
+  "saturation": 87.63387588997615,
+  "sharpness": 11.23581314086914,
+  "border_luminance": 106.28984069824219,
+  "face_sharpness": 6.8565144538879395,
+  "bitrate_kbps": 16708.818199052133,
+  "shoulder_px_rel_height": 0.22458136555352443
+ },
+ "asd_28": {
+  "luminance": 117.0626220703125,
+  "contrast": 61.75846862792969,
+  "saturation": 65.88281866212276,
+  "sharpness": 36.5483283996582,
+  "border_luminance": 144.25962829589844,
+  "face_sharpness": 4.590243339538574,
+  "bitrate_kbps": 11953.782857142856,
+  "shoulder_px_rel_height": 0.08413873945175845
+ },
+ "asd_29": {
+  "luminance": 116.5462646484375,
+  "contrast": 59.55183792114258,
+  "saturation": 65.33035276813271,
+  "sharpness": 36.33464050292969,
+  "border_luminance": 129.42007446289062,
+  "face_sharpness": 6.168563365936279,
+  "bitrate_kbps": 13264.367999999999,
+  "shoulder_px_rel_height": 0.05320921850978378
+ },
+ "asd_3": {
+  "luminance": 129.50157165527344,
+  "contrast": 56.17369842529297,
+  "saturation": 72.7211489679784,
+  "sharpness": 36.368465423583984,
+  "border_luminance": 126.9059829711914,
+  "face_sharpness": 3.738654136657715,
+  "bitrate_kbps": 15418.507199999998,
+  "shoulder_px_rel_height": 0.07754196300213799
+ },
+ "asd_30": {
+  "luminance": 117.8633804321289,
+  "contrast": 58.850799560546875,
+  "saturation": 58.898812279541445,
+  "sharpness": 44.036537170410156,
+  "border_luminance": 109.95478057861328,
+  "face_sharpness": 3.4901022911071777,
+  "bitrate_kbps": 14078.269714285714,
+  "shoulder_px_rel_height": 0.0771735375340521
+ },
+ "asd_31": {
+  "luminance": 115.79369354248047,
+  "contrast": 61.602569580078125,
+  "saturation": 55.718412824717085,
+  "sharpness": 29.81769371032715,
+  "border_luminance": 114.20940399169922,
+  "face_sharpness": 4.305776119232178,
+  "bitrate_kbps": 14506.594649681529,
+  "shoulder_px_rel_height": 0.05342449201508544
+ },
+ "asd_32": {
+  "luminance": 117.6824722290039,
+  "contrast": 62.265594482421875,
+  "saturation": 67.51289105902778,
+  "sharpness": 27.2954158782959,
+  "border_luminance": 127.9389419555664,
+  "face_sharpness": 34.38312530517578,
+  "bitrate_kbps": 12727.23918367347,
+  "shoulder_px_rel_height": 0.06001027545581601
+ },
+ "asd_33": {
+  "luminance": 124.48202514648438,
+  "contrast": 61.92646408081055,
+  "saturation": 62.00754355506822,
+  "sharpness": 40.90480422973633,
+  "border_luminance": 131.82913208007812,
+  "face_sharpness": 3.118990659713745,
+  "bitrate_kbps": 12842.54608695652,
+  "shoulder_px_rel_height": 0.052482539634684945
+ },
+ "asd_34": {
+  "luminance": 102.91880798339844,
+  "contrast": 40.74139404296875,
+  "saturation": 90.3672874903028,
+  "sharpness": 45.680633544921875,
+  "border_luminance": 116.60768127441406,
+  "face_sharpness": 3.3040919303894043,
+  "bitrate_kbps": 19409.76,
+  "shoulder_px_rel_height": 0.0893988505978078
+ },
+ "asd_35": {
+  "luminance": 109.56436157226562,
+  "contrast": 37.755123138427734,
+  "saturation": 69.50460283963922,
+  "sharpness": 29.301673889160156,
+  "border_luminance": 109.73079681396484,
+  "face_sharpness": 10.544669151306152,
+  "bitrate_kbps": 20851.417102473497,
+  "shoulder_px_rel_height": 0.10546936732461076
+ },
+ "asd_36": {
+  "luminance": 117.61962890625,
+  "contrast": 49.31623458862305,
+  "saturation": 75.57069886528465,
+  "sharpness": 33.6651496887207,
+  "border_luminance": 131.35093688964844,
+  "face_sharpness": 12.9910249710083,
+  "bitrate_kbps": 15799.516734693876,
+  "shoulder_px_rel_height": 0.10020614154390028
+ },
+ "asd_37": {
+  "luminance": 103.91221618652344,
+  "contrast": 48.76691436767578,
+  "saturation": 81.77382938627731,
+  "sharpness": 17.389127731323242,
+  "border_luminance": 119.43970489501953,
+  "face_sharpness": 9.117377281188965,
+  "bitrate_kbps": 18836.92032,
+  "shoulder_px_rel_height": 0.24635420788188533
+ },
+ "asd_38": {
+  "luminance": 115.35283660888672,
+  "contrast": 40.08904266357422,
+  "saturation": 66.40372871434653,
+  "sharpness": 38.2460823059082,
+  "border_luminance": 109.01438903808594,
+  "face_sharpness": 3.4606690406799316,
+  "bitrate_kbps": 27294.706712802767,
+  "shoulder_px_rel_height": 0.0949790794041264
+ },
+ "asd_39": {
+  "luminance": 93.42219543457031,
+  "contrast": 42.42726135253906,
+  "saturation": 72.93551158841595,
+  "sharpness": 27.82741355895996,
+  "border_luminance": 94.91289520263672,
+  "face_sharpness": 15.717876434326172,
+  "bitrate_kbps": 25308.411968503937,
+  "shoulder_px_rel_height": 0.15233236804897815
+ },
+ "asd_4": {
+  "luminance": 141.26202392578125,
+  "contrast": 59.318180084228516,
+  "saturation": 71.15658122749487,
+  "sharpness": 39.65434646606445,
+  "border_luminance": 145.04612731933594,
+  "face_sharpness": 3.61228609085083,
+  "bitrate_kbps": 14033.167567567567,
+  "shoulder_px_rel_height": 0.08150796389035585
+ },
+ "asd_40": {
+  "luminance": 109.1506118774414,
+  "contrast": 34.84325408935547,
+  "saturation": 87.52112967785493,
+  "sharpness": 18.00278091430664,
+  "border_luminance": 111.1771240234375,
+  "face_sharpness": 5.759964942932129,
+  "bitrate_kbps": 21927.511578947368,
+  "shoulder_px_rel_height": 0.19878800476699846
+ },
+ "asd_41": {
+  "luminance": 108.30448913574219,
+  "contrast": 46.111366271972656,
+  "saturation": 67.09237953317901,
+  "sharpness": 23.758014678955078,
+  "border_luminance": 109.95157623291016,
+  "face_sharpness": 25.53974151611328,
+  "bitrate_kbps": 22526.20206185567,
+  "shoulder_px_rel_height": 0.20563406863018116
+ },
+ "asd_42": {
+  "luminance": 120.62937927246094,
+  "contrast": 48.445350646972656,
+  "saturation": 73.53196768285477,
+  "sharpness": 29.19723892211914,
+  "border_luminance": 137.72283935546875,
+  "face_sharpness": 4.480474472045898,
+  "bitrate_kbps": 11631.057391304348,
+  "shoulder_px_rel_height": 0.07607109806882477
+ },
+ "asd_43": {
+  "luminance": 133.34559631347656,
+  "contrast": 49.78634262084961,
+  "saturation": 64.6933865666548,
+  "sharpness": 45.57647705078125,
+  "border_luminance": 142.74559020996094,
+  "face_sharpness": 146.84568786621094,
+  "bitrate_kbps": 18682.964409448818,
+  "shoulder_px_rel_height": 0.028892499399055634
+ },
+ "asd_44": {
+  "luminance": 107.8795166015625,
+  "contrast": 63.91862106323242,
+  "saturation": 96.59232519534673,
+  "sharpness": 33.688838958740234,
+  "border_luminance": 114.4152603149414,
+  "face_sharpness": 56.51256561279297,
+  "bitrate_kbps": 11987.323179916319,
+  "shoulder_px_rel_height": 0.035237627471189505
+ },
+ "asd_45": {
+  "luminance": 93.93357849121094,
+  "contrast": 42.1268310546875,
+  "saturation": 115.63265087226355,
+  "sharpness": 21.193401336669922,
+  "border_luminance": 95.952392578125,
+  "face_sharpness": 35.727684020996094,
+  "bitrate_kbps": 16397.1,
+  "shoulder_px_rel_height": 0.11052617981429956
+ },
+ "asd_46": {
+  "luminance": 88.15884399414062,
+  "contrast": 48.90239715576172,
+  "saturation": 112.76084276740934,
+  "sharpness": 15.83022689819336,
+  "border_luminance": 97.89891052246094,
+  "face_sharpness": 19.27124786376953,
+  "bitrate_kbps": 17665.415696202534,
+  "shoulder_px_rel_height": 0.18617890719217847
+ },
+ "asd_47": {
+  "luminance": 88.26691436767578,
+  "contrast": 30.85795783996582,
+  "saturation": 128.37480874194702,
+  "sharpness": 14.619218826293945,
+  "border_luminance": 92.54219055175781,
+  "face_sharpness": 7.1826629638671875,
+  "bitrate_kbps": 17272.388571428568,
+  "shoulder_px_rel_height": 0.15511775197551153
+ },
+ "asd_48": {
+  "luminance": 117.9438705444336,
+  "contrast": 63.96100997924805,
+  "saturation": 57.28620177469136,
+  "sharpness": 141.27671813964844,
+  "border_luminance": 133.76585388183594,
+  "face_sharpness": 3.5916175842285156,
+  "bitrate_kbps": 31728.129230769227,
+  "shoulder_px_rel_height": 0.07060870838660069
+ },
+ "asd_49": {
+  "luminance": 121.28367614746094,
+  "contrast": 58.467105865478516,
+  "saturation": 45.77027348826348,
+  "sharpness": 98.47733306884766,
+  "border_luminance": 136.38194274902344,
+  "face_sharpness": 3.209623336791992,
+  "bitrate_kbps": 32834.800441988955,
+  "shoulder_px_rel_height": 0.0633694942519582
+ },
+ "asd_5": {
+  "luminance": 132.94171142578125,
+  "contrast": 57.835636138916016,
+  "saturation": 75.3340671728661,
+  "sharpness": 56.4676399230957,
+  "border_luminance": 143.30291748046875,
+  "face_sharpness": 3.7203896045684814,
+  "bitrate_kbps": 18384.541881533103,
+  "shoulder_px_rel_height": 0.06294495347089667
+ },
+ "asd_50": {
+  "luminance": 118.11051940917969,
+  "contrast": 58.925254821777344,
+  "saturation": 62.30202555941357,
+  "sharpness": 73.95356750488281,
+  "border_luminance": 120.87043762207031,
+  "face_sharpness": 38.4027099609375,
+  "bitrate_kbps": 38504.354999999996,
+  "shoulder_px_rel_height": 0.09259537689345773
+ },
+ "asd_6": {
+  "luminance": 129.81463623046875,
+  "contrast": 52.85823440551758,
+  "saturation": 65.46238654996142,
+  "sharpness": 26.439157485961914,
+  "border_luminance": 125.2488021850586,
+  "face_sharpness": 3.191720724105835,
+  "bitrate_kbps": 14646.445,
+  "shoulder_px_rel_height": 0.08136345701902989
+ },
+ "asd_7": {
+  "luminance": 124.92991638183594,
+  "contrast": 51.09574508666992,
+  "saturation": 69.26051559999429,
+  "sharpness": 36.31537628173828,
+  "border_luminance": 119.74409484863281,
+  "face_sharpness": 2.8948488235473633,
+  "bitrate_kbps": 12693.408000000001,
+  "shoulder_px_rel_height": 0.06296961947917892
+ },
+ "asd_8": {
+  "luminance": 127.57252502441406,
+  "contrast": 54.16104507446289,
+  "saturation": 86.68843718241871,
+  "sharpness": 27.047489166259766,
+  "border_luminance": 129.84584045410156,
+  "face_sharpness": 3.8363163471221924,
+  "bitrate_kbps": 13711.727407407408,
+  "shoulder_px_rel_height": 0.06993762356104702
+ },
+ "asd_9": {
+  "luminance": 92.40499877929688,
+  "contrast": 33.21540451049805,
+  "saturation": 83.64903105911455,
+  "sharpness": 69.80901336669922,
+  "border_luminance": 99.61946868896484,
+  "face_sharpness": 2.6483287811279297,
+  "bitrate_kbps": 13179.420845070421,
+  "shoulder_px_rel_height": 0.11551801721619073
+ },
+ "td_1": {
+  "luminance": 124.39158630371094,
+  "contrast": 59.70843505859375,
+  "saturation": 77.29315718814699,
+  "sharpness": 49.40525817871094,
+  "border_luminance": 122.44844818115234,
+  "face_sharpness": 2.3713297843933105,
+  "bitrate_kbps": 10373.641348314606,
+  "shoulder_px_rel_height": 0.05145120584524239
+ },
+ "td_10": {
+  "luminance": 131.04583740234375,
+  "contrast": 52.95094680786133,
+  "saturation": 84.10758525520693,
+  "sharpness": 151.86947631835938,
+  "border_luminance": 143.8172149658203,
+  "face_sharpness": 1.6838624477386475,
+  "bitrate_kbps": 10133.443699421965,
+  "shoulder_px_rel_height": 0.07305867450649993
+ },
+ "td_11": {
+  "luminance": 140.8004150390625,
+  "contrast": 56.17228698730469,
+  "saturation": 73.41673726640309,
+  "sharpness": 177.9306182861328,
+  "border_luminance": 141.22750854492188,
+  "face_sharpness": 3.0959248542785645,
+  "bitrate_kbps": 10757.985573770493,
+  "shoulder_px_rel_height": 0.06793206923565866
+ },
+ "td_12": {
+  "luminance": 146.2015380859375,
+  "contrast": 55.12923812866211,
+  "saturation": 74.13956891889218,
+  "sharpness": 109.72534942626953,
+  "border_luminance": 155.68898010253906,
+  "face_sharpness": 2.1795265674591064,
+  "bitrate_kbps": 10480.651636363636,
+  "shoulder_px_rel_height": 0.05710309146959537
+ },
+ "td_13": {
+  "luminance": 145.8558349609375,
+  "contrast": 55.593711853027344,
+  "saturation": 73.17221626578183,
+  "sharpness": 99.2327651977539,
+  "border_luminance": 140.715087890625,
+  "face_sharpness": 240.23468017578125,
+  "bitrate_kbps": 7797.83661971831,
+  "shoulder_px_rel_height": 0.05671840487197344
+ },
+ "td_14": {
+  "luminance": 85.96479797363281,
+  "contrast": 34.7611198425293,
+  "saturation": 49.009193215744816,
+  "sharpness": 75.81214904785156,
+  "border_luminance": 106.8044662475586,
+  "face_sharpness": 1.957547903060913,
+  "bitrate_kbps": 14767.109999999999,
+  "shoulder_px_rel_height": 0.07429956671528426
+ },
+ "td_15": {
+  "luminance": 98.1397933959961,
+  "contrast": 50.42735290527344,
+  "saturation": 47.35510063314755,
+  "sharpness": 63.902034759521484,
+  "border_luminance": 132.5342254638672,
+  "face_sharpness": 2.1286492347717285,
+  "bitrate_kbps": 14273.391428571429,
+  "shoulder_px_rel_height": 0.069965670608472
+ },
+ "td_16": {
+  "luminance": 102.63616180419922,
+  "contrast": 52.41411590576172,
+  "saturation": 43.90292953784628,
+  "sharpness": 46.858131408691406,
+  "border_luminance": 130.4907989501953,
+  "face_sharpness": 3.2809951305389404,
+  "bitrate_kbps": 15807.204324324322,
+  "shoulder_px_rel_height": 0.060267245957184974
+ },
+ "td_17": {
+  "luminance": 100.15740203857422,
+  "contrast": 63.176719665527344,
+  "saturation": 48.205987570809576,
+  "sharpness": 57.519691467285156,
+  "border_luminance": 130.0178985595703,
+  "face_sharpness": 1.72787344455719,
+  "bitrate_kbps": 14922.399999999998,
+  "shoulder_px_rel_height": 0.06680202993015967
+ },
+ "td_18": {
+  "luminance": 104.90574645996094,
+  "contrast": 63.443031311035156,
+  "saturation": 47.095288542463514,
+  "sharpness": 47.871707916259766,
+  "border_luminance": 127.59325408935547,
+  "face_sharpness": 4.468288898468018,
+  "bitrate_kbps": 16747.382189781023,
+  "shoulder_px_rel_height": 0.08943225378627837
+ },
+ "td_19": {
+  "luminance": 100.25758361816406,
+  "contrast": 53.694698333740234,
+  "saturation": 48.37187114464574,
+  "sharpness": 44.674564361572266,
+  "border_luminance": 133.3529815673828,
+  "face_sharpness": 49.10954284667969,
+  "bitrate_kbps": 14706.900479999998,
+  "shoulder_px_rel_height": 0.08800029237666972
+ },
+ "td_2": {
+  "luminance": 115.04340362548828,
+  "contrast": 39.65817642211914,
+  "saturation": 74.74394073288559,
+  "sharpness": 373.5201721191406,
+  "border_luminance": 116.00162506103516,
+  "face_sharpness": 120.10507202148438,
+  "bitrate_kbps": 17753.149090909094,
+  "shoulder_px_rel_height": 0.0626636963942006
+ },
+ "td_20": {
+  "luminance": 109.2697982788086,
+  "contrast": 65.44266510009766,
+  "saturation": 51.71325040383681,
+  "sharpness": 37.64518356323242,
+  "border_luminance": 145.3644256591797,
+  "face_sharpness": 10.435548782348633,
+  "bitrate_kbps": 12699.460840336134,
+  "shoulder_px_rel_height": 0.07944826876602396
+ },
+ "td_21": {
+  "luminance": 97.36235809326172,
+  "contrast": 56.259857177734375,
+  "saturation": 46.76801741103412,
+  "sharpness": 39.73136520385742,
+  "border_luminance": 125.00435638427734,
+  "face_sharpness": 1.5218219757080078,
+  "bitrate_kbps": 13089.558620689655,
+  "shoulder_px_rel_height": 0.07868145978009283
+ },
+ "td_22": {
+  "luminance": 121.99510955810547,
+  "contrast": 52.478023529052734,
+  "saturation": 85.31905747991968,
+  "sharpness": 99.73284912109375,
+  "border_luminance": 121.19881439208984,
+  "face_sharpness": 218.5,
+  "bitrate_kbps": 8763.034576271188,
+  "shoulder_px_rel_height": 0.07001787631526707
+ },
+ "td_23": {
+  "luminance": 122.6136245727539,
+  "contrast": 54.06252670288086,
+  "saturation": 82.54798455409457,
+  "sharpness": 115.36447143554688,
+  "border_luminance": 122.85963439941406,
+  "face_sharpness": 33.378299713134766,
+  "bitrate_kbps": 9528.315616438356,
+  "shoulder_px_rel_height": 0.09171511036122215
+ },
+ "td_24": {
+  "luminance": 112.00142669677734,
+  "contrast": 66.58087158203125,
+  "saturation": 42.84170917086574,
+  "sharpness": 58.76335525512695,
+  "border_luminance": 137.3247528076172,
+  "face_sharpness": 6.652847766876221,
+  "bitrate_kbps": 14475.217297297297,
+  "shoulder_px_rel_height": 0.10158611643918339
+ },
+ "td_25": {
+  "luminance": 103.25146484375,
+  "contrast": 64.28820037841797,
+  "saturation": 47.71577588282504,
+  "sharpness": 71.04885864257812,
+  "border_luminance": 138.3228302001953,
+  "face_sharpness": 1.5323213338851929,
+  "bitrate_kbps": 13645.820000000002,
+  "shoulder_px_rel_height": 0.0682372256995898
+ },
+ "td_26": {
+  "luminance": 82.21280670166016,
+  "contrast": 50.89498519897461,
+  "saturation": 57.4189028129707,
+  "sharpness": 128.79644775390625,
+  "border_luminance": 121.67890167236328,
+  "face_sharpness": 89.13007354736328,
+  "bitrate_kbps": 17176.34802919708,
+  "shoulder_px_rel_height": 0.08719590378244893
+ },
+ "td_27": {
+  "luminance": 90.02523803710938,
+  "contrast": 58.91203308105469,
+  "saturation": 57.518189454273944,
+  "sharpness": 93.35554504394531,
+  "border_luminance": 123.56391906738281,
+  "face_sharpness": 9.968198776245117,
+  "bitrate_kbps": 15280.375384615385,
+  "shoulder_px_rel_height": 0.0877091707152985
+ },
+ "td_28": {
+  "luminance": 77.76516723632812,
+  "contrast": 28.031118392944336,
+  "saturation": 52.53567783319623,
+  "sharpness": 78.74498748779297,
+  "border_luminance": 86.4586181640625,
+  "face_sharpness": 261.4154357910156,
+  "bitrate_kbps": 14227.439999999999,
+  "shoulder_px_rel_height": 0.043312935828097754
+ },
+ "td_29": {
+  "luminance": 97.54875183105469,
+  "contrast": 61.32955551147461,
+  "saturation": 48.3224361806731,
+  "sharpness": 60.60636901855469,
+  "border_luminance": 124.98783874511719,
+  "face_sharpness": 104.03227996826172,
+  "bitrate_kbps": 12172.826181818184,
+  "shoulder_px_rel_height": 0.057223887434288453
+ },
+ "td_3": {
+  "luminance": 131.6609344482422,
+  "contrast": 54.28507995605469,
+  "saturation": 65.27767172161174,
+  "sharpness": 144.49908447265625,
+  "border_luminance": 126.8720474243164,
+  "face_sharpness": 3.1145713329315186,
+  "bitrate_kbps": 10151.313333333334,
+  "shoulder_px_rel_height": 0.06706772864058864
+ },
+ "td_30": {
+  "luminance": 106.45905303955078,
+  "contrast": 65.6726303100586,
+  "saturation": 43.92447462187318,
+  "sharpness": 45.075565338134766,
+  "border_luminance": 129.8371124267578,
+  "face_sharpness": 32.79100036621094,
+  "bitrate_kbps": 15066.998319327731,
+  "shoulder_px_rel_height": 0.07673845460165693
+ },
+ "td_31": {
+  "luminance": 108.11190032958984,
+  "contrast": 64.8049087524414,
+  "saturation": 42.740108386942545,
+  "sharpness": 52.06734848022461,
+  "border_luminance": 129.13650512695312,
+  "face_sharpness": 29.775371551513672,
+  "bitrate_kbps": 16362.152727272729,
+  "shoulder_px_rel_height": 0.10524782112949585
+ },
+ "td_32": {
+  "luminance": 112.52755737304688,
+  "contrast": 67.2029037475586,
+  "saturation": 45.24840797497709,
+  "sharpness": 42.79734802246094,
+  "border_luminance": 129.19529724121094,
+  "face_sharpness": 7.8013105392456055,
+  "bitrate_kbps": 15558.1956302521,
+  "shoulder_px_rel_height": 0.07100627817585486
+ },
+ "td_33": {
+  "luminance": 124.34400939941406,
+  "contrast": 64.90086364746094,
+  "saturation": 40.54899736644093,
+  "sharpness": 42.0286979675293,
+  "border_luminance": 143.4748992919922,
+  "face_sharpness": 27.36956214904785,
+  "bitrate_kbps": 15206.270561797754,
+  "shoulder_px_rel_height": 0.07753805472529608
+ },
+ "td_34": {
+  "luminance": 100.39014434814453,
+  "contrast": 59.93122100830078,
+  "saturation": 46.81575454792319,
+  "sharpness": 66.7703628540039,
+  "border_luminance": 132.66807556152344,
+  "face_sharpness": 38.09635543823242,
+  "bitrate_kbps": 14748.32516129032,
+  "shoulder_px_rel_height": 0.058313964424891895
+ },
+ "td_35": {
+  "luminance": 105.78206634521484,
+  "contrast": 64.2284927368164,
+  "saturation": 46.344271916809426,
+  "sharpness": 38.90958023071289,
+  "border_luminance": 132.4309844970703,
+  "face_sharpness": 1.6837880611419678,
+  "bitrate_kbps": 12910.983529411764,
+  "shoulder_px_rel_height": 0.05801556251399809
+ },
+ "td_36": {
+  "luminance": 113.24651336669922,
+  "contrast": 62.1197624206543,
+  "saturation": 43.72547554984718,
+  "sharpness": 44.33060073852539,
+  "border_luminance": 145.5691375732422,
+  "face_sharpness": 25.891992568969727,
+  "bitrate_kbps": 14261.20347826087,
+  "shoulder_px_rel_height": 0.07741683535674437
+ },
+ "td_37": {
+  "luminance": 118.51493835449219,
+  "contrast": 60.93590545654297,
+  "saturation": 40.17368672192582,
+  "sharpness": 68.21327209472656,
+  "border_luminance": 149.61917114257812,
+  "face_sharpness": 5.74057674407959,
+  "bitrate_kbps": 15964.048695652173,
+  "shoulder_px_rel_height": 0.07972130118846293
+ },
+ "td_38": {
+  "luminance": 95.04130554199219,
+  "contrast": 55.41352081298828,
+  "saturation": 45.1994145968145,
+  "sharpness": 58.114295959472656,
+  "border_luminance": 124.99906921386719,
+  "face_sharpness": 51.57243347167969,
+  "bitrate_kbps": 14924.463797468356,
+  "shoulder_px_rel_height": 0.06064718658000083
+ },
+ "td_40": {
+  "luminance": 105.5810317993164,
+  "contrast": 50.46873092651367,
+  "saturation": 44.831903435038946,
+  "sharpness": 58.93429946899414,
+  "border_luminance": 143.9406280517578,
+  "face_sharpness": 1.563897967338562,
+  "bitrate_kbps": 16591.442123893805,
+  "shoulder_px_rel_height": 0.05175462194964469
+ },
+ "td_41": {
+  "luminance": 102.82329559326172,
+  "contrast": 62.446983337402344,
+  "saturation": 45.74430618957395,
+  "sharpness": 54.19888687133789,
+  "border_luminance": 127.48670196533203,
+  "face_sharpness": 1.3682481050491333,
+  "bitrate_kbps": 16547.633777777777,
+  "shoulder_px_rel_height": 0.05652472433824324
+ },
+ "td_42": {
+  "luminance": 97.43211364746094,
+  "contrast": 61.35302734375,
+  "saturation": 47.00744853311509,
+  "sharpness": 56.87678146362305,
+  "border_luminance": 127.26139068603516,
+  "face_sharpness": 1.4545159339904785,
+  "bitrate_kbps": 15121.67489361702,
+  "shoulder_px_rel_height": 0.058915729455569235
+ },
+ "td_43": {
+  "luminance": 96.878662109375,
+  "contrast": 58.29398727416992,
+  "saturation": 48.457347418729086,
+  "sharpness": 41.074954986572266,
+  "border_luminance": 126.348876953125,
+  "face_sharpness": 34.133087158203125,
+  "bitrate_kbps": 15653.793684210526,
+  "shoulder_px_rel_height": 0.05436453231697515
+ },
+ "td_44": {
+  "luminance": 100.18514251708984,
+  "contrast": 59.06501388549805,
+  "saturation": 47.24456150290473,
+  "sharpness": 50.39625549316406,
+  "border_luminance": 131.87477111816406,
+  "face_sharpness": 50.69438171386719,
+  "bitrate_kbps": 16715.95243243243,
+  "shoulder_px_rel_height": 0.043345484593521826
+ },
+ "td_45": {
+  "luminance": 88.75074768066406,
+  "contrast": 50.23876953125,
+  "saturation": 47.34262885221698,
+  "sharpness": 77.543701171875,
+  "border_luminance": 122.28929138183594,
+  "face_sharpness": 253.8375244140625,
+  "bitrate_kbps": 15776.438709677417,
+  "shoulder_px_rel_height": 0.05379636936590179
+ },
+ "td_46": {
+  "luminance": 103.58306884765625,
+  "contrast": 63.983551025390625,
+  "saturation": 44.68235567294782,
+  "sharpness": 47.70008087158203,
+  "border_luminance": 128.8427734375,
+  "face_sharpness": 24.00358009338379,
+  "bitrate_kbps": 16347.239999999998,
+  "shoulder_px_rel_height": 0.06737095930431211
+ },
+ "td_47": {
+  "luminance": 101.9995346069336,
+  "contrast": 63.981815338134766,
+  "saturation": 53.52309902822608,
+  "sharpness": 39.30815505981445,
+  "border_luminance": 125.53060913085938,
+  "face_sharpness": 23.71598243713379,
+  "bitrate_kbps": 15641.30796116505,
+  "shoulder_px_rel_height": 0.09782548730792694
+ },
+ "td_48": {
+  "luminance": 101.063720703125,
+  "contrast": 58.85585403442383,
+  "saturation": 45.807834431596994,
+  "sharpness": 58.962650299072266,
+  "border_luminance": 126.09811401367188,
+  "face_sharpness": 34.23828125,
+  "bitrate_kbps": 17637.338947368422,
+  "shoulder_px_rel_height": 0.08665201185274654
+ },
+ "td_49": {
+  "luminance": 104.25344848632812,
+  "contrast": 62.647342681884766,
+  "saturation": 47.07635895820206,
+  "sharpness": 41.41230392456055,
+  "border_luminance": 127.04462432861328,
+  "face_sharpness": 10.594908714294434,
+  "bitrate_kbps": 15904.960000000001,
+  "shoulder_px_rel_height": 0.0710684498804152
+ },
+ "td_6": {
+  "luminance": 129.88233947753906,
+  "contrast": 54.288902282714844,
+  "saturation": 78.22076423738547,
+  "sharpness": 86.56464385986328,
+  "border_luminance": 140.42205810546875,
+  "face_sharpness": 2.7556405067443848,
+  "bitrate_kbps": 10815.269189189188,
+  "shoulder_px_rel_height": 0.05408261315324718
+ },
+ "td_8": {
+  "luminance": 146.92152404785156,
+  "contrast": 54.07514953613281,
+  "saturation": 71.18305428231899,
+  "sharpness": 306.2783508300781,
+  "border_luminance": 155.39584350585938,
+  "face_sharpness": 174.76123046875,
+  "bitrate_kbps": 14737.147118644069,
+  "shoulder_px_rel_height": 0.071978826919049
+ },
+ "td_9": {
+  "luminance": 145.14273071289062,
+  "contrast": 55.686927795410156,
+  "saturation": 77.6507557594038,
+  "sharpness": 112.28582763671875,
+  "border_luminance": 159.4598846435547,
+  "face_sharpness": 2.633885383605957,
+  "bitrate_kbps": 8321.622857142858,
+  "shoulder_px_rel_height": 0.0693917112252231
+ }
+}

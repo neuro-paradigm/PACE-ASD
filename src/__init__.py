@@ -1,1 +1,1 @@
-# PACE-ASD source package
+# PACE source package

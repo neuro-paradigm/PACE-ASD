@@ -1,5 +1,5 @@
 """
-PACE-ASD — descriptor-level gradient x input attribution.
+PACE — descriptor-level gradient x input attribution.
 
 The 198-dimensional per-frame descriptor [position | velocity | acceleration]
 enters the spatial encoder's first linear layer. Gradient x input is taken at

@@ -1,7 +1,7 @@
 """
-PACE-ASD — comparison architectures for the nested cross-validation.
+PACE — comparison architectures for the nested cross-validation.
 
-Every model takes the same input as PACE-ASD, a (B, T, 33, 2) batch of
+Every model takes the same input as PACE, a (B, T, 33, 2) batch of
 prepared pose sequences, derives the same masked kinematic channels
 (position, 10 x first difference, 5 x second difference of that), and
 returns (probability, logit). Frames without a detected pose are excluded
@@ -49,7 +49,7 @@ def frame_mask(x: torch.Tensor) -> torch.Tensor:
 
 def kinematics(x: torch.Tensor) -> torch.Tensor:
     """(B, T, J, 2) -> (B, T, J, 6): position, velocity, acceleration with the
-    same scaling and boundary masking as the PACE-ASD spatial encoder."""
+    same scaling and boundary masking as the PACE spatial encoder."""
     valid = x.abs().sum(dim=(-2, -1)) > 1e-4
     vel = torch.zeros_like(x)
     vel[:, 1:] = (x[:, 1:] - x[:, :-1]) * 10.0

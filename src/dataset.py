@@ -1,5 +1,5 @@
 """
-PACE-ASD — Dataset (Dryad-Only, Protocol Section 1.2)
+PACE — Dataset (Dryad-Only, Protocol Section 1.2)
 
 Two dataset classes:
   ASDMotionDataset       — loads all clips; used for val / test

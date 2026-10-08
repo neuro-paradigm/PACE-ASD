@@ -1,5 +1,5 @@
 """
-PACE-ASD — Platt Scaling Calibration
+PACE — Platt Scaling Calibration
 
 Fits a temperature + bias term on out-of-fold validation logits
 (Dryad-only) using LBFGS. Applied after each fold's best checkpoint

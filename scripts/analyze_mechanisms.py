@@ -1,5 +1,5 @@
 """
-PACE-ASD — analyses of what the models use and how the software behaves.
+PACE — analyses of what the models use and how the software behaves.
 
 Writes results/cv/mechanisms.json with the sections below (each can be run
 alone with --sections):
@@ -24,6 +24,18 @@ alone with --sections):
                image-normalised versus pixel coordinates
   runtime      latency of one forward pass and of the released ensemble;
                training time per model for every architecture
+
+Second revision (docs/validation_criteria.md):
+  selection_nulls  agreement of the selected blocks of randomly initialized
+               networks, agreement with a motion-energy heuristic, and
+               agreement between models of different repetitions (B3)
+  movement     gait descriptors within the cropped videos, unadjusted and
+               adjusted for age and sex, from standard, smoothed and
+               first-90-frame trajectories; landmark jitter; scene
+               properties; representativeness of the cropped autistic
+               children (B4)
+  depth        depth-camera skeletons: descriptors and recording properties by
+               group, agreement with the video descriptors (B5)
 
 Usage:
     python scripts/analyze_mechanisms.py
@@ -239,7 +251,7 @@ def confounds(R):
     vid = pd.read_csv("processed/video_metadata.csv").set_index("clip_id")
     full = np.array([vid.loc[s, "width"] == 1080 and vid.loc[s, "height"] == 1920 for s in S])
     subsets = {"boys": male, "shared_age": shared, "boys_shared_age": male & shared,
-               "cropped": ~full}
+               "cropped": ~full, "cropped_boys_shared_age": ~full & male & shared}
     out = {"shared_age_range": [float(lo), float(hi)],
            "subset_sizes": {k: {"autistic": int((m & (y == 1)).sum()), "td": int((m & (y == 0)).sum())}
                             for k, m in subsets.items()},
@@ -468,6 +480,306 @@ def frame_format():
     return out
 
 
+# ── second revision: selection nulls (docs/validation_criteria.md, B3) ────────
+
+def _valid_units(vm, L):
+    nb = int(np.ceil(len(vm) / L))
+    return np.array([vm[b * L:(b + 1) * L].any() for b in range(nb)])
+
+
+def _motion_units(a, L, M):
+    """Top-M valid blocks (frames) of a prepared sequence by mean motion
+    energy over pairs of valid frames (the heuristic gate)."""
+    vm = valid_mask(a)
+    e = np.zeros(len(a)); pair = np.zeros(len(a), bool)
+    pair[1:] = vm[1:] & vm[:-1]
+    e[1:] = np.linalg.norm(a[1:] - a[:-1], axis=-1).sum(-1)
+    vb = _valid_units(vm, L)
+    sc = []
+    for b in range(len(vb)):
+        p = pair[b * L:(b + 1) * L]
+        sc.append(e[b * L:(b + 1) * L][p].mean() if p.any() else 0.0)
+    sc = np.where(vb, sc, -np.inf)
+    order = np.argsort(-sc, kind="stable")
+    return {int(b) for b in order[:min(M, int(vb.sum()))]}
+
+
+def _mean_pairwise_jaccard(sets, pairs=None):
+    idx = pairs if pairs is not None else [(i, j) for i in range(len(sets)) for j in range(i + 1, len(sets))]
+    js = [len(sets[i] & sets[j]) / max(len(sets[i] | sets[j]), 1) for i, j in idx]
+    return float(np.mean(js)) if js else np.nan
+
+
+@torch.no_grad()
+def selection_nulls(device):
+    out = {}
+    for arm in ("PACE", "PACE-M4", "PACE-frames"):
+        files = sorted(glob.glob(os.path.join(CKPTS, arm, "*.pt")))
+        if not files:
+            continue
+        trained, rand, reps = defaultdict(list), defaultdict(list), defaultdict(list)
+        nvb, heur = {}, {}
+        for n, f in enumerate(files):
+            m, ck = load_ckpt(f, device)
+            set_seed(RNG + 7919 * n)
+            r = build_model(ck["arm"], ck["config"]).to(device).eval()
+            L, M = m.saliency_gate.block_size, m.saliency_gate.top_m
+            for s in ck["test"]:
+                a = prepare_sequence(raw(s))
+                vb = _valid_units(valid_mask(a), L)
+                nvb[s] = int(vb.sum())
+                if s not in heur:
+                    heur[s] = _motion_units(a, L, M)
+                x = torch.from_numpy(a)[None].to(device)
+                for model, store in ((m, trained), (r, rand)):
+                    _, idx, _ = model.get_attention_maps(x)
+                    store[s].append({b for b in (idx[0].cpu().numpy() // L).tolist()
+                                     if b < len(vb) and vb[b]})
+                reps[s].append(ck["repeat"])
+        rows = []
+        for s in trained:
+            if nvb[s] <= M:
+                continue
+            k = min(M, nvb[s])
+            T, Rn, rp = trained[s], rand[s], reps[s]
+            across = [(i, j) for i in range(len(T)) for j in range(i + 1, len(T)) if rp[i] != rp[j]]
+            rows.append({"child": s, "chance": chance_jaccard(nvb[s], k),
+                         "trained": _mean_pairwise_jaccard(T),
+                         "random_init": _mean_pairwise_jaccard(Rn),
+                         "trained_across_repeats": _mean_pairwise_jaccard(T, across),
+                         "trained_vs_motion": float(np.mean([len(t & heur[s]) / max(len(t | heur[s]), 1)
+                                                             for t in T])),
+                         "random_vs_motion": float(np.mean([len(t & heur[s]) / max(len(t | heur[s]), 1)
+                                                            for t in Rn]))})
+        col = lambda k: np.array([q[k] for q in rows])
+        res = {"budget_units": int(M), "unit_frames": int(L), "n_nontrivial": len(rows)}
+        for k in ("chance", "trained", "random_init", "trained_across_repeats", "trained_vs_motion",
+                  "random_vs_motion"):
+            res[k] = summ(col(k))
+        d = col("trained") - col("random_init")
+        res["trained_minus_random"] = summ(d)
+        res["wilcoxon_p_trained_vs_random"] = float(stats.wilcoxon(d).pvalue)
+        res["wilcoxon_p_random_vs_chance"] = float(stats.wilcoxon(col("random_init") - col("chance")).pvalue)
+        res["wilcoxon_p_motion_vs_chance"] = float(stats.wilcoxon(col("trained_vs_motion") - col("chance")).pvalue)
+        res["per_child"] = rows
+        out[arm] = res
+    return out
+
+
+# ── second revision: movement evidence (B4) ───────────────────────────────────
+
+def _ols_group_effect(x, group, age, male, B=2000, seed=RNG):
+    """Coefficient of group in an OLS regression of the standardized
+    descriptor on group, age and sex; two-sided t-test p and bootstrap 95%
+    interval (resampling children within groups)."""
+    ok = np.isfinite(x)
+    x, g, a, s = x[ok], group[ok].astype(float), age[ok], male[ok].astype(float)
+    z = (x - x.mean()) / (x.std(ddof=1) + 1e-12)
+    X = np.c_[np.ones(len(z)), g, a, s]
+
+    def fit(ix):
+        beta, *_ = np.linalg.lstsq(X[ix], z[ix], rcond=None)
+        return beta
+    beta = fit(np.arange(len(z)))
+    resid = z - X @ beta
+    dof = len(z) - X.shape[1]
+    cov = np.linalg.pinv(X.T @ X) * (resid @ resid) / dof
+    t = beta[1] / np.sqrt(cov[1, 1])
+    p = float(2 * stats.t.sf(abs(t), dof))
+    rng = np.random.default_rng(seed)
+    pos, neg = np.flatnonzero(g == 1), np.flatnonzero(g == 0)
+    bs = [fit(np.concatenate([rng.choice(pos, len(pos)), rng.choice(neg, len(neg))]))[1]
+          for _ in range(B)]
+    return {"beta": float(beta[1]), "p": p, "ci95": [float(np.percentile(bs, 2.5)),
+                                                      float(np.percentile(bs, 97.5))], "n": int(len(z))}
+
+
+def _bh(ps):
+    ps = np.asarray(ps, float)
+    order = np.argsort(ps)
+    q = np.empty_like(ps)
+    q[order] = np.minimum.accumulate((ps[order] * len(ps) / (np.arange(len(ps)) + 1))[::-1])[::-1]
+    return np.minimum(q, 1)
+
+
+def _auc_ci(y, x, B=1000, seed=RNG):
+    ok = np.isfinite(x)
+    y, x = y[ok], x[ok]
+    rng = np.random.default_rng(seed)
+    pos, neg = np.flatnonzero(y == 1), np.flatnonzero(y == 0)
+    bs = []
+    for _ in range(B):
+        i = np.concatenate([rng.choice(pos, len(pos)), rng.choice(neg, len(neg))])
+        bs.append(fast_auc(y[i], x[i]))
+    return {"auc": fast_auc(y, x), "ci95": [float(np.percentile(bs, 2.5)), float(np.percentile(bs, 97.5))]}
+
+
+def movement():
+    import pandas as pd
+    from gait_features import FEATURE_NAMES, feature_matrix
+    from protocol import crop_valid
+    from recording_features import JITTER_NAMES, SCENE_NAMES, jitter_features, smooth_sequence
+    p, S, y = part_info()
+    meta = pd.read_csv("processed/participant_metadata.csv").set_index("subject_id")
+    age = np.array([meta.loc[s, "age_years"] for s in S], float)
+    male = np.array([meta.loc[s, "sex"] == "M" for s in S])
+    vid = pd.read_csv("processed/video_metadata.csv").set_index("clip_id")
+    full = np.array([vid.loc[s, "width"] == 1080 and vid.loc[s, "height"] == 1920 for s in S])
+    crop = ~full
+    prep = [prepare_sequence(raw(s)) for s in S]
+    span = np.array([mask_summary(a)["span"] for a in prep])
+    versions = {"standard": feature_matrix(prep),
+                "smoothed": feature_matrix([smooth_sequence(a) for a in prep]),
+                "first90": feature_matrix([crop_valid(a, 90) for a in prep])}
+    out = {"n_cropped": {"autistic": int((crop & (y == 1)).sum()), "td": int((crop & (y == 0)).sum())},
+           "n_first90_cropped": {"autistic": int((crop & (span >= 90) & (y == 1)).sum()),
+                                 "td": int((crop & (span >= 90) & (y == 0)).sum())}}
+    # (b, c) descriptors within the cropped videos: unadjusted and adjusted for age and sex
+    desc = {}
+    for v, X in versions.items():
+        sub = crop & ((span >= 90) if v == "first90" else True)
+        rows = []
+        for j, name in enumerate(FEATURE_NAMES):
+            x = X[:, j]
+            a_, t_ = x[sub & (y == 1)], x[sub & (y == 0)]
+            a_, t_ = a_[np.isfinite(a_)], t_[np.isfinite(t_)]
+            u = stats.mannwhitneyu(a_, t_)
+            row = {"name": name, "median_autistic": float(np.median(a_)), "median_td": float(np.median(t_)),
+                   "p_mwu": float(u.pvalue), **{f"auc_{k}": v_ for k, v_ in _auc_ci(y[sub], x[sub]).items()},
+                   "adjusted": _ols_group_effect(x[sub], y[sub], age[sub], male[sub])}
+            rows.append(row)
+        for r, q in zip(rows, _bh([r["p_mwu"] for r in rows])):
+            r["q_mwu"] = float(q)
+        for r, q in zip(rows, _bh([r["adjusted"]["p"] for r in rows])):
+            r["adjusted"]["q"] = float(q)
+        desc[v] = rows
+    robust = []
+    for j, name in enumerate(FEATURE_NAMES):
+        st, sm, f9 = (desc[v][j]["adjusted"] for v in ("standard", "smoothed", "first90"))
+        same = lambda e: np.sign(e["beta"]) == np.sign(st["beta"]) and (e["ci95"][0] > 0 or e["ci95"][1] < 0)
+        if st["q"] < 0.05 and same(sm) and same(f9):
+            robust.append(name)
+    out["descriptors_cropped"] = desc
+    out["robust_descriptors"] = robust
+    # all 95 children, adjusted (for comparison with the first-revision table)
+    rows = []
+    for j, name in enumerate(FEATURE_NAMES):
+        rows.append({"name": name, "adjusted": _ols_group_effect(versions["standard"][:, j], y, age, male)})
+    for r, q in zip(rows, _bh([r["adjusted"]["p"] for r in rows])):
+        r["adjusted"]["q"] = float(q)
+    out["descriptors_all_adjusted"] = rows
+    # (c) jitter by group
+    J = np.array([[jitter_features(a)[k] for k in JITTER_NAMES] for a in prep])
+    out["jitter"] = {k: {"median_autistic": float(np.nanmedian(J[y == 1, i])),
+                         "median_td": float(np.nanmedian(J[y == 0, i])),
+                         "all": _auc_ci(y, J[:, i]), "cropped": _auc_ci(y[crop], J[crop, i]),
+                         "autistic_uncropped_vs_cropped": _auc_ci(full[y == 1].astype(int), J[y == 1, i])["auc"],
+                         "n_missing": int(np.isnan(J[:, i]).sum())}
+                     for i, k in enumerate(JITTER_NAMES)}
+    # descriptive (not in the plan): slow movement of the landmarks relative to the
+    # hips over 0.5 s, against the jitter of the same recording
+    from recording_features import _runs
+    from scipy.ndimage import uniform_filter1d
+    ratio = {"all": [], "arms_hands": [], "legs_feet": []}
+    for a_ in prep:
+        mv_, jt_ = [], []
+        for st, en in _runs(valid_mask(a_), 40):
+            seg = a_[st:en]
+            sm_ = uniform_filter1d(seg, 9, axis=0, mode="nearest")
+            jt_.append(np.linalg.norm(seg - sm_, axis=-1))
+            mv_.append(np.linalg.norm(sm_[30:] - sm_[:-30], axis=-1))
+        if not mv_:
+            continue
+        Jr = np.sqrt((np.concatenate(jt_) ** 2).mean(0)); Mr = np.sqrt((np.concatenate(mv_) ** 2).mean(0))
+        for k, idx in (("all", list(range(33))), ("arms_hands", list(range(11, 23))), ("legs_feet", list(range(25, 33)))):
+            ratio[k].append(float(np.median(Mr[idx] / Jr[idx])))
+    out["movement_to_jitter_ratio_0p5s"] = {k: summ(v) for k, v in ratio.items()}
+    # jitter relative to the range-type descriptors
+    rng_names = ["step_amplitude", "arm_swing", "elbow_rom", "knee_rom", "step_width_var", "trunk_sway",
+                 "head_sway", "head_bob", "wrist_lateral"]
+    Xs = versions["standard"]
+    out["jitter_descriptor_spearman"] = {
+        n: float(stats.spearmanr(J[:, 0], Xs[:, FEATURE_NAMES.index(n)], nan_policy="omit").correlation)
+        for n in rng_names}
+    # (d) scene features by group
+    sc_path = "results/cv/scene_features.json"
+    if os.path.isfile(sc_path):
+        sc = json.load(open(sc_path))
+        Z = np.array([[sc[s][k] for k in SCENE_NAMES] for s in S], float)
+        out["scene"] = {k: {"median_autistic_cropped": float(np.nanmedian(Z[crop & (y == 1), i])),
+                            "median_td": float(np.nanmedian(Z[y == 0, i])),
+                            "all": _auc_ci(y, Z[:, i]), "cropped": _auc_ci(y[crop], Z[crop, i])}
+                        for i, k in enumerate(SCENE_NAMES)}
+    # (f) representativeness of the cropped autistic children
+    a = y == 1
+    rep = {"n_cropped": int((a & crop).sum()), "n_uncropped": int((a & full).sum()),
+           "age_cropped": summ(age[a & crop]), "age_uncropped": summ(age[a & full]),
+           "age_mwu_p": float(stats.mannwhitneyu(age[a & crop], age[a & full]).pvalue),
+           "boys_cropped": int(male[a & crop].sum()), "boys_uncropped": int(male[a & full].sum()),
+           "sex_fisher_p": float(stats.fisher_exact([[male[a & crop].sum(), (~male[a & crop]).sum()],
+                                                     [male[a & full].sum(), (~male[a & full]).sum()]])[1]),
+           "detected_cropped": summ([valid_mask(raw(s)).sum() for s, c in zip(np.array(S)[a], crop[a]) if c]),
+           "detected_uncropped": summ([valid_mask(raw(s)).sum() for s, c in zip(np.array(S)[a], crop[a]) if not c])}
+    adj = []
+    for j, name in enumerate(FEATURE_NAMES):
+        x = Xs[a, j]
+        ok = np.isfinite(x)
+        adj.append({"name": name, "auc_cropped_vs_uncropped": fast_auc(crop[a][ok], x[ok]),
+                    "p": float(stats.mannwhitneyu(x[ok & crop[a]], x[ok & full[a]]).pvalue)})
+    for r, q in zip(adj, _bh([r["p"] for r in adj])):
+        r["q"] = float(q)
+    rep["descriptors"] = adj
+    out["representativeness"] = rep
+    return out
+
+
+def depth():
+    """Depth-camera skeletons (B5): descriptors and recording properties by
+    group, and agreement of video and depth descriptors of the same walk."""
+    import pandas as pd
+    import depth_skeleton as ds
+    from gait_features import FEATURE_NAMES, feature_matrix
+    path = "results/cv/depth_features.json"
+    if not os.path.isfile(path):
+        return {}
+    tab = json.load(open(path))
+    p, S, y = part_info()
+    vid = pd.read_csv("processed/video_metadata.csv").set_index("clip_id")
+    crop = np.array([not (vid.loc[s, "width"] == 1080 and vid.loc[s, "height"] == 1920) for s in S])
+    F = np.array([[tab[s]["features"][k] for k in ds.FEATURE_NAMES] for s in S], float)
+    Rr = np.array([[tab[s]["recording"][k] for k in ds.RECORDING_NAMES] for s in S], float)
+    meta = pd.read_csv("processed/participant_metadata.csv").set_index("subject_id")
+    age = np.array([meta.loc[s, "age_years"] for s in S], float)
+    male = np.array([meta.loc[s, "sex"] == "M" for s in S])
+    out = {"frames": summ(Rr[:, 0]), "features": {}, "recording": {}}
+    for i, k in enumerate(ds.FEATURE_NAMES):
+        # the age- and sex-adjusted effect is exploratory (not in the B5 plan)
+        out["features"][k] = {"median_autistic": float(np.median(F[y == 1, i])),
+                              "median_td": float(np.median(F[y == 0, i])),
+                              "all": _auc_ci(y, F[:, i]), "cropped": _auc_ci(y[crop], F[crop, i]),
+                              "adjusted_all_exploratory": _ols_group_effect(F[:, i], y, age, male)}
+    for i, k in enumerate(ds.RECORDING_NAMES):
+        out["recording"][k] = {"median_autistic": float(np.median(Rr[y == 1, i])),
+                               "median_td": float(np.median(Rr[y == 0, i])),
+                               "all": _auc_ci(y, Rr[:, i]), "cropped": _auc_ci(y[crop], Rr[crop, i])}
+    tod = Rr[:, ds.RECORDING_NAMES.index("time_of_day")]
+    out["time_of_day_quartiles"] = {g: [float(v) for v in np.percentile(tod[y == lab], [0, 25, 50, 75, 100])]
+                                    for g, lab in (("autistic", 1), ("td", 0))}
+    # convergent validity: the same walk measured from video and from depth
+    V = feature_matrix([prepare_sequence(raw(s)) for s in S])
+    pairs = {"step_width": "step_width", "arm_swing": "arm_swing", "knee_rom": "knee_rom",
+             "elbow_rom": "elbow_rom", "trunk_sway": "trunk_sway", "head_bob": "head_bob",
+             "wrist_height": "wrist_height"}
+    conv = {}
+    for dk, vk in pairs.items():
+        a, b = F[:, ds.FEATURE_NAMES.index(dk)], V[:, FEATURE_NAMES.index(vk)]
+        ok = np.isfinite(a) & np.isfinite(b)
+        rho = stats.spearmanr(a[ok], b[ok])
+        conv[dk] = {"rho": float(rho.correlation), "p": float(rho.pvalue)}
+    out["video_depth_spearman"] = conv
+    return out
+
+
 # ── runtime ───────────────────────────────────────────────────────────────────
 
 @torch.no_grad()
@@ -525,7 +837,9 @@ def main():
                      ("selection", lambda: selection(device)),
                      ("attribution", lambda: attribution(device)), ("gait", gait),
                      ("format", frame_format),
-                     ("runtime", runtime)):
+                     ("runtime", runtime),
+                     ("selection_nulls", lambda: selection_nulls(device)),
+                     ("movement", movement), ("depth", depth)):
         if want(name):
             t0 = time.time()
             res[name] = fn()

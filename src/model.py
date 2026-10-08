@@ -1,5 +1,5 @@
 """
-PACE-ASD — Model Architecture
+PACE — Model Architecture
 
 Pipeline:
   SpatialEncoder (per-frame residual MLP with LayerNorm)
@@ -493,7 +493,7 @@ class TemporalEventTransformer(nn.Module):
         return attn
 
 
-# ── E. Full PACE-ASD Model ────────────────────────────────────────────────────
+# ── E. Full PACE Model ────────────────────────────────────────────────────
 
 def align_onset(x: torch.Tensor) -> torch.Tensor:
     """Shift each sequence in (B, T, J, C) so that its first frame with a
@@ -524,7 +524,7 @@ def motion_energy(x: torch.Tensor):
 
 class ASDMotionModel(nn.Module):
     """
-    Full PACE-ASD pipeline with ablation variant flags.
+    Full PACE pipeline with ablation variant flags.
 
     Args:
         config       : dict from config.yaml

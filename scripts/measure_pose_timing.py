@@ -1,8 +1,8 @@
 """
-PACE-ASD — end-to-end timing from video to probability on the processor.
+PACE — end-to-end timing from video to probability on the processor.
 
 Scores N videos of the cohort with the released ensemble through
-PACEASDPredictor.predict_video (MediaPipe Pose, normalisation, preparation,
+PACEPredictor.predict_video (MediaPipe Pose, normalisation, preparation,
 ensemble, block agreement and attribution), one video at a time in a single
 process, and records the time spent on pose extraction and on everything
 after it. Writes results/pose_timing.json.
@@ -24,7 +24,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 os.chdir(ROOT)
 
-from inference_api import PACEASDPredictor          # noqa: E402
+from inference_api import PACEPredictor          # noqa: E402
 from preprocess import build_video_catalogue        # noqa: E402
 
 
@@ -39,7 +39,7 @@ def main():
     cat = [e for e in build_video_catalogue(a.raw_dir) if e["group"] == "regular"]
     asd = [e for e in cat if e["label"] == 1][: a.n // 2]
     td = [e for e in cat if e["label"] == 0][: a.n - a.n // 2]
-    pred = PACEASDPredictor(a.checkpoints, device=a.device)
+    pred = PACEPredictor(a.checkpoints, device=a.device)
     pred.predict_npy(f"processed/features/{asd[0]['clip_id']}.npy")     # warm-up
     rows = []
     for e in asd + td:
