@@ -5,10 +5,15 @@ whose position is known?
 Backgrounds are the prepared walking sequences of the cohort. From each
 child's sequence two synthetic sequences are made: one with a planted event
 (label 1) and one without (label 0), so the background carries no
-information about the label. The event is a burst of rapid vertical
-oscillation of both wrists and hands (landmarks 15-22; elbows at half
-amplitude), Hann-windowed, lasting D frames, at a uniformly random position
-inside the detected span. Models are trained with the standard recipe in a
+information about the label. The event resembles hand flapping: both hands
+and wrists (landmarks 15-22; elbows at half the displacement) are raised by
+`amp` shoulder widths and oscillate vertically by OSC shoulder widths with a
+period of PERIOD frames, under a flat-topped (Tukey) window lasting DURATION
+frames, at a uniformly random position inside the detected span. (A pure
+oscillation without the raise was not separable from the tracking noise of
+the hand landmarks even by a matched filter, so the raise is what makes the
+event detectable; `reference_detection` reports how detectable each
+amplitude is for a simple hand-height detector.) Models are trained with the standard recipe in a
 5-fold cross-validation grouped by background child (one inner validation
 fold per outer fold) and evaluated on the held-out backgrounds:
 
@@ -24,7 +29,8 @@ fold per outer fold) and evaluated on the held-out backgrounds:
                 (model-randomisation check)
 
 Usage:
-    python scripts/synthetic_events.py --amplitudes 0.05 0.1 --jobs 4
+    python scripts/synthetic_events.py --amplitudes 1.0 1.5 2.0 3.0 --jobs 3
+    python scripts/synthetic_events.py --summarize
 """
 
 import argparse
@@ -53,8 +59,9 @@ from sequence import valid_mask                                  # noqa: E402
 EVENT_LANDMARKS = list(range(15, 23))
 ELBOWS = [13, 14]
 ARMS_HANDS = list(range(11, 23))
-DURATION = 30          # frames
-PERIOD = 10            # frames per oscillation cycle
+DURATION = 30          # frames (0.5 s at 60 frames per second)
+PERIOD = 10            # frames per oscillation cycle (6 Hz)
+OSC = 0.2              # oscillation amplitude, shoulder widths
 SEED = 20261009
 
 SYN_ARMS = {           # name: (arm, overrides)
@@ -66,9 +73,11 @@ SYN_ARMS = {           # name: (arm, overrides)
 
 
 def plant(seq, start, amp):
+    from scipy.signal.windows import tukey
     out = seq.copy()
     t = np.arange(DURATION)
-    disp = amp * np.sin(2 * np.pi * t / PERIOD) * np.hanning(DURATION)
+    env = tukey(DURATION, 0.5)
+    disp = (-amp + OSC * np.sin(2 * np.pi * t / PERIOD)) * env     # image y points down
     vm = valid_mask(seq)[start:start + DURATION]
     out[start:start + DURATION, EVENT_LANDMARKS, 1] += (disp * vm)[:, None]
     out[start:start + DURATION, ELBOWS, 1] += (0.5 * disp * vm)[:, None]
@@ -86,6 +95,22 @@ def make_dataset(arrays, amp, seed=SEED):
         data[f"{s}+"] = {"x": plant(seq, start, amp), "y": 1, "bg": s, "event": [start, start + DURATION]}
         data[f"{s}-"] = {"x": seq, "y": 0, "bg": s, "event": None}
     return data
+
+
+def reference_detection(arrays, amp):
+    """AUC of a simple detector (lowest 30-frame mean of hand height relative
+    to the shoulders, against the recording's median) for event versus no
+    event, over all backgrounds."""
+    from sequence import fill_internal_gaps
+    data = make_dataset(arrays, amp)
+    ys, sc = [], []
+    for d in data.values():
+        x = fill_internal_gaps(d["x"])
+        n = int(valid_mask(x).sum())
+        h = (x[:n, 15:23, 1] - x[:n, [11, 12], 1].mean(1, keepdims=True)).mean(1)
+        sc.append(float(np.median(h) - min(h[i:i + DURATION].mean() for i in range(max(1, n - DURATION)))))
+        ys.append(d["y"])
+    return float(roc_auc_score(ys, sc))
 
 
 def splits(backgrounds, seed=SEED):
@@ -175,12 +200,19 @@ def run_one(arm_name, amp, fold, device):
     print(f"[synthetic] {arm_name} amp={amp} fold={fold} auc={res['trained']['auc']:.3f}", flush=True)
 
 
+LEARNED_AUC = 0.9
+
+
 def summarize():
     """results/synthetic/summary.json: per amplitude and configuration, the
     detection AUC over folds and the localisation measures over held-out
     sequences with an event, for trained and randomly initialised networks."""
     import glob
-    out = {"duration_frames": DURATION, "period_frames": PERIOD}
+    out = {"duration_frames": DURATION, "period_frames": PERIOD, "oscillation": OSC,
+           "learned_auc": LEARNED_AUC}
+    config = yaml.safe_load(open("configs/config.yaml"))
+    part = make_partition(config)
+    arrays = load_arrays(config, part["subjects"], True)
     for d in sorted(glob.glob(os.path.join("results", "synthetic", "amp*"))):
         amp = os.path.basename(d)[3:]
         for arm_dir in sorted(glob.glob(os.path.join(d, "*"))):
@@ -200,15 +232,27 @@ def summarize():
                 if "coverage" in seqs[0]:
                     diff = np.array([q["coverage"] - q["coverage_chance"] for q in seqs])
                     k["coverage_excess_p"] = float(__import__("scipy").stats.wilcoxon(diff).pvalue)
+                # learning is all-or-nothing across folds: report how many folds
+                # detected the event (AUC >= LEARNED_AUC) and localisation within them
+                learned = [r for r in recs if r[kind]["auc"] >= LEARNED_AUC]
+                k["n_learned"] = len(learned)
+                k["auc_min"], k["auc_max"] = float(min(k["auc_folds"])), float(max(k["auc_folds"]))
+                lseqs = [q for r in learned for q in r[kind]["per_sequence"]]
+                for m in ("coverage", "coverage_chance", "top1_hit", "top1_chance", "attr_event_share"):
+                    vals = [float(q[m]) for q in lseqs if m in q]
+                    if vals:
+                        k[m + "_learned"] = float(np.mean(vals))
                 res[kind] = k
             out.setdefault(amp, {})[os.path.basename(arm_dir)] = res
+        if amp in out:
+            out[amp]["reference_detection_auc"] = reference_detection(arrays, float(amp))
     json.dump(out, open(os.path.join("results", "synthetic", "summary.json"), "w"), indent=1)
     return out
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--amplitudes", type=float, nargs="+", default=[0.05, 0.1])
+    ap.add_argument("--amplitudes", type=float, nargs="+", default=[1.0, 1.5, 2.0, 3.0])
     ap.add_argument("--arms", nargs="+", default=list(SYN_ARMS))
     ap.add_argument("--jobs", type=int, default=1)
     ap.add_argument("--one", nargs=3, default=None, metavar=("ARM", "AMP", "FOLD"))

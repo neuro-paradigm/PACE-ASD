@@ -77,15 +77,44 @@ use them to score new recordings, not to estimate performance on this cohort.
 | 3. Tests | `python -m pytest tests -q` | |
 | 4. Feature classifiers and controls | `python scripts/run_feature_models.py` | `results/cv/runs/<model>/` |
 | 5. Networks (pilot, PACE-ASD family, comparison architectures) | `python scripts/run_all_cv.py --stage pilot`, then `--stage pace`, then `--stage comparison` | `results/cv/runs/<arm>/`, `models/cv/` |
-| 6. Planted-event benchmark | `python scripts/synthetic_events.py --amplitudes 0.05 0.1 --jobs 3` then `--summarize` | `results/synthetic/` |
+| 6. Planted-event benchmark | `python scripts/synthetic_events.py --jobs 2` then `--summarize` | `results/synthetic/` |
 | 7. Summaries | `python scripts/analyze_cv.py` and `python scripts/analyze_mechanisms.py` | `results/cv/summary.json`, `results/cv/mechanisms.json` |
 | 8. Released ensemble | `python scripts/train_release.py` | `models/release/` |
+| 9. Rerun check | `python scripts/check_reproducibility.py` | `results/cv/reproducibility.json` |
 
 All settings are in `configs/config.yaml`; the partition is frozen in
 `splits/cv_partition.json`. Every run is seeded and uses deterministic GPU
 kernels; runs resume at the level of an outer fold.
 
 <!-- RESULTS_TABLE -->
+### Results on the demonstration cohort
+
+Out-of-fold AUC (95% interval over children), 1 x 5-fold nested cross-validation over 95 children; 'cropped' = the 15 autistic and 45 typically developing children whose videos were cropped (the only frame format both groups share). Source: `results/cv/summary.json`, `results/cv/mechanisms.json`.
+
+| Configuration | AUC, all children | AUC, cropped videos |
+|---|---|---|
+| controls: clip duration | 0.644 (0.52-0.75) | 0.493 (0.33-0.70) |
+| controls: validity pattern | 0.648 (0.53-0.75) | 0.566 (0.41-0.73) |
+| controls: age and sex | 0.699 (0.58-0.80) | 0.655 (0.51-0.79) |
+| controls: frame format | 0.884 (0.80-0.95) | 0.671 (0.54-0.80) |
+| controls: all of the above | 0.905 (0.84-0.96) | - |
+| controls: validity-only network | 0.639 (0.53-0.74) | - |
+| gait-descriptor classifiers: logistic regression | 0.843 (0.75-0.92) | 0.962 (0.92-0.99) |
+| gait-descriptor classifiers: support vector machine | 0.848 (0.76-0.92) | 0.944 (0.89-0.98) |
+| gait-descriptor classifiers: random forest | 0.884 (0.81-0.95) | 0.973 (0.93-1.00) |
+| gait-descriptor classifiers: gradient-boosted trees | 0.870 (0.79-0.94) | 0.950 (0.90-0.99) |
+| gait-descriptor classifiers: logistic regression, image-normalized | 0.787 (0.69-0.88) | 0.951 (0.90-0.99) |
+| comparison networks: BiGRU | 0.864 (0.78-0.93) | - |
+| reference network and ablations: reference (L=15, M=8) | 0.892 (0.82-0.96) | 0.957 (0.91-0.99) |
+| reference network and ablations: no gate | 0.873 (0.79-0.95) | 0.952 (0.91-0.99) |
+| reference network and ablations: frame selection (L=1, M=120) | 0.899 (0.83-0.96) | 0.956 (0.91-0.99) |
+| reference network and ablations: budget M=4 | 0.897 (0.82-0.96) | 0.962 (0.92-0.99) |
+| reference network and ablations: averaging instead of attention | 0.887 (0.81-0.95) | 0.953 (0.90-0.99) |
+| reference network and ablations: no validity masking | 0.878 (0.80-0.95) | 0.948 (0.90-0.98) |
+| reference network and ablations: no onset alignment | 0.880 (0.80-0.95) | - |
+| reference network and ablations: epoch selection by validation loss | 0.890 (0.81-0.95) | - |
+
+Frame format alone separates the groups in this dataset; evidence about movement comes from the cropped videos. Nothing here establishes clinical validity.
 <!-- /RESULTS_TABLE -->
 
 ---

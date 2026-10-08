@@ -50,6 +50,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `processed/participant_metadata.csv`: sex and age from the deposit's readme.
 - GitHub Actions workflow running the tests on Ubuntu, Windows and macOS.
 - `scripts/train_release.py` and the released ensemble in `models/release/`.
+- `scripts/check_reproducibility.py`: reruns one outer fold and compares its
+  predictions with the stored ones.
+- `scripts/measure_pose_timing.py`: pose-extraction and end-to-end timing.
 
 ## [1.1.0] — unreleased
 

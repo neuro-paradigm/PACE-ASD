@@ -19,16 +19,21 @@ article (Intel Core i5-13450HX, RTX 4050 Laptop GPU, Windows 11).
    `python scripts/run_all_cv.py --stage pilot --jobs 3`,
    `python scripts/run_all_cv.py --stage pace --jobs 3`,
    `python scripts/run_all_cv.py --stage comparison --jobs 3`
-7. **Planted events**: `python scripts/synthetic_events.py --amplitudes 0.05 0.1 --jobs 3`,
+7. **Planted events** (amplitudes 1.0, 1.5, 2.0 and 3.0 by default):
+   `python scripts/synthetic_events.py --jobs 2`,
    then `python scripts/synthetic_events.py --summarize`
 8. **Released ensemble**: `python scripts/train_release.py`
 9. **Summaries**: `python scripts/analyze_cv.py` and `python scripts/analyze_mechanisms.py`
 10. **Timing**: `python scripts/measure_pose_timing.py --n 10 --device cpu`
+11. **Rerun check**: `python scripts/check_reproducibility.py --arm PACE --repeat 0 --fold 0`
+    reruns one outer fold into `results/repro/` and compares its predictions
+    with the stored ones (`results/cv/reproducibility.json`).
 
 The partition (`splits/cv_partition.json`) is part of the repository; deleting
 it makes `run_cv.py` generate it again from `cv.seed` in `configs/config.yaml`,
 which gives the same partition.
 
 Every model is seeded and trained with deterministic GPU kernels, so a rerun on
-the same hardware and library versions reproduces the stored predictions;
+the same hardware and library versions reproduces the stored predictions
+(step 11 reproduced one outer fold of the reference network bit for bit);
 other hardware reproduces the protocol, not necessarily every bit.
