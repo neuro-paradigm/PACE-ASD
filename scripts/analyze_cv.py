@@ -205,9 +205,11 @@ def main():
     n_test = N / part["n_outer"]
     summary["paired_differences_nadeau_bengio"] = {
         f"{a} - {b}": nadeau_bengio(recs[a], recs[b], N - n_test, n_test) for a, b in pairs}
+    # calibration intervals for every model, from the same resamples of children
+    cal, _ = bootstrap(y, mats, full=True)
+    for n in mats:
+        perf[n]["ci95_calibration"] = cal[n]
     if ref in mats:
-        cal, _ = bootstrap(y, {ref: mats[ref]}, full=True)
-        perf[ref]["ci95_calibration"] = cal[ref]
         # pooled reliability data for the figure
         summary["reliability"] = {"probs": mats[ref].mean(0).tolist(), "labels": y.tolist(),
                                   "subjects": S}

@@ -272,6 +272,14 @@ def load_ckpt(path, device):
     return m, ck
 
 
+def chance_jaccard(n: int, k: int) -> float:
+    """Expected Jaccard index of two independent uniformly random k-subsets of
+    n items. The overlap j is hypergeometric, P(j) = C(k,j) C(n-k,k-j) / C(n,k),
+    and the union has 2k - j items, so E[J] = sum_j P(j) j / (2k - j)."""
+    j = np.arange(max(0, 2 * k - n), k + 1)
+    return float(np.sum(stats.hypergeom.pmf(j, n, k, k) * j / (2 * k - j)))
+
+
 @torch.no_grad()
 def selection(device):
     p, S, y = part_info()
@@ -300,8 +308,7 @@ def selection(device):
             js = [len(sets[i] & sets[j]) / max(len(sets[i] | sets[j]), 1)
                   for i in range(len(sets)) for j in range(i + 1, len(sets))]
             n, k = nvb[s], min(M, nvb[s])
-            ov = k * k / n
-            ch = ov / (2 * k - ov)
+            ch = chance_jaccard(n, k)
             per_child[s] = {"jaccard": float(np.mean(js)), "chance": ch, "n_valid_units": n,
                             "n_models": len(sets)}
             jac.append(np.mean(js)); chance.append(ch)
