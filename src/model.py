@@ -27,6 +27,26 @@ Frame validity (config keys under `model`):
                  follow the last one (tests/test_padding_invariance.py).
   Both default to False so that checkpoints whose stored configuration lacks
   the keys load with the behaviour they were trained with.
+
+Gate training (config keys under `model`; defaults reproduce the hard gate):
+  gate_train_mode : "hard"      top-M of the learned scores (default)
+                    "anneal"    temporary larger budget: every block in epoch 1,
+                                decreasing linearly to M by epoch
+                                `gate_anneal_epochs` (needs set_epoch)
+                    "gumbel"    top-M of the scores plus standard Gumbel noise
+                                (stochastic exploration, Gumbel-top-k)
+                    "perturbed" differentiable relaxation: expected top-M
+                                selection over `gate_n_perturb` Gaussian
+                                perturbations of scale `gate_sigma`, with the
+                                perturbed-optimizer gradient estimator; tokens
+                                and positional encodings are the expected
+                                blocks
+                  All modes act during training only; evaluation is always the
+                  deterministic hard top-M, so the invariance above holds.
+  gate_scores     : "learned"   (default) or "motion": blocks scored by their
+                    mean motion energy (sum over landmarks of the frame-to-
+                    frame displacement over pairs of valid frames), selected
+                    without sigmoid weighting; a heuristic, not a learned gate.
 """
 
 import math
@@ -187,6 +207,31 @@ class MicrokineticEncoder(nn.Module):
 
 # ── C. Block-Level Event Saliency Gate (Block-ESG) ───────────────────────────
 
+class _PerturbedTopK(torch.autograd.Function):
+    """Expected top-k selection under Gaussian perturbation of the scores
+    (Berthet et al., 2020; Cordonnier et al., 2021). Returns (B, k, N): for
+    each of the k slots (selected blocks in temporal order) the probability
+    of each block. The gradient is the perturbed-optimizer estimator
+    d E[P(s + sigma Z)] / ds = E[P(s + sigma Z) Z^T] / sigma."""
+
+    @staticmethod
+    def forward(ctx, scores, k: int, n: int, sigma: float):
+        B, N = scores.shape
+        noise = torch.randn(n, B, N, device=scores.device, dtype=scores.dtype)
+        idx = torch.topk(scores.unsqueeze(0) + sigma * noise, k, dim=-1).indices
+        idx = torch.sort(idx, dim=-1).values                    # (n, B, k)
+        P = F.one_hot(idx, N).to(scores.dtype)                  # (n, B, k, N)
+        ctx.save_for_backward(P, noise)
+        ctx.sigma = sigma
+        return P.mean(dim=0)
+
+    @staticmethod
+    def backward(ctx, grad):
+        P, noise = ctx.saved_tensors
+        g = torch.einsum("nbkm,bkm->nb", P, grad)               # (n, B)
+        return (g.unsqueeze(-1) * noise).mean(dim=0) / ctx.sigma, None, None, None
+
+
 class EventSaliencyGate(nn.Module):
     """
     Allocates a fixed temporal token budget (K = top_m * block_size, default 8*15=120 frames)
@@ -200,10 +245,22 @@ class EventSaliencyGate(nn.Module):
             selected_indices (B, M*L)   — original frame positions
     """
 
-    def __init__(self, input_dim: int, block_size: int = 15, top_m: int = 8):
+    def __init__(self, input_dim: int, block_size: int = 15, top_m: int = 8,
+                 train_mode: str = "hard", score_source: str = "learned",
+                 anneal_epochs: int = 20, n_perturb: int = 16, sigma: float = 0.5):
         super().__init__()
+        if train_mode not in ("hard", "anneal", "gumbel", "perturbed"):
+            raise ValueError(f"unknown gate_train_mode {train_mode!r}")
+        if score_source not in ("learned", "motion"):
+            raise ValueError(f"unknown gate_scores {score_source!r}")
         self.block_size = block_size
         self.top_m      = top_m
+        self.train_mode = train_mode
+        self.score_source = score_source
+        self.anneal_epochs = anneal_epochs
+        self.n_perturb = n_perturb
+        self.sigma = sigma
+        self.epoch = None                       # set by set_epoch during training
         self.gate = nn.Sequential(
             nn.Linear(input_dim, input_dim // 2),
             nn.GELU(),
@@ -212,12 +269,29 @@ class EventSaliencyGate(nn.Module):
         self._last_block_scores: torch.Tensor | None = None
         self._last_valid_blocks: torch.Tensor | None = None
         self._last_token_mask: torch.Tensor | None = None
+        self._last_soft_selection: torch.Tensor | None = None
 
-    def forward(self, x: torch.Tensor, frame_mask: torch.Tensor | None = None):
+    def training_budget(self, n_blocks: int) -> int:
+        """Budget used in the current training epoch (annealing schedule)."""
+        M = self.top_m
+        if not (self.training and self.train_mode == "anneal" and self.epoch is not None):
+            return min(M, n_blocks)
+        E = max(self.anneal_epochs, 2)
+        if self.epoch >= E:
+            return min(M, n_blocks)
+        start = 20                              # blocks in a 300-frame sequence
+        m = round(start - (start - M) * (self.epoch - 1) / (E - 1))
+        return min(max(M, m), n_blocks)
+
+    def forward(self, x: torch.Tensor, frame_mask: torch.Tensor | None = None,
+                frame_energy: torch.Tensor | None = None,
+                energy_mask: torch.Tensor | None = None):
         """
         frame_mask: optional (B, T) bool, True = valid frame. When given, block
         validity and block means use valid frames only, and the token mask of
         the selection is stored in self._last_token_mask (True = valid token).
+        frame_energy / energy_mask: (B, T) motion energy and validity of the
+        frame pair it is computed from; required with gate_scores = "motion".
         """
         B, T, D  = x.shape
         L, M     = self.block_size, self.top_m
@@ -228,6 +302,9 @@ class EventSaliencyGate(nn.Module):
             x       = F.pad(x, (0, 0, 0, pad_len))
             if frame_mask is not None:
                 frame_mask = F.pad(frame_mask, (0, pad_len), value=False)
+            if frame_energy is not None:
+                frame_energy = F.pad(frame_energy, (0, pad_len))
+                energy_mask = F.pad(energy_mask, (0, pad_len), value=False)
         T_pad = x.shape[1]
         N     = T_pad // L                              # number of candidate blocks
 
@@ -244,31 +321,62 @@ class EventSaliencyGate(nn.Module):
             block_repr = (blocks * fm.unsqueeze(-1).to(x.dtype)).sum(dim=2) / n_valid
             valid_block_mask = fm.any(dim=2)                # (B, N)
 
-        raw_scores = self.gate(block_repr).squeeze(-1)  # (B, N)
+        if self.score_source == "motion":
+            if frame_energy is None:
+                raise ValueError("gate_scores='motion' needs frame_energy")
+            em = energy_mask.view(B, N, L).to(x.dtype)
+            raw_scores = ((frame_energy.view(B, N, L) * em).sum(dim=2)
+                          / em.sum(dim=2).clamp(min=1.0))
+        else:
+            raw_scores = self.gate(block_repr).squeeze(-1)  # (B, N)
         self._last_block_scores = raw_scores.detach()
         self._last_valid_blocks = valid_block_mask.detach()
+        self._last_soft_selection = None
 
         # Prioritize valid movement blocks by masking out padding
         masked_scores = raw_scores.masked_fill(~valid_block_mask, -1e9)
 
-        m = min(M, N)
-        _, top_idx   = torch.topk(masked_scores, m, dim=1)    # (B, m)
+        m = self.training_budget(N)
+        frame_offsets = torch.arange(L, device=x.device).view(1, 1, L)      # (1,1,L)
+        learned = self.score_source == "learned"
+
+        if self.training and learned and self.train_mode == "perturbed":
+            # expected selection: slot k is a mixture of blocks
+            P = _PerturbedTopK.apply(masked_scores, m, self.n_perturb, self.sigma)  # (B, m, N)
+            w = torch.sigmoid(raw_scores).unsqueeze(-1).unsqueeze(-1)
+            sel_blocks = torch.einsum("bkn,bnld->bkld", P, blocks * w)
+            sel_frames = sel_blocks.reshape(B, m * L, D)
+            top_idx = P.argmax(dim=-1)                                         # most probable block
+            sel_indices = (top_idx.unsqueeze(-1) * L + frame_offsets).reshape(B, -1)
+            self._last_soft_selection = P
+            if frame_mask is not None:
+                fm = frame_mask.view(B, N, L).to(x.dtype)
+                self._last_token_mask = (torch.einsum("bkn,bnl->bkl", P, fm) > 1e-6).reshape(B, -1)
+            else:
+                self._last_token_mask = None
+            return sel_frames, sel_indices
+
+        rank_scores = masked_scores
+        if self.training and learned and self.train_mode == "gumbel":
+            u = torch.rand_like(raw_scores).clamp(1e-6, 1 - 1e-6)
+            rank_scores = masked_scores + (-torch.log(-torch.log(u))).masked_fill(~valid_block_mask, 0.0)
+        _, top_idx   = torch.topk(rank_scores, m, dim=1)     # (B, m)
         top_idx, _   = torch.sort(top_idx, dim=1)            # temporal order
 
         # Gather selected blocks
         top_exp = top_idx.unsqueeze(-1).unsqueeze(-1).expand(-1, -1, L, D)
         sel_blocks = torch.gather(blocks, 1, top_exp)        # (B, m, L, D)
 
-        # Differentiable saliency weighting
-        sel_scores  = torch.gather(raw_scores, 1, top_idx)                    # (B, m)
-        sal_weights = torch.sigmoid(sel_scores).unsqueeze(-1).unsqueeze(-1)
-        sel_blocks  = sel_blocks * sal_weights
+        # Differentiable saliency weighting (the heuristic gate is unweighted)
+        if learned:
+            sel_scores  = torch.gather(raw_scores, 1, top_idx)                # (B, m)
+            sal_weights = torch.sigmoid(sel_scores).unsqueeze(-1).unsqueeze(-1)
+            sel_blocks  = sel_blocks * sal_weights
 
         sel_frames = sel_blocks.reshape(B, m * L, D)
 
         # Reconstruct original frame indices
         offsets         = top_idx * L                                        # (B, m)
-        frame_offsets   = torch.arange(L, device=x.device).view(1, 1, L)    # (1,1,L)
         sel_indices     = (offsets.unsqueeze(-1) + frame_offsets).reshape(B, -1)
 
         if frame_mask is not None:
@@ -289,6 +397,11 @@ class EventSaliencyGate(nn.Module):
 
     def get_token_mask(self) -> torch.Tensor | None:
         return self._last_token_mask
+
+    def get_soft_selection(self) -> torch.Tensor | None:
+        """(B, M, N) expected selection of the last training-mode forward pass
+        with gate_train_mode = "perturbed"; None otherwise."""
+        return self._last_soft_selection
 
 
 # ── D. Temporal Event Transformer ────────────────────────────────────────────
@@ -342,10 +455,20 @@ class TemporalEventTransformer(nn.Module):
         self.out_proj    = nn.Linear(input_dim, output_dim)
         self.norm        = nn.LayerNorm(output_dim)
 
+    def soft_positions(self, soft_sel: torch.Tensor, block_size: int) -> torch.Tensor:
+        """Expected positional encodings of soft-selected blocks: soft_sel is
+        (B, M, N); returns (B, M * block_size, d_model)."""
+        B, M, N = soft_sel.shape
+        pe = self.pos_enc.pe[0, :N * block_size].view(N, block_size, -1)
+        return torch.einsum("bkn,nld->bkld", soft_sel, pe).reshape(B, M * block_size, -1)
+
     def forward(self, x: torch.Tensor, indices: torch.Tensor,
-                token_mask: torch.Tensor | None = None) -> torch.Tensor:
-        """token_mask: optional (B, K) bool, True = valid token."""
-        x = self.input_proj(x) + self.pos_enc(indices)
+                token_mask: torch.Tensor | None = None,
+                positions: torch.Tensor | None = None) -> torch.Tensor:
+        """token_mask: optional (B, K) bool, True = valid token. positions:
+        optional precomputed positional encodings (B, K, d) used instead of
+        the encodings of `indices` (soft selection during training)."""
+        x = self.input_proj(x) + (self.pos_enc(indices) if positions is None else positions)
         if token_mask is None:
             x = self.transformer(x)
             x = x.mean(dim=1)
@@ -385,6 +508,18 @@ def align_onset(x: torch.Tensor) -> torch.Tensor:
     keep = (src < T).to(x.dtype)
     idx = src.clamp(max=T - 1)[:, :, None, None].expand(-1, -1, *x.shape[2:])
     return torch.gather(x, 1, idx) * keep[:, :, None, None]
+
+
+def motion_energy(x: torch.Tensor):
+    """(B, T, J, C) prepared positions -> per-frame motion energy (sum over
+    landmarks of the displacement from the previous frame) and the validity
+    of the frame pair it is computed from, both (B, T)."""
+    valid = x.abs().sum(dim=(-2, -1)) > 1e-4
+    e = torch.zeros(valid.shape, dtype=x.dtype, device=x.device)
+    e[:, 1:] = (x[:, 1:] - x[:, :-1]).norm(dim=-1).sum(dim=-1)
+    pair = torch.zeros_like(valid)
+    pair[:, 1:] = valid[:, 1:] & valid[:, :-1]
+    return e * pair.to(x.dtype), pair
 
 
 class ASDMotionModel(nn.Module):
@@ -427,6 +562,11 @@ class ASDMotionModel(nn.Module):
                 input_dim=micro_dim,
                 block_size=mc.get("event_block_size", 15),
                 top_m=mc.get("event_top_m", 8),
+                train_mode=mc.get("gate_train_mode", "hard"),
+                score_source=mc.get("gate_scores", "learned"),
+                anneal_epochs=mc.get("gate_anneal_epochs", 20),
+                n_perturb=mc.get("gate_n_perturb", 16),
+                sigma=mc.get("gate_sigma", 0.5),
             )
         else:
             self.saliency_gate = None
@@ -458,6 +598,12 @@ class ASDMotionModel(nn.Module):
         # Platt calibration temperature (post-hoc)
         self.temperature = nn.Parameter(torch.ones(1), requires_grad=False)
 
+    def set_epoch(self, epoch: int) -> None:
+        """Called by the trainer at the start of every epoch (1-based); used
+        by the annealed gate budget."""
+        if self.saliency_gate is not None:
+            self.saliency_gate.epoch = epoch
+
     def forward(self, x: torch.Tensor, calibrate: bool = False):
         """
         Args:
@@ -472,7 +618,11 @@ class ASDMotionModel(nn.Module):
 
         # D. Temporal aggregation
         if self.use_transformer:
-            global_repr = self.temporal_transformer(tokens, indices, token_mask)  # (B, spatial_dim)
+            soft = self.saliency_gate.get_soft_selection() if self.use_gate else None
+            positions = None if soft is None else self.temporal_transformer.soft_positions(
+                soft, self.saliency_gate.block_size)
+            global_repr = self.temporal_transformer(tokens, indices, token_mask,
+                                                    positions)            # (B, spatial_dim)
         elif token_mask is None:
             global_repr = self.no_tf_proj(tokens.mean(dim=1))
         else:
@@ -509,7 +659,11 @@ class ASDMotionModel(nn.Module):
 
         # C. Event selection
         if self.use_gate:
-            tokens, indices = self.saliency_gate(micro, frame_mask)  # (B, M*L, micro_dim)
+            energy = energy_mask = None
+            if self.saliency_gate.score_source == "motion":
+                energy, energy_mask = motion_energy(x)
+            tokens, indices = self.saliency_gate(micro, frame_mask, energy,
+                                                 energy_mask)        # (B, M*L, micro_dim)
             token_mask = self.saliency_gate.get_token_mask()
         else:
             tokens  = micro

@@ -128,5 +128,5 @@ def test_display_path_on_another_drive():
     """Checkpoints on another drive than the working directory (as on Windows
     CI runners) must not make inference fail."""
     from inference_api import display_path
-    other = "Z:\models\m.pt" if os.name == "nt" else "/tmp/m.pt"
+    other = r"Z:\models\m.pt" if os.name == "nt" else "/tmp/m.pt"
     assert display_path(other)

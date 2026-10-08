@@ -177,6 +177,8 @@ def fit_model(arm: str, cfg: dict, train_x, train_y, val_x, val_y, seed: int,
     t0 = time.time()
     for epoch in range(1, tc["epochs"] + 1):
         model.train()
+        if hasattr(model, "set_epoch"):
+            model.set_epoch(epoch)
         tot, nb = 0.0, 0
         for xb, yb in _batches(ep_x, ep_y, tc["batch_size"], shuffle=True):
             xb = np.stack([augment_sequence(s) for s in xb])
