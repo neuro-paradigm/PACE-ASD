@@ -45,7 +45,7 @@ python -m venv .venv
 source .venv/bin/activate            # Windows: .venv\Scripts\activate
 pip install torch==2.1.2 torchvision==0.16.2 --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements.txt
-python -m pytest tests -q            # synthetic data only, about 15 s
+python -m pytest tests -q            # synthetic data only, a few seconds
 ```
 
 Score a stored landmark array or a video with the released ensemble:
