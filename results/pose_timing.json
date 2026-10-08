@@ -1,0 +1,113 @@
+{
+ "n_videos": 10,
+ "device": "cpu",
+ "n_models": 15,
+ "threads": 8,
+ "ms_per_frame_median": 76.80677552552552,
+ "seconds_per_video_median": 9.786999999999999,
+ "frames_per_video_median": 123.5,
+ "model_seconds_median": 0.1753,
+ "end_to_end_seconds_median": 10.139,
+ "rows": [
+  {
+   "clip_id": "asd_1",
+   "frames": 129,
+   "width": 1080,
+   "height": 1920,
+   "pose_seconds": 12.991,
+   "model_seconds": 0.1839,
+   "total_seconds": 13.433,
+   "probability": 0.158868
+  },
+  {
+   "clip_id": "asd_2",
+   "frames": 245,
+   "width": 1080,
+   "height": 1920,
+   "pose_seconds": 21.591,
+   "model_seconds": 0.1768,
+   "total_seconds": 22.129,
+   "probability": 0.887309
+  },
+  {
+   "clip_id": "asd_3",
+   "frames": 200,
+   "width": 1080,
+   "height": 1920,
+   "pose_seconds": 17.47,
+   "model_seconds": 0.1796,
+   "total_seconds": 17.98,
+   "probability": 0.861257
+  },
+  {
+   "clip_id": "asd_4",
+   "frames": 111,
+   "width": 1080,
+   "height": 1920,
+   "pose_seconds": 8.565,
+   "model_seconds": 0.1416,
+   "total_seconds": 8.896,
+   "probability": 0.1857
+  },
+  {
+   "clip_id": "asd_5",
+   "frames": 287,
+   "width": 1080,
+   "height": 1920,
+   "pose_seconds": 21.56,
+   "model_seconds": 0.1738,
+   "total_seconds": 21.963,
+   "probability": 0.901596
+  },
+  {
+   "clip_id": "td_1",
+   "frames": 89,
+   "width": 736,
+   "height": 1680,
+   "pose_seconds": 6.482,
+   "model_seconds": 0.1908,
+   "total_seconds": 6.91,
+   "probability": 0.137566
+  },
+  {
+   "clip_id": "td_2",
+   "frames": 88,
+   "width": 656,
+   "height": 1380,
+   "pose_seconds": 6.821,
+   "model_seconds": 0.1777,
+   "total_seconds": 7.23,
+   "probability": 0.143878
+  },
+  {
+   "clip_id": "td_3",
+   "frames": 144,
+   "width": 700,
+   "height": 1300,
+   "pose_seconds": 11.009,
+   "model_seconds": 0.1525,
+   "total_seconds": 11.382,
+   "probability": 0.179471
+  },
+  {
+   "clip_id": "td_4",
+   "frames": 73,
+   "width": 692,
+   "height": 1172,
+   "pose_seconds": 5.341,
+   "model_seconds": 0.1604,
+   "total_seconds": 5.713,
+   "probability": 0.136221
+  },
+  {
+   "clip_id": "td_5",
+   "frames": 118,
+   "width": 664,
+   "height": 1108,
+   "pose_seconds": 8.132,
+   "model_seconds": 0.1536,
+   "total_seconds": 8.541,
+   "probability": 0.29915
+  }
+ ]
+}

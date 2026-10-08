@@ -1,0 +1,49 @@
+{
+ "stream_share": {
+  "position": 0.5028,
+  "velocity": 0.0896,
+  "acceleration": 0.4077
+ },
+ "region_share_velocity_acceleration": {
+  "head": 0.3299,
+  "arms_hands": 0.3661,
+  "hips": 0.0182,
+  "legs_feet": 0.2857
+ },
+ "landmark_share": [
+  0.02647,
+  0.02505,
+  0.02713,
+  0.03055,
+  0.02964,
+  0.02745,
+  0.02649,
+  0.02914,
+  0.0289,
+  0.02615,
+  0.03082,
+  0.03212,
+  0.03233,
+  0.02545,
+  0.0254,
+  0.02699,
+  0.02349,
+  0.02873,
+  0.03221,
+  0.03083,
+  0.03243,
+  0.02797,
+  0.02739,
+  0.00617,
+  0.00722,
+  0.02848,
+  0.02162,
+  0.04699,
+  0.04424,
+  0.04809,
+  0.04225,
+  0.04284,
+  0.05898
+ ],
+ "note": "Descriptor-level |gradient x input| averaged over ensemble members: the sensitivity of the trained models for this clip, not a measurement of the movement."
+}

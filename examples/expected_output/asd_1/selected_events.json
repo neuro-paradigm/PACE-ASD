@@ -1,0 +1,250 @@
+{
+ "block_size": 15,
+ "budget_blocks": 8,
+ "n_valid_blocks": 9,
+ "selection_is_trivial": false,
+ "blocks": [
+  {
+   "block": 0,
+   "input_frames": [
+    0,
+    14
+   ],
+   "valid_frames": 15,
+   "selected_by_fraction_of_models": 0.9333,
+   "mean_gate_score": 0.3796
+  },
+  {
+   "block": 1,
+   "input_frames": [
+    15,
+    29
+   ],
+   "valid_frames": 13,
+   "selected_by_fraction_of_models": 0.8667,
+   "mean_gate_score": 0.3125
+  },
+  {
+   "block": 2,
+   "input_frames": [
+    30,
+    44
+   ],
+   "valid_frames": 15,
+   "selected_by_fraction_of_models": 1.0,
+   "mean_gate_score": 0.3233
+  },
+  {
+   "block": 3,
+   "input_frames": [
+    45,
+    59
+   ],
+   "valid_frames": 15,
+   "selected_by_fraction_of_models": 0.9333,
+   "mean_gate_score": 0.2378
+  },
+  {
+   "block": 4,
+   "input_frames": [
+    60,
+    74
+   ],
+   "valid_frames": 15,
+   "selected_by_fraction_of_models": 1.0,
+   "mean_gate_score": 0.271
+  },
+  {
+   "block": 5,
+   "input_frames": [
+    75,
+    89
+   ],
+   "valid_frames": 14,
+   "selected_by_fraction_of_models": 0.4,
+   "mean_gate_score": 0.2309
+  },
+  {
+   "block": 6,
+   "input_frames": [
+    90,
+    104
+   ],
+   "valid_frames": 14,
+   "selected_by_fraction_of_models": 1.0,
+   "mean_gate_score": 0.3141
+  },
+  {
+   "block": 7,
+   "input_frames": [
+    105,
+    119
+   ],
+   "valid_frames": 15,
+   "selected_by_fraction_of_models": 1.0,
+   "mean_gate_score": 0.266
+  },
+  {
+   "block": 8,
+   "input_frames": [
+    120,
+    134
+   ],
+   "valid_frames": 9,
+   "selected_by_fraction_of_models": 0.8667,
+   "mean_gate_score": 0.3033
+  }
+ ],
+ "per_model": [
+  [
+   0,
+   1,
+   2,
+   3,
+   4,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   1,
+   2,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   1,
+   2,
+   3,
+   4,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   1,
+   2,
+   3,
+   4,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7
+  ],
+  [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   1,
+   2,
+   3,
+   4,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   1,
+   2,
+   3,
+   4,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   1,
+   2,
+   3,
+   4,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   1,
+   2,
+   3,
+   4,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   1,
+   2,
+   3,
+   4,
+   6,
+   7,
+   8
+  ],
+  [
+   0,
+   1,
+   2,
+   3,
+   4,
+   6,
+   7,
+   8
+  ]
+ ]
+}
