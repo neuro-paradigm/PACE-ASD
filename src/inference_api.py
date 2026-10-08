@@ -65,6 +65,15 @@ def _scaler_from(obj):
     return s
 
 
+def display_path(p: str) -> str:
+    """Path relative to the working directory when possible; absolute when the
+    file is on another drive (os.path.relpath raises on Windows then)."""
+    try:
+        return os.path.relpath(p)
+    except ValueError:
+        return os.path.abspath(p)
+
+
 def checkpoint_paths(spec) -> list:
     if isinstance(spec, (list, tuple)):
         return [str(p) for p in spec]
@@ -187,7 +196,7 @@ class PACEASDPredictor:
             "n_frames_rejected_implausible": n_rejected,
             "onset_frame": onset,
             "model_seconds": round(model_seconds, 4),
-            "checkpoints": [os.path.relpath(pp) for pp in self.paths],
+            "checkpoints": [display_path(pp) for pp in self.paths],
         }
         if video:
             out["video"] = video
