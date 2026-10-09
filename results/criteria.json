@@ -216,8 +216,8 @@
     0.7212283950617283,
     0.9437160493827159
    ],
-   "recording_auc_cropped": 0.6814814814814815,
-   "corroborates": true
+   "recording_auc_cropped": 0.9614814814814815,
+   "corroborates": false
   }
  },
  "C5": {
@@ -1825,6 +1825,14 @@
   "timing": "P",
   "permutation_null": {
    "All-controls": {
+    "null_mean": 0.4965311111111111,
+    "reference": 0.6569244444444444,
+    "observed": 0.969925925925926,
+    "p": 0.004975124378109453,
+    "n": 200,
+    "passes": true
+   },
+   "All-controls-linear": {
     "null_mean": 0.49761333333333335,
     "reference": 0.6617955555555556,
     "observed": 0.9801481481481481,
@@ -1872,6 +1880,14 @@
     "n": 200,
     "passes": true
    },
+   "Time-of-day": {
+    "null_mean": 0.4986055555555556,
+    "reference": 0.6378,
+    "observed": 0.8525925925925927,
+    "p": 0.004975124378109453,
+    "n": 200,
+    "passes": true
+   },
    "PACE": {
     "null_mean": 0.48288888888888887,
     "reference": 0.6106666666666667,
@@ -1883,58 +1899,58 @@
   },
   "all_controls_cropped": {
    "PACE": {
-    "diff": 0.008888888888888835,
+    "diff": 0.03456790123456788,
     "ci95": [
-     -0.053827160493827186,
-     0.08049382716049369
+     -0.046925925925925954,
+     0.13530864197530867
     ],
     "passes": false
    },
    "Gait-LR": {
-    "diff": 0.014814814814814836,
+    "diff": 0.04049382716049388,
     "ci95": [
-     -0.05283950617283939,
-     0.08939506172839502
+     -0.04592592592592582,
+     0.14371604938271607
     ],
     "passes": false
    },
    "Gait-RF": {
-    "diff": 0.0251851851851852,
+    "diff": 0.05086419753086424,
     "ci95": [
-     -0.03506172839506161,
-     0.09188888888888869
+     -0.032604938271605065,
+     0.15209876543209866
     ],
     "passes": false
    },
    "CTR-GCN": {
-    "diff": 0.02172839506172841,
+    "diff": 0.047407407407407454,
     "ci95": [
-     -0.04345679012345682,
-     0.09283950617283954
+     -0.03753086419753082,
+     0.1486790123456786
     ],
     "passes": false
    },
    "Gait-LR-adjusted": {
-    "diff": -0.008888888888888946,
+    "diff": 0.016790123456790096,
     "ci95": [
-     -0.09135802469135801,
-     0.0726172839506171
+     -0.07853086419753089,
+     0.12404938271604897
     ],
     "passes": false
    },
    "Mean-pose": {
-    "diff": -0.11358024691358015,
+    "diff": -0.08790123456790111,
     "ci95": [
-     -0.3106172839506173,
-     0.04495061728395052
+     -0.2944814814814815,
+     0.08740740740740727
     ],
     "passes": false
    },
    "Depth-RF": {
-    "diff": -0.0990123456790124,
+    "diff": -0.07333333333333336,
     "ci95": [
-     -0.24154320987654312,
-     0.022969135802469096
+     -0.233111111111111,
+     0.0775555555555553
     ],
     "passes": false
    }
@@ -1946,12 +1962,12 @@
     0.7212283950617283,
     0.9437160493827159
    ],
-   "time_of_day_auc_cropped": 0.25728395061728393,
+   "time_of_day_auc_cropped": 0.9506172839506174,
    "time_of_day_ci95": [
-    0.15901234567901235,
-    0.3629753086419753
+    0.8908395061728395,
+    0.9960493827160494
    ],
-   "corroborates": true
+   "corroborates": false
   },
   "controls": {
    "Duration": {
@@ -2027,30 +2043,30 @@
     ]
    },
    "Time-of-day": {
-    "all": "uninformative",
-    "cropped": "uninformative",
-    "auc_cropped": 0.25728395061728393,
+    "all": "informative",
+    "cropped": "informative",
+    "auc_cropped": 0.9506172839506174,
     "ci95_cropped": [
-     0.15901234567901235,
-     0.3629753086419753
+     0.8908395061728395,
+     0.9960493827160494
     ]
    },
    "Depth-recording": {
-    "all": "not excluded",
-    "cropped": "not excluded",
-    "auc_cropped": 0.6814814814814815,
+    "all": "informative",
+    "cropped": "informative",
+    "auc_cropped": 0.9614814814814815,
     "ci95_cropped": [
-     0.5377654320987655,
-     0.7985308641975307
+     0.9180246913580247,
+     0.9930864197530864
     ]
    },
    "All-controls": {
     "all": "informative",
     "cropped": "informative",
-    "auc_cropped": 0.9476543209876543,
+    "auc_cropped": 0.9219753086419753,
     "ci95_cropped": [
-     0.88,
-     0.9911111111111112
+     0.8128271604938271,
+     0.9901358024691359
     ]
    },
    "PACE-maskonly": {
@@ -2267,9 +2283,9 @@
     "beats_all_controls": null
    },
    "Time-of-day": {
-    "auc": 0.9150617283950617,
+    "auc": 0.9419753086419753,
     "ci95": [
-     0.7826543209876543,
+     0.842962962962963,
      1.0
     ],
     "beats_all_controls": null
@@ -2291,10 +2307,10 @@
     "beats_all_controls": null
    },
    "All-controls-noformat": {
-    "auc": 0.9688888888888889,
+    "auc": 0.9669135802469135,
     "ci95": [
-     0.9244444444444445,
-     0.9980370370370371
+     0.9199999999999999,
+     0.9995061728395062
     ],
     "beats_all_controls": null
    }
@@ -2887,5 +2903,288 @@
     "p_holm": 1.0
    }
   ]
+ },
+ "phase4": {
+  "timing": "P4",
+  "incremental_value_nested": {
+   "all": {
+    "PACE": {
+     "adds": true,
+     "auc_gain": 0.026814814814814847,
+     "auc_gain_ci95": [
+      0.005033333333333359,
+      0.055414814814814826
+     ],
+     "logloss_reduction": 0.13853356171969597,
+     "logloss_reduction_ci95": [
+      0.03232336570017826,
+      0.2784511671449409
+     ]
+    },
+    "Gait-RF": {
+     "adds": true,
+     "auc_gain": 0.028444444444444494,
+     "auc_gain_ci95": [
+      0.005185185185185179,
+      0.06000000000000005
+     ],
+     "logloss_reduction": 0.14825229365329265,
+     "logloss_reduction_ci95": [
+      0.03727579520691546,
+      0.29211724807189343
+     ]
+    },
+    "Depth-RF": {
+     "adds": true,
+     "auc_gain": 0.033629629629629676,
+     "auc_gain_ci95": [
+      0.007103703703703557,
+      0.06889259259259257
+     ],
+     "logloss_reduction": 0.19810507870675131,
+     "logloss_reduction_ci95": [
+      0.05839511232592606,
+      0.38911681617437494
+     ]
+    }
+   },
+   "cropped": {
+    "PACE": {
+     "adds": true,
+     "auc_gain": 0.0276543209876543,
+     "auc_gain_ci95": [
+      0.002962962962962945,
+      0.0637037037037037
+     ],
+     "logloss_reduction": 0.08820690440733076,
+     "logloss_reduction_ci95": [
+      0.008387892728094737,
+      0.18357777446234663
+     ]
+    },
+    "Gait-RF": {
+     "adds": false,
+     "auc_gain": 0.021234567901234458,
+     "auc_gain_ci95": [
+      0.0009876543209875743,
+      0.04940740740740727
+     ],
+     "logloss_reduction": 0.0786559998117928,
+     "logloss_reduction_ci95": [
+      -0.0006045855714007504,
+      0.17252146506312366
+     ]
+    },
+    "Depth-RF": {
+     "adds": true,
+     "auc_gain": 0.03753086419753082,
+     "auc_gain_ci95": [
+      0.006913580246913684,
+      0.08248148148148145
+     ],
+     "logloss_reduction": 0.14603856724886355,
+     "logloss_reduction_ci95": [
+      0.04678455022118971,
+      0.2740723948520486
+     ]
+    }
+   }
+  },
+  "positive_control_reevaluated": {
+   "movement_g4": 0.65,
+   "movement_g1": 0.0,
+   "movement_g4_arm_swing_rule": 0.55,
+   "passes": false
+  },
+  "planted_recording_differences": {
+   "n1": {
+    "movement": 0.0,
+    "supported_or_better": 0.0
+   },
+   "n2": {
+    "movement": 0.0,
+    "supported_or_better": 0.0
+   },
+   "n3": {
+    "movement": 0.0,
+    "supported_or_better": 0.0
+   },
+   "passes": true
+  },
+  "graded_outcome_specificity": {
+   "supported_or_better": {
+    "pc_g1|n20": 0.05,
+    "pc_g1|n30": 0.0,
+    "pc_g1|n45": 0.0,
+    "n1|n45": 0.0,
+    "n2|n45": 0.0,
+    "n3|n45": 0.0
+   },
+   "passes": true
+  },
+  "operating_characteristics": {
+   "pc_g1|n20": {
+    "movement": 0.0,
+    "supported_or_better": 0.05,
+    "i": 0.6,
+    "ii": 0.05,
+    "iii": 0.0,
+    "iv": 0.1,
+    "v": 0.15
+   },
+   "pc_g1|n30": {
+    "movement": 0.0,
+    "supported_or_better": 0.0,
+    "i": 0.8,
+    "ii": 0.1,
+    "iii": 0.0,
+    "iv": 0.0,
+    "v": 0.25
+   },
+   "pc_g1|n45": {
+    "movement": 0.0,
+    "supported_or_better": 0.0,
+    "i": 0.95,
+    "ii": 0.0,
+    "iii": 0.05,
+    "iv": 0.05,
+    "v": 0.0
+   },
+   "pc_g2|n20": {
+    "movement": 0.0,
+    "supported_or_better": 0.0,
+    "i": 0.65,
+    "ii": 0.0,
+    "iii": 0.0,
+    "iv": 0.1,
+    "v": 0.4
+   },
+   "pc_g2|n30": {
+    "movement": 0.0,
+    "supported_or_better": 0.05,
+    "i": 0.8,
+    "ii": 0.2,
+    "iii": 0.05,
+    "iv": 0.2,
+    "v": 0.65
+   },
+   "pc_g2|n45": {
+    "movement": 0.0,
+    "supported_or_better": 0.3,
+    "i": 0.95,
+    "ii": 0.4,
+    "iii": 0.2,
+    "iv": 0.15,
+    "v": 0.65
+   },
+   "pc_g3|n20": {
+    "movement": 0.0,
+    "supported_or_better": 0.15,
+    "i": 0.6,
+    "ii": 0.2,
+    "iii": 0.0,
+    "iv": 0.1,
+    "v": 0.8
+   },
+   "pc_g3|n30": {
+    "movement": 0.05,
+    "supported_or_better": 0.5,
+    "i": 0.8,
+    "ii": 0.6,
+    "iii": 0.1,
+    "iv": 0.5,
+    "v": 1.0
+   },
+   "pc_g3|n45": {
+    "movement": 0.25,
+    "supported_or_better": 0.8,
+    "i": 0.95,
+    "ii": 0.85,
+    "iii": 0.45,
+    "iv": 0.7,
+    "v": 1.0
+   },
+   "pc_g4|n20": {
+    "movement": 0.0,
+    "supported_or_better": 0.2,
+    "i": 0.6,
+    "ii": 0.25,
+    "iii": 0.05,
+    "iv": 0.1,
+    "v": 0.95
+   },
+   "pc_g4|n30": {
+    "movement": 0.2,
+    "supported_or_better": 0.7,
+    "i": 0.8,
+    "ii": 0.85,
+    "iii": 0.2,
+    "iv": 0.85,
+    "v": 1.0
+   },
+   "pc_g4|n45": {
+    "movement": 0.65,
+    "supported_or_better": 0.95,
+    "i": 0.95,
+    "ii": 1.0,
+    "iii": 0.7,
+    "iv": 1.0,
+    "v": 1.0
+   },
+   "pc_g6|n20": {
+    "movement": 0.1,
+    "supported_or_better": 0.5,
+    "i": 0.6,
+    "ii": 0.6,
+    "iii": 0.3,
+    "iv": 0.45,
+    "v": 1.0
+   },
+   "pc_g6|n30": {
+    "movement": 0.35,
+    "supported_or_better": 0.8,
+    "i": 0.85,
+    "ii": 0.95,
+    "iii": 0.45,
+    "iv": 0.95,
+    "v": 1.0
+   },
+   "pc_g6|n45": {
+    "movement": 0.85,
+    "supported_or_better": 0.95,
+    "i": 0.95,
+    "ii": 1.0,
+    "iii": 0.9,
+    "iv": 1.0,
+    "v": 1.0
+   },
+   "n1|n45": {
+    "movement": 0.0,
+    "supported_or_better": 0.0,
+    "i": 0.0,
+    "ii": 0.0,
+    "iii": 0.0,
+    "iv": 0.0,
+    "v": 0.0
+   },
+   "n2|n45": {
+    "movement": 0.0,
+    "supported_or_better": 0.0,
+    "i": 0.0,
+    "ii": 0.0,
+    "iii": 0.0,
+    "iv": 0.05,
+    "v": 0.0
+   },
+   "n3|n45": {
+    "movement": 0.0,
+    "supported_or_better": 0.0,
+    "i": 0.95,
+    "ii": 1.0,
+    "iii": 0.7,
+    "iv": 1.0,
+    "v": 0.0
+   }
+  }
  }
 }

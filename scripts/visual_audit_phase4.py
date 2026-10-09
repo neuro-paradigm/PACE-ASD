@@ -211,6 +211,19 @@ def consensus_by_child():
     return c
 
 
+def annotation_table():
+    """(table indexed by child with setting and the three items, source): the
+    consensus of the two blinded annotators once it is complete, otherwise
+    the first, AI-assisted annotation of the third phase."""
+    cons = consensus_by_child()
+    if cons is not None:
+        t = cons[["setting"] + ITEMS].copy()
+        for it in ITEMS:
+            t[it] = ["yes" if yes(v) else "no" for v in t[it]]
+        return t, "consensus"
+    return pd.read_csv(AI_CSV).set_index("child")[["setting"] + ITEMS], "ai"
+
+
 def agreement():
     from sklearn.metrics import adjusted_rand_score
     S, lab = cohort()

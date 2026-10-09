@@ -61,7 +61,39 @@ when several processes run in parallel and does not change any forest.
     (sections metadata, tracking, incremental, reliability, scale, scale_noise,
     viewpoint, age_subset, within_cropped, shuffle, ig, visual) and
     `python scripts/attribution_planted.py`
-17. **Code verification**: `python scripts/verify_analysis.py`; then
+17. **Code cross-checks**: `python scripts/verify_analysis.py`; then
+    `python scripts/evaluate_criteria.py`
+
+## Fourth phase (`docs/validation_criteria_phase4.md`)
+
+Settings and criteria were committed before these analyses were run (commit
+0ecb42c). Run the calibration with single-threaded numerical libraries
+(`OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 PACE_RF_JOBS=1`);
+several processes in parallel then share the processor without oversubscribing it.
+
+18. **Time of day as a spline**: the third-phase runs of `Time-of-day`,
+    `Depth-recording` and `All-controls` are kept as `*-linear`; rerun the new
+    rows with `python scripts/run_feature_models.py --models Time-of-day
+    Depth-recording All-controls`, then `python scripts/analyze_cv.py`,
+    `python scripts/analyze_mechanisms.py --sections confounds`,
+    `python scripts/phase3_analyses.py --sections within_cropped age_subset visual`
+    and `python scripts/permutation_null.py --fast --models Time-of-day
+    All-controls` followed by `--summarize`
+19. **Incremental value by nested stacking**: `python scripts/phase4_real.py
+    --sections incremental` (reads the stored inner-model checkpoints of the
+    test-case network in `models/cv/PACE/`)
+20. **Planted recording differences**: `python scripts/negative_control_videos.py
+    --variant n1 --workers 3` and `--variant n2` (re-extract the landmarks from
+    transformed videos; about 15 min each)
+21. **Calibration**: `python scripts/phase4_calibration.py --variants`, then
+    `--run --workers <W> --worker_id <0..W-1>` (about 3.4 min of one core per
+    split; 340 splits), then `--summarize`
+22. **Visual audit**: `python scripts/visual_audit_phase4.py --approach`;
+    `--kit` makes the blinded annotation sheets (not committed: they show
+    children); after two annotators and their consensus
+    (`docs/annotation_codebook.md`), `--agreement`, then
+    `python scripts/phase3_analyses.py --sections visual`
+23. **Cross-checks and criteria**: `python scripts/verify_analysis.py`, then
     `python scripts/evaluate_criteria.py`
 
 The partition (`splits/cv_partition.json`) is part of the repository; deleting

@@ -7,8 +7,8 @@ are trained and evaluated exactly as for the real labels.
 
   --network    the test-case network, permutations 0-9 (GPU; resumable;
                --workers/--worker_id split the (permutation, fold) jobs)
-  --fast       Gait-LR, Scene, Frame-format, Mean-pose, All-controls
-               (permutations 0-199) and Gait-RF (0-99)
+  --fast       Gait-LR, Scene, Frame-format, Mean-pose, All-controls,
+               Time-of-day (permutations 0-199) and Gait-RF (0-99)
   --summarize  null distributions and permutation p-values ->
                results/phase3/permutation_null.json
 
@@ -35,7 +35,11 @@ from phase3_common import OUT, permuted_partition, run_network_folds   # noqa: E
 
 NET_PERMS = range(10)
 FAST_PERMS = {"Gait-LR": 200, "Scene": 200, "Frame-format": 200, "Mean-pose": 200,
-              "All-controls": 200, "Gait-RF": 100}
+              "All-controls": 200, "Gait-RF": 100,
+              # fourth phase (docs/validation_criteria_phase4.md, E1): All-controls and
+              # Time-of-day with the spline time of day; the third-phase run of the
+              # linear All-controls is kept as All-controls-linear.json
+              "Time-of-day": 200}
 
 
 def cohort():

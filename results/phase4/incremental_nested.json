@@ -1,0 +1,186 @@
+{
+ "controls": [
+  "Scene",
+  "Time-of-day",
+  "Frame-format",
+  "Demographics"
+ ],
+ "repetitions": 3,
+ "level2": "Firth",
+ "B": 2000,
+ "all": {
+  "PACE": {
+   "n": 95,
+   "n_positive": 50,
+   "repetitions": 3,
+   "controls": [
+    "Scene",
+    "Time-of-day",
+    "Frame-format",
+    "Demographics"
+   ],
+   "movement": "PACE",
+   "auc_controls": 0.9598518518518518,
+   "auc_with_movement": 0.9866666666666667,
+   "auc_gain": 0.026814814814814847,
+   "auc_gain_ci95": [
+    0.005033333333333359,
+    0.055414814814814826
+   ],
+   "logloss_controls": 0.2948289305655419,
+   "logloss_with_movement": 0.1562953688458459,
+   "logloss_reduction": 0.13853356171969597,
+   "logloss_reduction_ci95": [
+    0.03232336570017826,
+    0.2784511671449409
+   ],
+   "adds": true
+  },
+  "Gait-RF": {
+   "n": 95,
+   "n_positive": 50,
+   "repetitions": 3,
+   "controls": [
+    "Scene",
+    "Time-of-day",
+    "Frame-format",
+    "Demographics"
+   ],
+   "movement": "Gait-RF",
+   "auc_controls": 0.9598518518518518,
+   "auc_with_movement": 0.9882962962962963,
+   "auc_gain": 0.028444444444444494,
+   "auc_gain_ci95": [
+    0.005185185185185179,
+    0.06000000000000005
+   ],
+   "logloss_controls": 0.2948289305655419,
+   "logloss_with_movement": 0.14657663691224923,
+   "logloss_reduction": 0.14825229365329265,
+   "logloss_reduction_ci95": [
+    0.03727579520691546,
+    0.29211724807189343
+   ],
+   "adds": true
+  },
+  "Depth-RF": {
+   "n": 95,
+   "n_positive": 50,
+   "repetitions": 3,
+   "controls": [
+    "Scene",
+    "Time-of-day",
+    "Frame-format",
+    "Demographics"
+   ],
+   "movement": "Depth-RF",
+   "auc_controls": 0.9598518518518518,
+   "auc_with_movement": 0.9934814814814815,
+   "auc_gain": 0.033629629629629676,
+   "auc_gain_ci95": [
+    0.007103703703703557,
+    0.06889259259259257
+   ],
+   "logloss_controls": 0.2948289305655419,
+   "logloss_with_movement": 0.09672385185879058,
+   "logloss_reduction": 0.19810507870675131,
+   "logloss_reduction_ci95": [
+    0.05839511232592606,
+    0.38911681617437494
+   ],
+   "adds": true
+  }
+ },
+ "cropped": {
+  "PACE": {
+   "n": 60,
+   "n_positive": 15,
+   "repetitions": 3,
+   "controls": [
+    "Scene",
+    "Time-of-day",
+    "Frame-format",
+    "Demographics"
+   ],
+   "movement": "PACE",
+   "auc_controls": 0.9590123456790124,
+   "auc_with_movement": 0.9866666666666667,
+   "auc_gain": 0.0276543209876543,
+   "auc_gain_ci95": [
+    0.002962962962962945,
+    0.0637037037037037
+   ],
+   "logloss_controls": 0.23485600844723964,
+   "logloss_with_movement": 0.14664910403990888,
+   "logloss_reduction": 0.08820690440733076,
+   "logloss_reduction_ci95": [
+    0.008387892728094737,
+    0.18357777446234663
+   ],
+   "adds": true
+  },
+  "Gait-RF": {
+   "n": 60,
+   "n_positive": 15,
+   "repetitions": 3,
+   "controls": [
+    "Scene",
+    "Time-of-day",
+    "Frame-format",
+    "Demographics"
+   ],
+   "movement": "Gait-RF",
+   "auc_controls": 0.9590123456790124,
+   "auc_with_movement": 0.9802469135802468,
+   "auc_gain": 0.021234567901234458,
+   "auc_gain_ci95": [
+    0.0009876543209875743,
+    0.04940740740740727
+   ],
+   "logloss_controls": 0.23485600844723964,
+   "logloss_with_movement": 0.15620000863544684,
+   "logloss_reduction": 0.0786559998117928,
+   "logloss_reduction_ci95": [
+    -0.0006045855714007504,
+    0.17252146506312366
+   ],
+   "adds": false
+  },
+  "Depth-RF": {
+   "n": 60,
+   "n_positive": 15,
+   "repetitions": 3,
+   "controls": [
+    "Scene",
+    "Time-of-day",
+    "Frame-format",
+    "Demographics"
+   ],
+   "movement": "Depth-RF",
+   "auc_controls": 0.9590123456790124,
+   "auc_with_movement": 0.9965432098765432,
+   "auc_gain": 0.03753086419753082,
+   "auc_gain_ci95": [
+    0.006913580246913684,
+    0.08248148148148145
+   ],
+   "logloss_controls": 0.23485600844723964,
+   "logloss_with_movement": 0.08881744119837609,
+   "logloss_reduction": 0.14603856724886355,
+   "logloss_reduction_ci95": [
+    0.04678455022118971,
+    0.2740723948520486
+   ],
+   "adds": true
+  }
+ },
+ "inner_auc": {
+  "Scene": 0.9716666666666669,
+  "Time-of-day": 0.8308796296296297,
+  "Frame-format": 0.9047222222222223,
+  "Demographics": 0.622986111111111,
+  "Gait-RF": 0.8760879629629631,
+  "Depth-RF": 0.8054166666666667,
+  "PACE": 0.9289814814814814
+ }
+}

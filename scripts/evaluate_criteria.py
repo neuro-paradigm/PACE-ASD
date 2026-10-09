@@ -4,10 +4,12 @@ stored results and write results/criteria.json.
 
 Reads results/cv/summary.json, results/cv/mechanisms.json, the stored
 out-of-fold predictions (results/cv/runs), the planted-event results
-(results/synthetic) and the third-phase results (results/phase3). Every
-criterion carries its timing: "P" (specified before the analysis was run:
-docs/validation_criteria.md for the second phase, docs/validation_criteria_phase3.md
-for the third) or "R" (written after the first results had been seen).
+(results/synthetic) and the third- and fourth-phase results (results/phase3,
+results/phase4). Every criterion carries its timing: "P" (specified before
+the analysis was run: docs/validation_criteria.md for the second phase,
+docs/validation_criteria_phase3.md for the third), "P4"
+(docs/validation_criteria_phase4.md) or "R" (written after the first results
+had been seen).
 
 The parts are named C1-C6 (docs/validation_criteria_phase3.md): C2 = V1-V2,
 C3 and C4 = V3, C5 = V4-V5, C6 = V6 of the second-phase document.
@@ -385,6 +387,52 @@ def phase3(S, M, C5):
     return out
 
 
+P4 = os.path.join("results", "phase4")
+
+
+def phase4():
+    """Criteria of docs/validation_criteria_phase4.md (all written before the
+    fourth-phase analyses: P4)."""
+    out = {"timing": "P4"}
+    iv = _load(P4, "incremental_nested.json")
+    if iv:
+        out["incremental_value_nested"] = {sub: {m: {"adds": d["adds"], "auc_gain": d["auc_gain"],
+                                                      "auc_gain_ci95": d["auc_gain_ci95"],
+                                                      "logloss_reduction": d["logloss_reduction"],
+                                                      "logloss_reduction_ci95": d["logloss_reduction_ci95"]}
+                                                  for m, d in iv[sub].items()} for sub in ("all", "cropped")}
+    cal = _load(P4, "calibration.json")
+    if cal:
+        cells = cal["cells"]
+        share = lambda name, k: cells[name]["share"][k] if name in cells else None
+        g4, g1 = "pc_g4|n45", "pc_g1|n45"
+        if g4 in cells and g1 in cells:
+            out["positive_control_reevaluated"] = {
+                "movement_g4": share(g4, "grade_A"), "movement_g1": share(g1, "grade_A"),
+                "movement_g4_arm_swing_rule": share(g4, "movement_concluded_arm_swing_rule"),
+                "passes": bool(share(g4, "grade_A") >= 0.80 and share(g1, "grade_A") <= 0.10)}
+        negs = {s: cells[f"{s}|n45"]["share"] for s in ("n1", "n2", "n3") if f"{s}|n45" in cells}
+        if negs:
+            out["planted_recording_differences"] = {
+                s: {"movement": v["grade_A"], "supported_or_better": v["grade_AB"]} for s, v in negs.items()}
+            out["planted_recording_differences"]["passes"] = bool(all(v["grade_A"] <= 0.10 for v in negs.values()))
+        spec = {name: d["share"]["grade_AB"] for name, d in cells.items()
+                if name.startswith("pc_g1|") or name.split("|")[0] in ("n1", "n2", "n3")}
+        if spec:
+            out["graded_outcome_specificity"] = {"supported_or_better": spec,
+                                                 "passes": bool(all(v <= 0.10 for v in spec.values()))}
+        out["operating_characteristics"] = {name: {"movement": d["share"]["grade_A"],
+                                                   "supported_or_better": d["share"]["grade_AB"],
+                                                   **{c: d["share"][c] for c in ("i", "ii", "iii", "iv", "v")}}
+                                            for name, d in cells.items()}
+    ag = _load(P4, "annotation_agreement.json")
+    if ag and "criterion_kappa_ge_0.6" in ag:
+        out["annotation"] = {"kappa": {k: v["kappa"] for k, v in ag["items"].items()},
+                             "passes": bool(all(ag["criterion_kappa_ge_0.6"].values())),
+                             "adjusted_rand_index": ag["settings"]["adjusted_rand_index"]}
+    return out
+
+
 def main():
     S = json.load(open("results/cv/summary.json"))
     M = json.load(open("results/cv/mechanisms.json"))
@@ -392,6 +440,7 @@ def main():
     c5 = v4(Y)
     res = {"C2": v1_v2(S), "C3_C4": v3(S, M), "C5": c5, "C5_selection": v5(M), "C6": v6(M, Y)}
     res["phase3"] = phase3(S, M, c5)
+    res["phase4"] = phase4()
     json.dump(res, open(OUT, "w"), indent=1)
     print(json.dumps(res["phase3"], indent=1, default=str)[:8000])
 

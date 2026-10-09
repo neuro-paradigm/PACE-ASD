@@ -638,12 +638,14 @@ def visual():
     frame) by group and frame format, and the AUC of every stored model
     within the children who walk towards the camera. Not pre-specified."""
     S, y, age, male, crop, vid = cohort_info()
-    a = pd.read_csv("results/phase3/qc/visual_audit.csv").set_index("child")
+    # fourth phase (E7): the blinded two-annotator consensus once it exists
+    from visual_audit_phase4 import annotation_table
+    a, source = annotation_table()
     walk = np.array([a.loc[s, "walks_toward_camera"] == "yes" for s in S])
     other = np.array([a.loc[s, "other_person_visible"] == "yes" for s in S])
     gross = np.array([a.loc[s, "gross_tracking_error"] == "yes" for s in S])
     sett = np.array([a.loc[s, "setting"] for s in S])
-    out = {"by_group": {}}
+    out = {"source": source, "by_group": {}}
     for name, m in (("autistic", y == 1), ("td", y == 0), ("autistic_cropped", (y == 1) & crop),
                     ("autistic_uncropped", (y == 1) & ~crop)):
         out["by_group"][name] = {"n": int(m.sum()), "n_settings": int(len(set(sett[m]))),

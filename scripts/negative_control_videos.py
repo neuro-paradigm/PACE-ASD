@@ -18,6 +18,7 @@ results/phase4/cache/keypoints_<v>/<child>.npy and videos_<v>.json.
 
 Usage:
     python scripts/negative_control_videos.py --variant n1 --workers 4
+    python scripts/negative_control_videos.py --summarize
 """
 
 import argparse
@@ -102,12 +103,50 @@ def one(args):
     return s, np.stack(kps), {"width": int(W), "height": int(H), "frames": t, "scene": scene}
 
 
+def summarize():
+    """How the transformations changed the pose estimates and the image
+    statistics -> results/phase4/negative_control_videos.json."""
+    from recording_features import SCENE_NAMES
+    vid = pd.read_csv("processed/video_metadata.csv").set_index("clip_id")
+    base = json.load(open(os.path.join("results", "cv", "scene_features.json")))
+    out = {}
+    for v in ("n1", "n2"):
+        meta = json.load(open(os.path.join(CACHE, f"videos_{v}.json")))
+        d, diff = [], []
+        for s, m in meta.items():
+            kp = np.load(os.path.join(CACHE, f"keypoints_{v}", f"{s}.npy"))
+            det = np.abs(kp[..., :2]).sum((1, 2)) > 0
+            d.append(int(det.sum()) - int(vid.loc[s, "frames_detected"]))
+            orig = np.load(os.path.join("processed", "keypoints", f"{s}.npy"))
+            both = det[:len(orig)] & (np.abs(orig).sum((1, 2)) > 0)[:len(det)]
+            if both.any():
+                # landmark displacement in pixels of the original frame (crop offset removed)
+                W0, H0 = float(vid.loc[s, "width"]), float(vid.loc[s, "height"])
+                W1, H1 = float(m["width"]), float(m["height"])
+                p0 = orig[:len(both)][both] * [W0, H0]
+                p1 = kp[:len(both)][both][..., :2] * [W1, H1] + [(W0 - W1) // 2, (H0 - H1) // 2]
+                sw = np.linalg.norm(p0[:, 11] - p0[:, 12], axis=-1)[:, None]
+                diff.append(float(np.median(np.linalg.norm(p1 - p0, axis=-1) / np.maximum(sw, 1e-6))))
+        d = np.array(d)
+        sc = {k: float(np.median([meta[s]["scene"][k] - base[s][k] for s in meta])) for k in SCENE_NAMES}
+        out[v] = {"n": len(meta), "n_detection_changed": int((d != 0).sum()), "detected_change_median": float(np.median(d)),
+                  "detected_change_range": [int(d.min()), int(d.max())],
+                  "landmark_shift_median_shoulder_widths": float(np.median(diff)) if diff else None,
+                  "scene_change_median": sc}
+    json.dump(out, open(os.path.join("results", "phase4", "negative_control_videos.json"), "w"), indent=1)
+    print(json.dumps(out, indent=1))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--variant", required=True, choices=["n1", "n2"])
+    ap.add_argument("--variant", choices=["n1", "n2"])
+    ap.add_argument("--summarize", action="store_true")
     ap.add_argument("--raw_dir", default=os.environ.get("PACE_RAW_DIR", os.path.join("Dataset-2", "Dataset")))
     ap.add_argument("--workers", type=int, default=4)
     a = ap.parse_args()
+    if a.summarize:
+        summarize()
+        return
     p = json.load(open("splits/cv_partition.json"))
     td = sorted(s for s in p["subjects"] if p["labels"][s] == 0)
     vid = pd.read_csv("processed/video_metadata.csv").set_index("clip_id")

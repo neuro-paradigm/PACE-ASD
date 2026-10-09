@@ -29,8 +29,15 @@ contains:
   validity-only network; test-time counterfactuals; a planted-event benchmark
   with three event types and reference detectors for the selection mechanism
   and attributions; invariance tests;
-* **pass/fail criteria fixed in advance** (`docs/validation_criteria.md`),
-  applied to the stored results by `scripts/evaluate_criteria.py`;
+* **calibration of the checks**: planted movement differences of graded size
+  at several sample sizes, planted recording differences (image, framing,
+  video only) and a label-permutation null (`scripts/phase4_calibration.py`,
+  `scripts/permutation_null.py`); incremental value of a movement score by
+  nested stacking with a Firth second level (`scripts/phase4_common.py`);
+* **pass/fail criteria written before their analyses**
+  (`docs/validation_criteria.md`, `_phase3.md`, `_phase4.md`; commits, not
+  independent time stamps), applied to the stored results by
+  `scripts/evaluate_criteria.py`;
 * **inference** for research: applying trained models to a video or array with
   one checkpoint or an ensemble (`scripts/infer.py`, `src/inference_api.py`).
 
@@ -109,9 +116,9 @@ Out-of-fold AUC (95% interval over children), 3 x 5-fold nested cross-validation
 | controls: scene and camera (image properties) | 0.967 (0.94-0.99) | 0.941 (0.86-1.00) |
 | controls: high-frequency landmark motion | 0.590 (0.49-0.69) | 0.605 (0.44-0.75) |
 | controls: tracking quality | 0.569 (0.47-0.67) | 0.601 (0.46-0.72) |
-| controls: time of day | 0.397 (0.32-0.48) | 0.257 (0.16-0.36) |
-| controls: depth-recording properties | 0.671 (0.56-0.78) | 0.681 (0.54-0.80) |
-| controls: all controls together | 0.980 (0.96-1.00) | 0.948 (0.88-0.99) |
+| controls: time of day | 0.853 (0.77-0.93) | 0.951 (0.89-1.00) |
+| controls: depth-recording properties | 0.897 (0.83-0.95) | 0.961 (0.92-0.99) |
+| controls: all controls together | 0.970 (0.93-0.99) | 0.922 (0.81-0.99) |
 | controls: validity-only network | 0.626 (0.52-0.72) | 0.522 (0.37-0.67) |
 | posture and gait descriptors: mean pose (posture only) | 0.819 (0.74-0.89) | 0.834 (0.64-0.97) |
 | posture and gait descriptors: logistic regression | 0.858 (0.78-0.92) | 0.962 (0.92-0.99) |

@@ -5,6 +5,28 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [1.2.0] — 2026-10
 
+### Fourth phase (October 2026)
+- **Criteria** for the fourth-phase analyses in
+  `docs/validation_criteria_phase4.md`, written after the third review and
+  committed before the analyses were run.
+- **Time of day as a spline** (`SplineLast` in `scripts/run_feature_models.py`)
+  in the `Time-of-day`, `Depth-recording` and `All-controls` controls; the
+  linear third-phase rows are kept as `*-linear`.
+- **Incremental value by nested stacking** with a Firth-penalized second level
+  (`scripts/phase4_common.py`, `scripts/phase4_real.py`); it replaces the
+  third-phase test, which fitted the second level to all children's
+  out-of-fold scores with a weak ridge penalty.
+- **Operating characteristics and planted recording differences**
+  (`scripts/phase4_calibration.py`, `scripts/negative_control_videos.py`):
+  the protocol over planted gains and sample sizes; image, framing and
+  video-only differences as negative controls; a graded outcome.
+- **Visual audit** (`scripts/visual_audit_phase4.py`,
+  `docs/annotation_codebook.md`): an approach index computed from the
+  landmarks; blinded sheets and agreement statistics for two human annotators.
+- The automated code checks are called cross-checks; new cross-checks of the
+  Firth fits and of every calibration AUC (`scripts/verify_analysis.py`).
+- Tests in `tests/test_phase4.py`.
+
 ### Third phase (October 2026)
 - **Pre-specified criteria** for the third-phase analyses in
   `docs/validation_criteria_phase3.md`, committed before they were run, with one
@@ -25,7 +47,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   gradients and temporal occlusion (`scripts/phase3_analyses.py`,
   `scripts/attribution_planted.py`), file and container metadata.
 - **Pose quality control** (`scripts/pose_qc.py`, `scripts/overlay_sheets.py`)
-  and independent code checks (`scripts/verify_analysis.py`).
+  and code cross-checks (`scripts/verify_analysis.py`).
 - `scripts/feature_sets.py` holds the feature sets and one nested run of a
   feature classifier, shared by every script; `PACE_RF_JOBS` sets the threads
   of the random forests (results unchanged).

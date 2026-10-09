@@ -236,9 +236,17 @@ def run(scns, sizes, workers, worker_id):
         F = Assembled(part["subjects"], part["labels"], scn, variants)
         rec = {"scenario": scn, "n": n, "split": j, "labels": part["labels"], "probs": {}, "inner": {},
                "params": {}}
+        # n1 and n2 leave the depth skeletons as they are, so their depth-side classifiers are
+        # identical to those of pc_g1 on the same split (same partition, features and seeds)
+        null = os.path.join(CAL, "pc_g1", f"n{n}", f"split{j:02d}.json")
+        reuse = json.load(open(null)) if scn in ("n1", "n2") and os.path.isfile(null) else None
         for m in MODELS:
+            if reuse is not None and m in DEPTH:
+                rec["probs"][m], rec["inner"][m], rec["params"][m] = reuse["probs"][m], reuse["inner"][m], reuse["params"][m]
+                continue
             o, i, p = fit_predict_nested(m, F, part)
             rec["probs"][m], rec["inner"][m], rec["params"][m] = o, i, p
+        rec["depth_from_pc_g1"] = reuse is not None
         os.makedirs(os.path.dirname(path), exist_ok=True)
         json.dump(rec, open(path, "w"))
         y = [part["labels"][s] for s in part["subjects"]]
@@ -352,7 +360,16 @@ def summarize():
                 rec = json.load(open(f))
             if any(v not in variants for v in set(scenario_sources(rec["scenario"]).values())):
                 continue
-            ev = evaluate(rec, variants, td)
+            # evaluations are cached next to the summary; recomputed if the split record is newer
+            ecache = os.path.join(OUT4, "calibration_eval", scn, f"n{n}", f"split{j:02d}.json")
+            srcs = [os.path.join(CAL, s, f"n{n}", f"split{j:02d}.json") for s in
+                    (["pc_g4", "pc_g1"] if scn == "n3" else [scn])]
+            if os.path.isfile(ecache) and os.path.getmtime(ecache) > max(os.path.getmtime(f) for f in srcs):
+                ev = json.load(open(ecache))
+            else:
+                ev = evaluate(rec, variants, td)
+                os.makedirs(os.path.dirname(ecache), exist_ok=True)
+                json.dump(ev, open(ecache, "w"))
             rows.append({"split": j, **ev})
             print(f"[summary] {scn} n={n} split {j}: grade {ev['grade']} {ev['criteria']}", flush=True)
         if not rows:

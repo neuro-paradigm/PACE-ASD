@@ -26,6 +26,12 @@ repeated nested cross-validation partition as the neural networks.
       its own frame dimension) instead of pixel units; measures how much that
       normalisation changes the result.
 
+Fourth phase (docs/validation_criteria_phase4.md, E1):
+  Time-of-day, Depth-recording, All-controls
+      the time of day (last column) enters as a cubic spline (SplineLast);
+      the third-phase linear versions are kept as Time-of-day-linear,
+      Depth-recording-linear and All-controls-linear.
+
 Third phase (settings fixed in docs/validation_criteria_phase3.md):
   Time-of-day, All-controls, Tracking-quality, Mean-pose
       time of day of the depth recording alone; everything that is not

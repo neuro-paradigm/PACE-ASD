@@ -1,4 +1,5 @@
 {
+ "source": "ai",
  "by_group": {
   "autistic": {
    "n": 50,
@@ -82,14 +83,16 @@
   "autistic_cropped": 3
  },
  "auc_walking_subset": {
-  "All-controls": 0.9923182441700961,
+  "All-controls": 0.9882030178326474,
+  "All-controls-linear": 0.9923182441700961,
   "BiGRU": 0.8466392318244171,
   "CTR-GCN": 0.8139917695473251,
   "Covariates": 0.9662551440329219,
   "Demographics": 0.6994513031550068,
   "Depth-LR": 0.6098765432098765,
   "Depth-RF": 0.7582990397805213,
-  "Depth-recording": 0.6866941015089164,
+  "Depth-recording": 0.9179698216735254,
+  "Depth-recording-linear": 0.6866941015089164,
   "Duration": 0.6502057613168725,
   "Frame-format": 0.9909465020576133,
   "Gait-LR": 0.8027434842249658,
@@ -119,7 +122,8 @@
   "ST-Transformer": 0.8153635116598079,
   "Scene": 0.9750342935528121,
   "TCN": 0.7989026063100138,
-  "Time-of-day": 0.38655692729766805,
+  "Time-of-day": 0.8674897119341564,
+  "Time-of-day-linear": 0.38655692729766805,
   "Tracking-quality": 0.4880658436213992
  }
 }
