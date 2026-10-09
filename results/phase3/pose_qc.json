@@ -1,0 +1,1993 @@
+{
+ "summary": {
+  "autistic": {
+   "n": 50,
+   "flagged_recordings": 31,
+   "flagged_share_median": 0.06058808261337091,
+   "flagged_share_max": 0.7090909090909091,
+   "hip_jump_frames": 172,
+   "scale_jump_frames": 659,
+   "low_visibility_frames": 247,
+   "mean_visibility_median": 0.8425925970077515
+  },
+  "td": {
+   "n": 45,
+   "flagged_recordings": 32,
+   "flagged_share_median": 0.0970873786407767,
+   "flagged_share_max": 0.43548387096774194,
+   "hip_jump_frames": 42,
+   "scale_jump_frames": 483,
+   "low_visibility_frames": 65,
+   "mean_visibility_median": 0.9058017134666443
+  },
+  "uncropped": {
+   "n": 35,
+   "flagged_recordings": 22,
+   "flagged_share_median": 0.06040268456375839,
+   "flagged_share_max": 0.43870967741935485,
+   "hip_jump_frames": 67,
+   "scale_jump_frames": 465,
+   "low_visibility_frames": 173,
+   "mean_visibility_median": 0.8821068406105042
+  },
+  "cropped": {
+   "n": 60,
+   "flagged_recordings": 41,
+   "flagged_share_median": 0.09488088743407892,
+   "flagged_share_max": 0.7090909090909091,
+   "hip_jump_frames": 147,
+   "scale_jump_frames": 677,
+   "low_visibility_frames": 139,
+   "mean_visibility_median": 0.8787911832332611
+  },
+  "all": {
+   "n": 95,
+   "flagged_recordings": 63,
+   "flagged_share_median": 0.0708955223880597,
+   "flagged_share_max": 0.7090909090909091,
+   "hip_jump_frames": 214,
+   "scale_jump_frames": 1142,
+   "low_visibility_frames": 312,
+   "mean_visibility_median": 0.879524290561676
+  }
+ },
+ "overlay_children": [
+  "asd_1",
+  "asd_11",
+  "asd_16",
+  "asd_21",
+  "asd_22",
+  "asd_25",
+  "asd_28",
+  "asd_3",
+  "asd_36",
+  "asd_38",
+  "asd_4",
+  "asd_46",
+  "asd_47",
+  "asd_5",
+  "asd_50",
+  "asd_8",
+  "td_1",
+  "td_16",
+  "td_17",
+  "td_19",
+  "td_22",
+  "td_24",
+  "td_3",
+  "td_31",
+  "td_33",
+  "td_34",
+  "td_37",
+  "td_41",
+  "td_42",
+  "td_9"
+ ],
+ "reextraction": {
+  "n_same_length": 95,
+  "max_abs_diff": 0.0,
+  "n_same_detections": 95
+ },
+ "per_child": {
+  "asd_1": {
+   "n_detected": 129,
+   "hip_jump": 1,
+   "scale_jump": 23,
+   "low_visibility": 0,
+   "flagged": 23,
+   "flagged_share": 0.17829457364341086,
+   "flagged_recording": true,
+   "mean_visibility": 0.9434472918510437,
+   "mean_visibility_regions": {
+    "face": 0.9988592863082886,
+    "arms_hands": 0.9540616869926453,
+    "legs_feet": 0.8372069597244263
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": true
+  },
+  "asd_10": {
+   "n_detected": 149,
+   "hip_jump": 0,
+   "scale_jump": 9,
+   "low_visibility": 0,
+   "flagged": 9,
+   "flagged_share": 0.06040268456375839,
+   "flagged_recording": true,
+   "mean_visibility": 0.9478335976600647,
+   "mean_visibility_regions": {
+    "face": 0.9994613528251648,
+    "arms_hands": 0.9700108766555786,
+    "legs_feet": 0.83054518699646
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_11": {
+   "n_detected": 119,
+   "hip_jump": 1,
+   "scale_jump": 7,
+   "low_visibility": 0,
+   "flagged": 7,
+   "flagged_share": 0.058823529411764705,
+   "flagged_recording": true,
+   "mean_visibility": 0.8821068406105042,
+   "mean_visibility_regions": {
+    "face": 0.9996973872184753,
+    "arms_hands": 0.9089630842208862,
+    "legs_feet": 0.6506844758987427
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": true
+  },
+  "asd_12": {
+   "n_detected": 111,
+   "hip_jump": 1,
+   "scale_jump": 5,
+   "low_visibility": 0,
+   "flagged": 5,
+   "flagged_share": 0.04504504504504504,
+   "flagged_recording": false,
+   "mean_visibility": 0.8958000540733337,
+   "mean_visibility_regions": {
+    "face": 0.9993129968643188,
+    "arms_hands": 0.9249254465103149,
+    "legs_feet": 0.6837490797042847
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_13": {
+   "n_detected": 200,
+   "hip_jump": 2,
+   "scale_jump": 18,
+   "low_visibility": 0,
+   "flagged": 18,
+   "flagged_share": 0.09,
+   "flagged_recording": true,
+   "mean_visibility": 0.8560726046562195,
+   "mean_visibility_regions": {
+    "face": 0.9959495067596436,
+    "arms_hands": 0.782089114189148,
+    "legs_feet": 0.7387513518333435
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_14": {
+   "n_detected": 89,
+   "hip_jump": 0,
+   "scale_jump": 7,
+   "low_visibility": 0,
+   "flagged": 7,
+   "flagged_share": 0.07865168539325842,
+   "flagged_recording": true,
+   "mean_visibility": 0.8867831230163574,
+   "mean_visibility_regions": {
+    "face": 0.99330735206604,
+    "arms_hands": 0.8355336785316467,
+    "legs_feet": 0.7888941168785095
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_15": {
+   "n_detected": 59,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.9536070227622986,
+   "mean_visibility_regions": {
+    "face": 0.999871551990509,
+    "arms_hands": 0.9711665511131287,
+    "legs_feet": 0.8520666360855103
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_16": {
+   "n_detected": 199,
+   "hip_jump": 1,
+   "scale_jump": 5,
+   "low_visibility": 0,
+   "flagged": 6,
+   "flagged_share": 0.03015075376884422,
+   "flagged_recording": false,
+   "mean_visibility": 0.7972122430801392,
+   "mean_visibility_regions": {
+    "face": 0.9994679689407349,
+    "arms_hands": 0.6501824855804443,
+    "legs_feet": 0.6890652775764465
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": true
+  },
+  "asd_17": {
+   "n_detected": 84,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.8129143714904785,
+   "mean_visibility_regions": {
+    "face": 0.9992212653160095,
+    "arms_hands": 0.8476007580757141,
+    "legs_feet": 0.45798709988594055
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_18": {
+   "n_detected": 97,
+   "hip_jump": 5,
+   "scale_jump": 6,
+   "low_visibility": 0,
+   "flagged": 7,
+   "flagged_share": 0.07216494845360824,
+   "flagged_recording": true,
+   "mean_visibility": 0.8232941031455994,
+   "mean_visibility_regions": {
+    "face": 0.9873635768890381,
+    "arms_hands": 0.8124890923500061,
+    "legs_feet": 0.5702338218688965
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": false
+  },
+  "asd_19": {
+   "n_detected": 273,
+   "hip_jump": 1,
+   "scale_jump": 1,
+   "low_visibility": 47,
+   "flagged": 48,
+   "flagged_share": 0.17582417582417584,
+   "flagged_recording": true,
+   "mean_visibility": 0.5854161381721497,
+   "mean_visibility_regions": {
+    "face": 0.9151320457458496,
+    "arms_hands": 0.24998311698436737,
+    "legs_feet": 0.5316693186759949
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_2": {
+   "n_detected": 245,
+   "hip_jump": 0,
+   "scale_jump": 17,
+   "low_visibility": 0,
+   "flagged": 17,
+   "flagged_share": 0.06938775510204082,
+   "flagged_recording": true,
+   "mean_visibility": 0.9514370560646057,
+   "mean_visibility_regions": {
+    "face": 0.9964450597763062,
+    "arms_hands": 0.9674471020698547,
+    "legs_feet": 0.8534298539161682
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_20": {
+   "n_detected": 45,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 3,
+   "flagged": 3,
+   "flagged_share": 0.06666666666666667,
+   "flagged_recording": true,
+   "mean_visibility": 0.6776828169822693,
+   "mean_visibility_regions": {
+    "face": 0.8483021259307861,
+    "arms_hands": 0.5573685765266418,
+    "legs_feet": 0.5430304408073425
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": false
+  },
+  "asd_21": {
+   "n_detected": 209,
+   "hip_jump": 2,
+   "scale_jump": 34,
+   "low_visibility": 0,
+   "flagged": 34,
+   "flagged_share": 0.16267942583732056,
+   "flagged_recording": true,
+   "mean_visibility": 0.7675849795341492,
+   "mean_visibility_regions": {
+    "face": 0.9900532364845276,
+    "arms_hands": 0.5617010593414307,
+    "legs_feet": 0.7124267220497131
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": true
+  },
+  "asd_22": {
+   "n_detected": 71,
+   "hip_jump": 1,
+   "scale_jump": 10,
+   "low_visibility": 0,
+   "flagged": 10,
+   "flagged_share": 0.14084507042253522,
+   "flagged_recording": true,
+   "mean_visibility": 0.6684026122093201,
+   "mean_visibility_regions": {
+    "face": 0.9922648668289185,
+    "arms_hands": 0.4397831857204437,
+    "legs_feet": 0.4831971824169159
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": true
+  },
+  "asd_23": {
+   "n_detected": 123,
+   "hip_jump": 23,
+   "scale_jump": 31,
+   "low_visibility": 43,
+   "flagged": 58,
+   "flagged_share": 0.4715447154471545,
+   "flagged_recording": true,
+   "mean_visibility": 0.578991174697876,
+   "mean_visibility_regions": {
+    "face": 0.8129127025604248,
+    "arms_hands": 0.5339653491973877,
+    "legs_feet": 0.22205883264541626
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": false
+  },
+  "asd_24": {
+   "n_detected": 55,
+   "hip_jump": 18,
+   "scale_jump": 30,
+   "low_visibility": 12,
+   "flagged": 39,
+   "flagged_share": 0.7090909090909091,
+   "flagged_recording": true,
+   "mean_visibility": 0.5379249453544617,
+   "mean_visibility_regions": {
+    "face": 0.879245400428772,
+    "arms_hands": 0.32872506976127625,
+    "legs_feet": 0.2669237554073334
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": false
+  },
+  "asd_25": {
+   "n_detected": 102,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.9456770420074463,
+   "mean_visibility_regions": {
+    "face": 0.9998941421508789,
+    "arms_hands": 0.8895558714866638,
+    "legs_feet": 0.941743016242981
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": true
+  },
+  "asd_26": {
+   "n_detected": 208,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.9621714949607849,
+   "mean_visibility_regions": {
+    "face": 0.9978885054588318,
+    "arms_hands": 0.9720274806022644,
+    "legs_feet": 0.888831377029419
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_27": {
+   "n_detected": 210,
+   "hip_jump": 3,
+   "scale_jump": 5,
+   "low_visibility": 12,
+   "flagged": 12,
+   "flagged_share": 0.05714285714285714,
+   "flagged_recording": true,
+   "mean_visibility": 0.7690085172653198,
+   "mean_visibility_regions": {
+    "face": 0.9533253908157349,
+    "arms_hands": 0.6868739724159241,
+    "legs_feet": 0.5812295079231262
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_28": {
+   "n_detected": 69,
+   "hip_jump": 0,
+   "scale_jump": 4,
+   "low_visibility": 8,
+   "flagged": 10,
+   "flagged_share": 0.14492753623188406,
+   "flagged_recording": true,
+   "mean_visibility": 0.7505682706832886,
+   "mean_visibility_regions": {
+    "face": 0.9289547801017761,
+    "arms_hands": 0.6432887315750122,
+    "legs_feet": 0.6058099269866943
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": true
+  },
+  "asd_29": {
+   "n_detected": 84,
+   "hip_jump": 6,
+   "scale_jump": 15,
+   "low_visibility": 16,
+   "flagged": 23,
+   "flagged_share": 0.27380952380952384,
+   "flagged_recording": true,
+   "mean_visibility": 0.7780619859695435,
+   "mean_visibility_regions": {
+    "face": 0.9630634188652039,
+    "arms_hands": 0.6738871932029724,
+    "legs_feet": 0.6252579689025879
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_3": {
+   "n_detected": 200,
+   "hip_jump": 2,
+   "scale_jump": 36,
+   "low_visibility": 0,
+   "flagged": 36,
+   "flagged_share": 0.18,
+   "flagged_recording": true,
+   "mean_visibility": 0.9319827556610107,
+   "mean_visibility_regions": {
+    "face": 0.9943534731864929,
+    "arms_hands": 0.9378597736358643,
+    "legs_feet": 0.8204231262207031
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": true
+  },
+  "asd_30": {
+   "n_detected": 125,
+   "hip_jump": 5,
+   "scale_jump": 8,
+   "low_visibility": 0,
+   "flagged": 8,
+   "flagged_share": 0.064,
+   "flagged_recording": true,
+   "mean_visibility": 0.8918740153312683,
+   "mean_visibility_regions": {
+    "face": 0.998786211013794,
+    "arms_hands": 0.8687361478805542,
+    "legs_feet": 0.7525814175605774
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_31": {
+   "n_detected": 470,
+   "hip_jump": 3,
+   "scale_jump": 55,
+   "low_visibility": 0,
+   "flagged": 55,
+   "flagged_share": 0.11702127659574468,
+   "flagged_recording": true,
+   "mean_visibility": 0.8896150588989258,
+   "mean_visibility_regions": {
+    "face": 0.9988306760787964,
+    "arms_hands": 0.7973859906196594,
+    "legs_feet": 0.85019850730896
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_32": {
+   "n_detected": 28,
+   "hip_jump": 3,
+   "scale_jump": 3,
+   "low_visibility": 0,
+   "flagged": 6,
+   "flagged_share": 0.21428571428571427,
+   "flagged_recording": true,
+   "mean_visibility": 0.561698853969574,
+   "mean_visibility_regions": {
+    "face": 0.9530990123748779,
+    "arms_hands": 0.36541545391082764,
+    "legs_feet": 0.2092505693435669
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_33": {
+   "n_detected": 80,
+   "hip_jump": 0,
+   "scale_jump": 3,
+   "low_visibility": 0,
+   "flagged": 3,
+   "flagged_share": 0.0375,
+   "flagged_recording": false,
+   "mean_visibility": 0.8888214826583862,
+   "mean_visibility_regions": {
+    "face": 0.9923433065414429,
+    "arms_hands": 0.798542320728302,
+    "legs_feet": 0.8541074991226196
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_34": {
+   "n_detected": 132,
+   "hip_jump": 0,
+   "scale_jump": 2,
+   "low_visibility": 0,
+   "flagged": 2,
+   "flagged_share": 0.015151515151515152,
+   "flagged_recording": false,
+   "mean_visibility": 0.9521457552909851,
+   "mean_visibility_regions": {
+    "face": 0.997023344039917,
+    "arms_hands": 0.9572614431381226,
+    "legs_feet": 0.8708085417747498
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": false
+  },
+  "asd_35": {
+   "n_detected": 283,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.9109341502189636,
+   "mean_visibility_regions": {
+    "face": 0.9975860714912415,
+    "arms_hands": 0.890082061290741,
+    "legs_feet": 0.8008237481117249
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_36": {
+   "n_detected": 124,
+   "hip_jump": 6,
+   "scale_jump": 8,
+   "low_visibility": 11,
+   "flagged": 19,
+   "flagged_share": 0.1532258064516129,
+   "flagged_recording": true,
+   "mean_visibility": 0.6115750074386597,
+   "mean_visibility_regions": {
+    "face": 0.8033223748207092,
+    "arms_hands": 0.45044389367103577,
+    "legs_feet": 0.4937232732772827
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": true
+  },
+  "asd_37": {
+   "n_detected": 125,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.760800302028656,
+   "mean_visibility_regions": {
+    "face": 0.996605634689331,
+    "arms_hands": 0.5481517910957336,
+    "legs_feet": 0.6960151195526123
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_38": {
+   "n_detected": 273,
+   "hip_jump": 2,
+   "scale_jump": 53,
+   "low_visibility": 0,
+   "flagged": 54,
+   "flagged_share": 0.1978021978021978,
+   "flagged_recording": true,
+   "mean_visibility": 0.8291125893592834,
+   "mean_visibility_regions": {
+    "face": 0.9880898594856262,
+    "arms_hands": 0.7347466349601746,
+    "legs_feet": 0.7093495726585388
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": true
+  },
+  "asd_39": {
+   "n_detected": 127,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.9594339728355408,
+   "mean_visibility_regions": {
+    "face": 0.9998878240585327,
+    "arms_hands": 0.9486232399940491,
+    "legs_feet": 0.9099521040916443
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": false
+  },
+  "asd_4": {
+   "n_detected": 111,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.9584025740623474,
+   "mean_visibility_regions": {
+    "face": 0.9991946220397949,
+    "arms_hands": 0.9776116609573364,
+    "legs_feet": 0.863111674785614
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": true
+  },
+  "asd_40": {
+   "n_detected": 95,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.8230387568473816,
+   "mean_visibility_regions": {
+    "face": 0.9897881746292114,
+    "arms_hands": 0.6168349385261536,
+    "legs_feet": 0.8588448166847229
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_41": {
+   "n_detected": 97,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 5,
+   "flagged": 5,
+   "flagged_share": 0.05154639175257732,
+   "flagged_recording": true,
+   "mean_visibility": 0.7120647430419922,
+   "mean_visibility_regions": {
+    "face": 0.9398991465568542,
+    "arms_hands": 0.6306250691413879,
+    "legs_feet": 0.44942253828048706
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_42": {
+   "n_detected": 92,
+   "hip_jump": 1,
+   "scale_jump": 1,
+   "low_visibility": 0,
+   "flagged": 1,
+   "flagged_share": 0.010869565217391304,
+   "flagged_recording": false,
+   "mean_visibility": 0.888032078742981,
+   "mean_visibility_regions": {
+    "face": 0.9978954792022705,
+    "arms_hands": 0.8069512248039246,
+    "legs_feet": 0.8306339383125305
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": false
+  },
+  "asd_43": {
+   "n_detected": 155,
+   "hip_jump": 25,
+   "scale_jump": 62,
+   "low_visibility": 0,
+   "flagged": 68,
+   "flagged_share": 0.43870967741935485,
+   "flagged_recording": true,
+   "mean_visibility": 0.7047803401947021,
+   "mean_visibility_regions": {
+    "face": 0.9898879528045654,
+    "arms_hands": 0.48455125093460083,
+    "legs_feet": 0.5693965554237366
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_44": {
+   "n_detected": 179,
+   "hip_jump": 49,
+   "scale_jump": 66,
+   "low_visibility": 5,
+   "flagged": 84,
+   "flagged_share": 0.4692737430167598,
+   "flagged_recording": true,
+   "mean_visibility": 0.5798364281654358,
+   "mean_visibility_regions": {
+    "face": 0.9467164874076843,
+    "arms_hands": 0.3759426772594452,
+    "legs_feet": 0.2767564058303833
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": false
+  },
+  "asd_45": {
+   "n_detected": 93,
+   "hip_jump": 0,
+   "scale_jump": 5,
+   "low_visibility": 0,
+   "flagged": 5,
+   "flagged_share": 0.053763440860215055,
+   "flagged_recording": true,
+   "mean_visibility": 0.73737633228302,
+   "mean_visibility_regions": {
+    "face": 0.9729418754577637,
+    "arms_hands": 0.5599300861358643,
+    "legs_feet": 0.6140223145484924
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": false
+  },
+  "asd_46": {
+   "n_detected": 158,
+   "hip_jump": 0,
+   "scale_jump": 8,
+   "low_visibility": 0,
+   "flagged": 8,
+   "flagged_share": 0.05063291139240506,
+   "flagged_recording": true,
+   "mean_visibility": 0.7254590392112732,
+   "mean_visibility_regions": {
+    "face": 0.9839323163032532,
+    "arms_hands": 0.6077951788902283,
+    "legs_feet": 0.4784637689590454
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": true
+  },
+  "asd_47": {
+   "n_detected": 70,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.920352041721344,
+   "mean_visibility_regions": {
+    "face": 0.99989914894104,
+    "arms_hands": 0.834234893321991,
+    "legs_feet": 0.9202754497528076
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": true
+  },
+  "asd_48": {
+   "n_detected": 52,
+   "hip_jump": 0,
+   "scale_jump": 1,
+   "low_visibility": 0,
+   "flagged": 1,
+   "flagged_share": 0.019230769230769232,
+   "flagged_recording": false,
+   "mean_visibility": 0.7229925990104675,
+   "mean_visibility_regions": {
+    "face": 0.9706763625144958,
+    "arms_hands": 0.39645543694496155,
+    "legs_feet": 0.8029908537864685
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_49": {
+   "n_detected": 181,
+   "hip_jump": 1,
+   "scale_jump": 11,
+   "low_visibility": 0,
+   "flagged": 11,
+   "flagged_share": 0.06077348066298342,
+   "flagged_recording": true,
+   "mean_visibility": 0.9002833366394043,
+   "mean_visibility_regions": {
+    "face": 0.9966323971748352,
+    "arms_hands": 0.7790627479553223,
+    "legs_feet": 0.9247110486030579
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_5": {
+   "n_detected": 287,
+   "hip_jump": 0,
+   "scale_jump": 22,
+   "low_visibility": 0,
+   "flagged": 22,
+   "flagged_share": 0.07665505226480836,
+   "flagged_recording": true,
+   "mean_visibility": 0.9473361372947693,
+   "mean_visibility_regions": {
+    "face": 0.9998032450675964,
+    "arms_hands": 0.9545288681983948,
+    "legs_feet": 0.8512528538703918
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": true
+  },
+  "asd_50": {
+   "n_detected": 192,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.907324492931366,
+   "mean_visibility_regions": {
+    "face": 0.9976133704185486,
+    "arms_hands": 0.8046249747276306,
+    "legs_feet": 0.9140677452087402
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": true
+  },
+  "asd_6": {
+   "n_detected": 187,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.9502963423728943,
+   "mean_visibility_regions": {
+    "face": 0.9992690086364746,
+    "arms_hands": 0.9849459528923035,
+    "legs_feet": 0.8185771703720093
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_7": {
+   "n_detected": 268,
+   "hip_jump": 0,
+   "scale_jump": 19,
+   "low_visibility": 0,
+   "flagged": 19,
+   "flagged_share": 0.0708955223880597,
+   "flagged_recording": true,
+   "mean_visibility": 0.8224824666976929,
+   "mean_visibility_regions": {
+    "face": 0.9989061951637268,
+    "arms_hands": 0.8692903518676758,
+    "legs_feet": 0.46534737944602966
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": false
+  },
+  "asd_8": {
+   "n_detected": 402,
+   "hip_jump": 10,
+   "scale_jump": 68,
+   "low_visibility": 85,
+   "flagged": 127,
+   "flagged_share": 0.31592039800995025,
+   "flagged_recording": true,
+   "mean_visibility": 0.7695590853691101,
+   "mean_visibility_regions": {
+    "face": 0.9334685206413269,
+    "arms_hands": 0.6953800320625305,
+    "legs_feet": 0.5984055995941162
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": true,
+   "overlay": true
+  },
+  "asd_9": {
+   "n_detected": 142,
+   "hip_jump": 0,
+   "scale_jump": 1,
+   "low_visibility": 0,
+   "flagged": 1,
+   "flagged_share": 0.007042253521126761,
+   "flagged_recording": false,
+   "mean_visibility": 0.8777744174003601,
+   "mean_visibility_regions": {
+    "face": 0.9988008141517639,
+    "arms_hands": 0.7896363735198975,
+    "legs_feet": 0.8130277395248413
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "autistic",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_1": {
+   "n_detected": 83,
+   "hip_jump": 0,
+   "scale_jump": 17,
+   "low_visibility": 0,
+   "flagged": 17,
+   "flagged_share": 0.20481927710843373,
+   "flagged_recording": true,
+   "mean_visibility": 0.9346120357513428,
+   "mean_visibility_regions": {
+    "face": 0.9991738796234131,
+    "arms_hands": 0.9010710120201111,
+    "legs_feet": 0.8798072338104248
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_10": {
+   "n_detected": 170,
+   "hip_jump": 1,
+   "scale_jump": 18,
+   "low_visibility": 0,
+   "flagged": 18,
+   "flagged_share": 0.10588235294117647,
+   "flagged_recording": true,
+   "mean_visibility": 0.9117381572723389,
+   "mean_visibility_regions": {
+    "face": 0.9991903901100159,
+    "arms_hands": 0.8998765349388123,
+    "legs_feet": 0.7872244715690613
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_11": {
+   "n_detected": 175,
+   "hip_jump": 3,
+   "scale_jump": 9,
+   "low_visibility": 0,
+   "flagged": 9,
+   "flagged_share": 0.05142857142857143,
+   "flagged_recording": true,
+   "mean_visibility": 0.7250859141349792,
+   "mean_visibility_regions": {
+    "face": 0.9651351571083069,
+    "arms_hands": 0.45429980754852295,
+    "legs_feet": 0.7324851751327515
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_12": {
+   "n_detected": 107,
+   "hip_jump": 0,
+   "scale_jump": 8,
+   "low_visibility": 0,
+   "flagged": 8,
+   "flagged_share": 0.07476635514018691,
+   "flagged_recording": true,
+   "mean_visibility": 0.9167872667312622,
+   "mean_visibility_regions": {
+    "face": 0.9907128810882568,
+    "arms_hands": 0.8880621194839478,
+    "legs_feet": 0.8374320268630981
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_13": {
+   "n_detected": 69,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 15,
+   "flagged": 15,
+   "flagged_share": 0.21739130434782608,
+   "flagged_recording": true,
+   "mean_visibility": 0.5219438672065735,
+   "mean_visibility_regions": {
+    "face": 0.979453444480896,
+    "arms_hands": 0.265718549489975,
+    "legs_feet": 0.1581788808107376
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_14": {
+   "n_detected": 96,
+   "hip_jump": 0,
+   "scale_jump": 16,
+   "low_visibility": 0,
+   "flagged": 16,
+   "flagged_share": 0.16666666666666666,
+   "flagged_recording": true,
+   "mean_visibility": 0.8498290181159973,
+   "mean_visibility_regions": {
+    "face": 0.9984751343727112,
+    "arms_hands": 0.7665293216705322,
+    "legs_feet": 0.7328556180000305
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_15": {
+   "n_detected": 112,
+   "hip_jump": 0,
+   "scale_jump": 15,
+   "low_visibility": 0,
+   "flagged": 15,
+   "flagged_share": 0.13392857142857142,
+   "flagged_recording": true,
+   "mean_visibility": 0.838772177696228,
+   "mean_visibility_regions": {
+    "face": 0.9572553634643555,
+    "arms_hands": 0.7848536372184753,
+    "legs_feet": 0.716440737247467
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_16": {
+   "n_detected": 107,
+   "hip_jump": 3,
+   "scale_jump": 25,
+   "low_visibility": 0,
+   "flagged": 26,
+   "flagged_share": 0.24299065420560748,
+   "flagged_recording": true,
+   "mean_visibility": 0.7708688378334045,
+   "mean_visibility_regions": {
+    "face": 0.9978992938995361,
+    "arms_hands": 0.8139969706535339,
+    "legs_feet": 0.33675116300582886
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_17": {
+   "n_detected": 78,
+   "hip_jump": 0,
+   "scale_jump": 4,
+   "low_visibility": 0,
+   "flagged": 4,
+   "flagged_share": 0.05128205128205128,
+   "flagged_recording": true,
+   "mean_visibility": 0.9441038966178894,
+   "mean_visibility_regions": {
+    "face": 0.9971898794174194,
+    "arms_hands": 0.9335516095161438,
+    "legs_feet": 0.8729699850082397
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_18": {
+   "n_detected": 133,
+   "hip_jump": 1,
+   "scale_jump": 15,
+   "low_visibility": 0,
+   "flagged": 15,
+   "flagged_share": 0.11278195488721804,
+   "flagged_recording": true,
+   "mean_visibility": 0.9440602660179138,
+   "mean_visibility_regions": {
+    "face": 0.99764484167099,
+    "arms_hands": 0.9724764823913574,
+    "legs_feet": 0.8137801289558411
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_19": {
+   "n_detected": 125,
+   "hip_jump": 0,
+   "scale_jump": 1,
+   "low_visibility": 0,
+   "flagged": 1,
+   "flagged_share": 0.008,
+   "flagged_recording": false,
+   "mean_visibility": 0.879524290561676,
+   "mean_visibility_regions": {
+    "face": 0.9844037890434265,
+    "arms_hands": 0.8856687545776367,
+    "legs_feet": 0.6959975361824036
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_2": {
+   "n_detected": 88,
+   "hip_jump": 0,
+   "scale_jump": 11,
+   "low_visibility": 0,
+   "flagged": 11,
+   "flagged_share": 0.125,
+   "flagged_recording": true,
+   "mean_visibility": 0.8749932646751404,
+   "mean_visibility_regions": {
+    "face": 0.9889999032020569,
+    "arms_hands": 0.8599746227264404,
+    "legs_feet": 0.7095191478729248
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_20": {
+   "n_detected": 82,
+   "hip_jump": 1,
+   "scale_jump": 17,
+   "low_visibility": 0,
+   "flagged": 17,
+   "flagged_share": 0.2073170731707317,
+   "flagged_recording": true,
+   "mean_visibility": 0.5895535349845886,
+   "mean_visibility_regions": {
+    "face": 0.9536569714546204,
+    "arms_hands": 0.399077445268631,
+    "legs_feet": 0.27204078435897827
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_21": {
+   "n_detected": 94,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.9348975419998169,
+   "mean_visibility_regions": {
+    "face": 0.999474048614502,
+    "arms_hands": 0.8645108342170715,
+    "legs_feet": 0.9354109168052673
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_22": {
+   "n_detected": 105,
+   "hip_jump": 3,
+   "scale_jump": 11,
+   "low_visibility": 37,
+   "flagged": 43,
+   "flagged_share": 0.4095238095238095,
+   "flagged_recording": true,
+   "mean_visibility": 0.5066701173782349,
+   "mean_visibility_regions": {
+    "face": 0.971534788608551,
+    "arms_hands": 0.2012334167957306,
+    "legs_feet": 0.2030830681324005
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_23": {
+   "n_detected": 73,
+   "hip_jump": 1,
+   "scale_jump": 4,
+   "low_visibility": 0,
+   "flagged": 4,
+   "flagged_share": 0.0547945205479452,
+   "flagged_recording": true,
+   "mean_visibility": 0.9363221526145935,
+   "mean_visibility_regions": {
+    "face": 0.9980301260948181,
+    "arms_hands": 0.9314530491828918,
+    "legs_feet": 0.842863917350769
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_24": {
+   "n_detected": 148,
+   "hip_jump": 1,
+   "scale_jump": 17,
+   "low_visibility": 0,
+   "flagged": 17,
+   "flagged_share": 0.11486486486486487,
+   "flagged_recording": true,
+   "mean_visibility": 0.9058017134666443,
+   "mean_visibility_regions": {
+    "face": 0.9948112368583679,
+    "arms_hands": 0.9437180757522583,
+    "legs_feet": 0.7030069828033447
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_25": {
+   "n_detected": 144,
+   "hip_jump": 0,
+   "scale_jump": 23,
+   "low_visibility": 0,
+   "flagged": 23,
+   "flagged_share": 0.1597222222222222,
+   "flagged_recording": true,
+   "mean_visibility": 0.9285069704055786,
+   "mean_visibility_regions": {
+    "face": 0.9973386526107788,
+    "arms_hands": 0.9391795992851257,
+    "legs_feet": 0.7999907732009888
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_26": {
+   "n_detected": 134,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.8246700763702393,
+   "mean_visibility_regions": {
+    "face": 0.9651377201080322,
+    "arms_hands": 0.8397001028060913,
+    "legs_feet": 0.565174400806427
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_27": {
+   "n_detected": 104,
+   "hip_jump": 0,
+   "scale_jump": 8,
+   "low_visibility": 0,
+   "flagged": 8,
+   "flagged_share": 0.07692307692307693,
+   "flagged_recording": true,
+   "mean_visibility": 0.9069607257843018,
+   "mean_visibility_regions": {
+    "face": 0.9987438917160034,
+    "arms_hands": 0.9163093566894531,
+    "legs_feet": 0.7434853911399841
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_28": {
+   "n_detected": 117,
+   "hip_jump": 2,
+   "scale_jump": 27,
+   "low_visibility": 5,
+   "flagged": 31,
+   "flagged_share": 0.26495726495726496,
+   "flagged_recording": true,
+   "mean_visibility": 0.6850213408470154,
+   "mean_visibility_regions": {
+    "face": 0.8883053660392761,
+    "arms_hands": 0.46112850308418274,
+    "legs_feet": 0.6626170873641968
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_29": {
+   "n_detected": 188,
+   "hip_jump": 3,
+   "scale_jump": 16,
+   "low_visibility": 0,
+   "flagged": 18,
+   "flagged_share": 0.09574468085106383,
+   "flagged_recording": true,
+   "mean_visibility": 0.7076799273490906,
+   "mean_visibility_regions": {
+    "face": 0.9526474475860596,
+    "arms_hands": 0.47278913855552673,
+    "legs_feet": 0.6501439213752747
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_3": {
+   "n_detected": 144,
+   "hip_jump": 0,
+   "scale_jump": 7,
+   "low_visibility": 0,
+   "flagged": 7,
+   "flagged_share": 0.04861111111111111,
+   "flagged_recording": false,
+   "mean_visibility": 0.9697569608688354,
+   "mean_visibility_regions": {
+    "face": 0.9993546009063721,
+    "arms_hands": 0.9787152409553528,
+    "legs_feet": 0.9080683588981628
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_30": {
+   "n_detected": 119,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.975176215171814,
+   "mean_visibility_regions": {
+    "face": 0.9972637891769409,
+    "arms_hands": 0.9808080196380615,
+    "legs_feet": 0.9301574230194092
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_31": {
+   "n_detected": 88,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.9329090118408203,
+   "mean_visibility_regions": {
+    "face": 0.9922540783882141,
+    "arms_hands": 0.9782795906066895,
+    "legs_feet": 0.7664949297904968
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_32": {
+   "n_detected": 119,
+   "hip_jump": 0,
+   "scale_jump": 17,
+   "low_visibility": 0,
+   "flagged": 17,
+   "flagged_share": 0.14285714285714285,
+   "flagged_recording": true,
+   "mean_visibility": 0.8883209824562073,
+   "mean_visibility_regions": {
+    "face": 0.9934402704238892,
+    "arms_hands": 0.893676221370697,
+    "legs_feet": 0.707844078540802
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_33": {
+   "n_detected": 72,
+   "hip_jump": 0,
+   "scale_jump": 4,
+   "low_visibility": 0,
+   "flagged": 4,
+   "flagged_share": 0.05555555555555555,
+   "flagged_recording": true,
+   "mean_visibility": 0.9138891696929932,
+   "mean_visibility_regions": {
+    "face": 0.9977483153343201,
+    "arms_hands": 0.9556934237480164,
+    "legs_feet": 0.7143573760986328
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_34": {
+   "n_detected": 97,
+   "hip_jump": 3,
+   "scale_jump": 20,
+   "low_visibility": 0,
+   "flagged": 20,
+   "flagged_share": 0.20618556701030927,
+   "flagged_recording": true,
+   "mean_visibility": 0.8490824103355408,
+   "mean_visibility_regions": {
+    "face": 0.9779397249221802,
+    "arms_hands": 0.7386626601219177,
+    "legs_feet": 0.7998210191726685
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_35": {
+   "n_detected": 62,
+   "hip_jump": 0,
+   "scale_jump": 3,
+   "low_visibility": 0,
+   "flagged": 3,
+   "flagged_share": 0.04838709677419355,
+   "flagged_recording": false,
+   "mean_visibility": 0.8467158675193787,
+   "mean_visibility_regions": {
+    "face": 0.992089033126831,
+    "arms_hands": 0.7628429532051086,
+    "legs_feet": 0.7343246936798096
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_36": {
+   "n_detected": 68,
+   "hip_jump": 0,
+   "scale_jump": 3,
+   "low_visibility": 0,
+   "flagged": 3,
+   "flagged_share": 0.04411764705882353,
+   "flagged_recording": false,
+   "mean_visibility": 0.9674172401428223,
+   "mean_visibility_regions": {
+    "face": 0.9984561800956726,
+    "arms_hands": 0.9790917038917542,
+    "legs_feet": 0.8990874290466309
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_37": {
+   "n_detected": 92,
+   "hip_jump": 0,
+   "scale_jump": 2,
+   "low_visibility": 0,
+   "flagged": 2,
+   "flagged_share": 0.021739130434782608,
+   "flagged_recording": false,
+   "mean_visibility": 0.9411557912826538,
+   "mean_visibility_regions": {
+    "face": 0.9929214715957642,
+    "arms_hands": 0.9772778749465942,
+    "legs_feet": 0.8010973930358887
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_38": {
+   "n_detected": 76,
+   "hip_jump": 0,
+   "scale_jump": 3,
+   "low_visibility": 0,
+   "flagged": 3,
+   "flagged_share": 0.039473684210526314,
+   "flagged_recording": false,
+   "mean_visibility": 0.921157956123352,
+   "mean_visibility_regions": {
+    "face": 0.9883621335029602,
+    "arms_hands": 0.8561241030693054,
+    "legs_feet": 0.9065990447998047
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_40": {
+   "n_detected": 109,
+   "hip_jump": 0,
+   "scale_jump": 12,
+   "low_visibility": 0,
+   "flagged": 12,
+   "flagged_share": 0.11009174311926606,
+   "flagged_recording": true,
+   "mean_visibility": 0.8071020245552063,
+   "mean_visibility_regions": {
+    "face": 0.9973331093788147,
+    "arms_hands": 0.7129685282707214,
+    "legs_feet": 0.6385168433189392
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_41": {
+   "n_detected": 97,
+   "hip_jump": 4,
+   "scale_jump": 19,
+   "low_visibility": 0,
+   "flagged": 19,
+   "flagged_share": 0.1958762886597938,
+   "flagged_recording": true,
+   "mean_visibility": 0.9419686794281006,
+   "mean_visibility_regions": {
+    "face": 0.9994320869445801,
+    "arms_hands": 0.9095836281776428,
+    "legs_feet": 0.897032618522644
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_42": {
+   "n_detected": 56,
+   "hip_jump": 0,
+   "scale_jump": 18,
+   "low_visibility": 0,
+   "flagged": 18,
+   "flagged_share": 0.32142857142857145,
+   "flagged_recording": true,
+   "mean_visibility": 0.9466263651847839,
+   "mean_visibility_regions": {
+    "face": 0.9979895949363708,
+    "arms_hands": 0.9561794996261597,
+    "legs_feet": 0.8483358025550842
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  },
+  "td_43": {
+   "n_detected": 114,
+   "hip_jump": 0,
+   "scale_jump": 5,
+   "low_visibility": 0,
+   "flagged": 5,
+   "flagged_share": 0.043859649122807015,
+   "flagged_recording": false,
+   "mean_visibility": 0.7732376456260681,
+   "mean_visibility_regions": {
+    "face": 0.8250572681427002,
+    "arms_hands": 0.6729957461357117,
+    "legs_feet": 0.7956814765930176
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_44": {
+   "n_detected": 103,
+   "hip_jump": 0,
+   "scale_jump": 10,
+   "low_visibility": 0,
+   "flagged": 10,
+   "flagged_share": 0.0970873786407767,
+   "flagged_recording": true,
+   "mean_visibility": 0.9688848853111267,
+   "mean_visibility_regions": {
+    "face": 0.9987715482711792,
+    "arms_hands": 0.9642373323440552,
+    "legs_feet": 0.9269917607307434
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_45": {
+   "n_detected": 62,
+   "hip_jump": 13,
+   "scale_jump": 20,
+   "low_visibility": 0,
+   "flagged": 27,
+   "flagged_share": 0.43548387096774194,
+   "flagged_recording": true,
+   "mean_visibility": 0.8207051157951355,
+   "mean_visibility_regions": {
+    "face": 0.9386231303215027,
+    "arms_hands": 0.7870306372642517,
+    "legs_feet": 0.6642753481864929
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_46": {
+   "n_detected": 96,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.9581387639045715,
+   "mean_visibility_regions": {
+    "face": 0.9960528016090393,
+    "arms_hands": 0.9702218174934387,
+    "legs_feet": 0.8774277567863464
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_47": {
+   "n_detected": 103,
+   "hip_jump": 0,
+   "scale_jump": 12,
+   "low_visibility": 0,
+   "flagged": 12,
+   "flagged_share": 0.11650485436893204,
+   "flagged_recording": true,
+   "mean_visibility": 0.8415144681930542,
+   "mean_visibility_regions": {
+    "face": 0.9951756000518799,
+    "arms_hands": 0.8720799684524536,
+    "legs_feet": 0.544779896736145
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_48": {
+   "n_detected": 114,
+   "hip_jump": 0,
+   "scale_jump": 14,
+   "low_visibility": 0,
+   "flagged": 14,
+   "flagged_share": 0.12280701754385964,
+   "flagged_recording": true,
+   "mean_visibility": 0.9314355254173279,
+   "mean_visibility_regions": {
+    "face": 0.9970239996910095,
+    "arms_hands": 0.9417656660079956,
+    "legs_feet": 0.8086231350898743
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_49": {
+   "n_detected": 144,
+   "hip_jump": 0,
+   "scale_jump": 0,
+   "low_visibility": 0,
+   "flagged": 0,
+   "flagged_share": 0.0,
+   "flagged_recording": false,
+   "mean_visibility": 0.9339343309402466,
+   "mean_visibility_regions": {
+    "face": 0.9941740036010742,
+    "arms_hands": 0.942532479763031,
+    "legs_feet": 0.8217031359672546
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_6": {
+   "n_detected": 146,
+   "hip_jump": 0,
+   "scale_jump": 36,
+   "low_visibility": 0,
+   "flagged": 36,
+   "flagged_share": 0.2465753424657534,
+   "flagged_recording": true,
+   "mean_visibility": 0.832412838935852,
+   "mean_visibility_regions": {
+    "face": 0.9946966767311096,
+    "arms_hands": 0.7283241748809814,
+    "legs_feet": 0.7235215902328491
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_8": {
+   "n_detected": 117,
+   "hip_jump": 1,
+   "scale_jump": 6,
+   "low_visibility": 4,
+   "flagged": 11,
+   "flagged_share": 0.09401709401709402,
+   "flagged_recording": true,
+   "mean_visibility": 0.7412817478179932,
+   "mean_visibility_regions": {
+    "face": 0.9809418320655823,
+    "arms_hands": 0.7055811285972595,
+    "legs_feet": 0.4010283052921295
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": false
+  },
+  "td_9": {
+   "n_detected": 159,
+   "hip_jump": 2,
+   "scale_jump": 10,
+   "low_visibility": 4,
+   "flagged": 11,
+   "flagged_share": 0.06918238993710692,
+   "flagged_recording": true,
+   "mean_visibility": 0.8780580759048462,
+   "mean_visibility_regions": {
+    "face": 0.9876672029495239,
+    "arms_hands": 0.8574538826942444,
+    "legs_feet": 0.7278329133987427
+   },
+   "reextraction_max_abs_diff": 0.0,
+   "reextraction_same_detections": true,
+   "group": "td",
+   "uncropped": false,
+   "overlay": true
+  }
+ }
+}

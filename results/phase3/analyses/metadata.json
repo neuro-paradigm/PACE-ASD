@@ -1,0 +1,939 @@
+{
+ "per_child": {
+  "asd_1": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_10": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-13",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_11": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_12": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_13": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_14": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_15": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_16": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_17": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-11"
+  },
+  "asd_18": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-05",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-11"
+  },
+  "asd_19": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-25",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_2": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_20": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_21": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-25",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_22": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-25",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_23": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_24": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-25",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_25": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-25",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_26": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-25",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_27": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-25",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_28": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_29": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_3": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_30": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_31": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-25",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_32": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_33": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_34": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_35": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-25",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_36": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_37": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_38": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_39": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_4": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-10",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_40": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_41": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_42": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-11"
+  },
+  "asd_43": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-11",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_44": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-25",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "asd_45": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-26",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "asd_46": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "asd_47": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "asd_48": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "asd_49": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "asd_5": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-10",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_50": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-04-21",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "asd_6": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2019-12-10",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_7": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-05",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_8": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-05",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "asd_9": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-01-24",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-21",
+   "mtime_color_video": "2020-09-09"
+  },
+  "td_1": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-06",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_10": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-05-23",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_11": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-05-23",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_12": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-05-23",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_13": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-07",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_14": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-07",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_15": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-07",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_16": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-06",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_17": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-08",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_18": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-08",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_19": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-08",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_2": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-06",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_20": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-06",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_21": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-08",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_22": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-08",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_23": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-05-22",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_24": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-08",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_25": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-08",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_26": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-06",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_27": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-08",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_28": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-05-22",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_29": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-06",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_3": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-05-22",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_30": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-08",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_31": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_32": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_33": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_34": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_35": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_36": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_37": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_38": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_40": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-06",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_41": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_42": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_43": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_44": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_45": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_46": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_47": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_48": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_49": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-06-09",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-11"
+  },
+  "td_6": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-05-22",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_8": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-05-22",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  },
+  "td_9": {
+   "codec": "XVID",
+   "writing_library": "Lavf58.20.100",
+   "date_fields": {},
+   "mtime_Tvideo.avi": "2020-05-22",
+   "mtime_Svideo.avi": "2020-06-22",
+   "mtime_8.xlsx": "2020-06-22",
+   "mtime_color_video": "2020-09-10"
+  }
+ },
+ "by_group": {
+  "autistic": {
+   "codecs": [
+    "XVID"
+   ],
+   "writing_libraries": [
+    "Lavf58.20.100"
+   ],
+   "n_with_date_field": 0,
+   "Tvideo.avi_range": [
+    "2019-12-09",
+    "2020-04-21"
+   ],
+   "Tvideo.avi_months": [
+    "2019-12",
+    "2020-01",
+    "2020-04"
+   ],
+   "Svideo.avi_range": [
+    "2020-06-22",
+    "2020-06-22"
+   ],
+   "Svideo.avi_months": [
+    "2020-06"
+   ],
+   "8.xlsx_range": [
+    "2020-06-21",
+    "2020-06-22"
+   ],
+   "8.xlsx_months": [
+    "2020-06"
+   ],
+   "color_video_range": [
+    "2020-09-09",
+    "2020-09-11"
+   ],
+   "color_video_months": [
+    "2020-09"
+   ]
+  },
+  "td": {
+   "codecs": [
+    "XVID"
+   ],
+   "writing_libraries": [
+    "Lavf58.20.100"
+   ],
+   "n_with_date_field": 0,
+   "Tvideo.avi_range": [
+    "2020-05-22",
+    "2020-06-09"
+   ],
+   "Tvideo.avi_months": [
+    "2020-05",
+    "2020-06"
+   ],
+   "Svideo.avi_range": [
+    "2020-06-22",
+    "2020-06-22"
+   ],
+   "Svideo.avi_months": [
+    "2020-06"
+   ],
+   "8.xlsx_range": [
+    "2020-06-22",
+    "2020-06-22"
+   ],
+   "8.xlsx_months": [
+    "2020-06"
+   ],
+   "color_video_range": [
+    "2020-09-10",
+    "2020-09-11"
+   ],
+   "color_video_months": [
+    "2020-09"
+   ]
+  }
+ },
+ "tvideo_ranges_overlap": false
+}

@@ -1,5 +1,5 @@
 {
- "V1_V2": {
+ "C2": {
   "timing": "R",
   "comparisons": {
    "PACE-nogate": {
@@ -126,7 +126,7 @@
   "any_component_improves": false,
   "outperforms_simpler": false
  },
- "V3": {
+ "C3_C4": {
   "movement_evidence_cropped": {
    "timing": "R",
    "PACE": {
@@ -220,7 +220,7 @@
    "corroborates": true
   }
  },
- "V4": {
+ "C5": {
   "1.0": {
    "event": "raise",
    "amplitude": 1.0,
@@ -1690,7 +1690,7 @@
   },
   "chosen_remedy": "anneal-M2"
  },
- "V5": {
+ "C5_selection": {
   "PACE": {
    "chance_criterion": {
     "timing": "R",
@@ -1776,7 +1776,7 @@
    }
   }
  },
- "V6": {
+ "C6": {
   "timing": "R",
   "planted": {
    "1.0": {
@@ -1820,5 +1820,1072 @@
    "profile_rho": 0.7357174688057041,
    "passes": false
   }
+ },
+ "phase3": {
+  "timing": "P",
+  "permutation_null": {
+   "All-controls": {
+    "null_mean": 0.49761333333333335,
+    "reference": 0.6617955555555556,
+    "observed": 0.9801481481481481,
+    "p": 0.004975124378109453,
+    "n": 200,
+    "passes": true
+   },
+   "Frame-format": {
+    "null_mean": 0.4795444444444444,
+    "reference": 0.6151644444444444,
+    "observed": 0.9013333333333334,
+    "p": 0.004975124378109453,
+    "n": 200,
+    "passes": true
+   },
+   "Gait-LR": {
+    "null_mean": 0.4992111111111111,
+    "reference": 0.6920844444444443,
+    "observed": 0.8577777777777778,
+    "p": 0.004975124378109453,
+    "n": 200,
+    "passes": true
+   },
+   "Gait-RF": {
+    "null_mean": 0.4966622222222222,
+    "reference": 0.6693022222222225,
+    "observed": 0.8856296296296295,
+    "p": 0.009900990099009901,
+    "n": 100,
+    "passes": true
+   },
+   "Mean-pose": {
+    "null_mean": 0.5007933333333334,
+    "reference": 0.66492,
+    "observed": 0.818962962962963,
+    "p": 0.004975124378109453,
+    "n": 200,
+    "passes": true
+   },
+   "Scene": {
+    "null_mean": 0.49620666666666663,
+    "reference": 0.6506711111111111,
+    "observed": 0.967111111111111,
+    "p": 0.004975124378109453,
+    "n": 200,
+    "passes": true
+   },
+   "PACE": {
+    "null_mean": 0.48288888888888887,
+    "reference": 0.6106666666666667,
+    "observed": 0.9001481481481481,
+    "p": 0.09090909090909091,
+    "n": 10,
+    "passes": true
+   }
+  },
+  "all_controls_cropped": {
+   "PACE": {
+    "diff": 0.008888888888888835,
+    "ci95": [
+     -0.053827160493827186,
+     0.08049382716049369
+    ],
+    "passes": false
+   },
+   "Gait-LR": {
+    "diff": 0.014814814814814836,
+    "ci95": [
+     -0.05283950617283939,
+     0.08939506172839502
+    ],
+    "passes": false
+   },
+   "Gait-RF": {
+    "diff": 0.0251851851851852,
+    "ci95": [
+     -0.03506172839506161,
+     0.09188888888888869
+    ],
+    "passes": false
+   },
+   "CTR-GCN": {
+    "diff": 0.02172839506172841,
+    "ci95": [
+     -0.04345679012345682,
+     0.09283950617283954
+    ],
+    "passes": false
+   },
+   "Gait-LR-adjusted": {
+    "diff": -0.008888888888888946,
+    "ci95": [
+     -0.09135802469135801,
+     0.0726172839506171
+    ],
+    "passes": false
+   },
+   "Mean-pose": {
+    "diff": -0.11358024691358015,
+    "ci95": [
+     -0.3106172839506173,
+     0.04495061728395052
+    ],
+    "passes": false
+   },
+   "Depth-RF": {
+    "diff": -0.0990123456790124,
+    "ci95": [
+     -0.24154320987654312,
+     0.022969135802469096
+    ],
+    "passes": false
+   }
+  },
+  "depth_vs_time_of_day": {
+   "model": "Depth-RF",
+   "auc_cropped": 0.8486419753086419,
+   "ci95": [
+    0.7212283950617283,
+    0.9437160493827159
+   ],
+   "time_of_day_auc_cropped": 0.25728395061728393,
+   "time_of_day_ci95": [
+    0.15901234567901235,
+    0.3629753086419753
+   ],
+   "corroborates": true
+  },
+  "controls": {
+   "Duration": {
+    "all": "not excluded",
+    "cropped": "uninformative",
+    "auc_cropped": 0.4930864197530864,
+    "ci95_cropped": [
+     0.3258765432098766,
+     0.6968395061728395
+    ]
+   },
+   "Mask-pattern": {
+    "all": "not excluded",
+    "cropped": "not excluded",
+    "auc_cropped": 0.5664197530864198,
+    "ci95_cropped": [
+     0.4118148148148148,
+     0.7295679012345678
+    ]
+   },
+   "Demographics": {
+    "all": "informative",
+    "cropped": "not excluded",
+    "auc_cropped": 0.6553086419753087,
+    "ci95_cropped": [
+     0.5123024691358025,
+     0.7901358024691357
+    ]
+   },
+   "Frame-format": {
+    "all": "informative",
+    "cropped": "not excluded",
+    "auc_cropped": 0.6711111111111111,
+    "ci95_cropped": [
+     0.5402345679012346,
+     0.7960617283950617
+    ]
+   },
+   "Covariates": {
+    "all": "informative",
+    "cropped": "not excluded",
+    "auc_cropped": 0.6612345679012346,
+    "ci95_cropped": [
+     0.5165432098765432,
+     0.7876913580246913
+    ]
+   },
+   "Scene": {
+    "all": "informative",
+    "cropped": "informative",
+    "auc_cropped": 0.9412345679012345,
+    "ci95_cropped": [
+     0.8562345679012346,
+     0.9965432098765432
+    ]
+   },
+   "Jitter": {
+    "all": "uninformative",
+    "cropped": "not excluded",
+    "auc_cropped": 0.6049382716049383,
+    "ci95_cropped": [
+     0.44443209876543205,
+     0.7467160493827161
+    ]
+   },
+   "Tracking-quality": {
+    "all": "uninformative",
+    "cropped": "not excluded",
+    "auc_cropped": 0.6009876543209877,
+    "ci95_cropped": [
+     0.45923456790123457,
+     0.7215432098765432
+    ]
+   },
+   "Time-of-day": {
+    "all": "uninformative",
+    "cropped": "uninformative",
+    "auc_cropped": 0.25728395061728393,
+    "ci95_cropped": [
+     0.15901234567901235,
+     0.3629753086419753
+    ]
+   },
+   "Depth-recording": {
+    "all": "not excluded",
+    "cropped": "not excluded",
+    "auc_cropped": 0.6814814814814815,
+    "ci95_cropped": [
+     0.5377654320987655,
+     0.7985308641975307
+    ]
+   },
+   "All-controls": {
+    "all": "informative",
+    "cropped": "informative",
+    "auc_cropped": 0.9476543209876543,
+    "ci95_cropped": [
+     0.88,
+     0.9911111111111112
+    ]
+   },
+   "PACE-maskonly": {
+    "all": "not excluded",
+    "cropped": "uninformative",
+    "auc_cropped": 0.5219753086419754,
+    "ci95_cropped": [
+     0.36687654320987656,
+     0.669641975308642
+    ]
+   }
+  },
+  "incremental_value": {
+   "all": {
+    "PACE": {
+     "adds": true,
+     "lr_p": 3.481564744214307e-06,
+     "diff": 0.023111111111111082,
+     "ci95": [
+      0.002666666666666706,
+      0.09112222222222208
+     ]
+    },
+    "Gait-RF": {
+     "adds": true,
+     "lr_p": 3.1265969229379026e-05,
+     "diff": 0.01777777777777778,
+     "ci95": [
+      0.000888888888888939,
+      0.07866666666666666
+     ]
+    },
+    "Depth-RF": {
+     "adds": false,
+     "lr_p": 0.0002659892251345169,
+     "diff": 0.013777777777777778,
+     "ci95": [
+      -0.008888888888888835,
+      0.0689333333333331
+     ]
+    }
+   },
+   "cropped": {
+    "PACE": {
+     "adds": false,
+     "lr_p": 0.0001348362742051008,
+     "diff": 0.06666666666666665,
+     "ci95": [
+      0.0,
+      0.2755925925925925
+     ]
+    },
+    "Gait-RF": {
+     "adds": false,
+     "lr_p": 0.00025394931640754416,
+     "diff": 0.06074074074074076,
+     "ci95": [
+      0.0,
+      0.24892592592592577
+     ]
+    },
+    "Depth-RF": {
+     "adds": false,
+     "lr_p": 0.0003216301181369295,
+     "diff": 0.05629629629629629,
+     "ci95": [
+      0.0,
+      0.23411111111111094
+     ]
+    }
+   }
+  },
+  "reliability_bounded_agreement": {
+   "interpretable": [
+    "arm_swing",
+    "wrist_height",
+    "knee_rom",
+    "elbow_rom",
+    "trunk_sway",
+    "head_bob"
+   ],
+   "indeterminate": [
+    "step_width"
+   ],
+   "robust_with_depth": [
+    "arm_swing",
+    "wrist_height",
+    "elbow_rom",
+    "knee_rom",
+    "trunk_sway"
+   ],
+   "robust_with_depth_disagree_interpretable": [
+    "arm_swing",
+    "elbow_rom",
+    "knee_rom",
+    "trunk_sway"
+   ],
+   "agree": [
+    "wrist_height"
+   ]
+  },
+  "scale_robust": {
+   "robust": [
+    "step_width_var",
+    "arm_swing",
+    "wrist_height",
+    "elbow_rom",
+    "elbow_flexion",
+    "knee_rom",
+    "knee_flexion",
+    "trunk_sway",
+    "head_sway"
+   ],
+   "scale_robust": [
+    "step_width_var",
+    "arm_swing",
+    "wrist_height",
+    "elbow_rom",
+    "elbow_flexion",
+    "knee_rom",
+    "knee_flexion",
+    "trunk_sway",
+    "head_sway"
+   ]
+  },
+  "viewpoint": {
+   "robust_after_size_adjustment": [
+    "step_width_var",
+    "arm_swing",
+    "wrist_height",
+    "elbow_rom",
+    "elbow_flexion",
+    "knee_rom",
+    "knee_flexion",
+    "trunk_sway",
+    "head_sway"
+   ]
+  },
+  "frame_order": {
+   "PACE": {
+    "drop": 0.07333333333333336,
+    "ci95": [
+     0.008292592592592617,
+     0.14386296296296291
+    ],
+    "uses_order": true,
+    "drop_cropped": 0.07358024691358012
+   },
+   "PACE-nogate": {
+    "drop": 0.06400000000000006,
+    "ci95": [
+     0.008888888888888872,
+     0.1257925925925925
+    ],
+    "uses_order": true,
+    "drop_cropped": 0.07012345679012355
+   }
+  },
+  "within_cropped": {
+   "Gait-LR": {
+    "auc": 0.9362962962962963,
+    "ci95": [
+     0.8449382716049384,
+     0.994074074074074
+    ],
+    "beats_all_controls": false
+   },
+   "Gait-RF": {
+    "auc": 0.9417283950617285,
+    "ci95": [
+     0.866641975308642,
+     0.994074074074074
+    ],
+    "beats_all_controls": false
+   },
+   "Gait-LR-adjusted": {
+    "auc": 0.9145679012345679,
+    "ci95": [
+     0.8286296296296297,
+     0.9812469135802468
+    ],
+    "beats_all_controls": null
+   },
+   "Mean-pose": {
+    "auc": 0.9713580246913581,
+    "ci95": [
+     0.9259135802469136,
+     1.0
+    ],
+    "beats_all_controls": false
+   },
+   "Depth-LR": {
+    "auc": 0.7214814814814815,
+    "ci95": [
+     0.5525925925925926,
+     0.8745802469135804
+    ],
+    "beats_all_controls": null
+   },
+   "Depth-RF": {
+    "auc": 0.7906172839506173,
+    "ci95": [
+     0.6261481481481481,
+     0.9298765432098764
+    ],
+    "beats_all_controls": false
+   },
+   "Scene": {
+    "auc": 0.8819753086419753,
+    "ci95": [
+     0.7456666666666667,
+     0.9738271604938271
+    ],
+    "beats_all_controls": null
+   },
+   "Time-of-day": {
+    "auc": 0.9150617283950617,
+    "ci95": [
+     0.7826543209876543,
+     1.0
+    ],
+    "beats_all_controls": null
+   },
+   "Demographics": {
+    "auc": 0.6276543209876544,
+    "ci95": [
+     0.481962962962963,
+     0.7600061728395062
+    ],
+    "beats_all_controls": null
+   },
+   "Tracking-quality": {
+    "auc": 0.5861728395061728,
+    "ci95": [
+     0.45432098765432105,
+     0.7190246913580247
+    ],
+    "beats_all_controls": null
+   },
+   "All-controls-noformat": {
+    "auc": 0.9688888888888889,
+    "ci95": [
+     0.9244444444444445,
+     0.9980370370370371
+    ],
+    "beats_all_controls": null
+   }
+  },
+  "within_cropped_controls": {
+   "Scene": "informative",
+   "Time-of-day": "informative",
+   "Demographics": "not excluded",
+   "Tracking-quality": "not excluded",
+   "All-controls-noformat": "informative"
+  },
+  "ig_real": {
+   "max_share_difference": 0.055702806566620744,
+   "profile_rho": 0.6418894830659536,
+   "passes": false
+  },
+  "attribution_planted": {
+   "raise1.0": {
+    "ig": {
+     "trained_ratio": 1.978418837732387,
+     "random_ratio": 0.9464180098320331,
+     "passes": true
+    },
+    "occlusion": {
+     "trained_ratio": 1.5381928631251243,
+     "random_ratio": 0.9129647697410198,
+     "passes": true
+    },
+    "reproduced": true
+   },
+   "flap0.6": {
+    "ig": {
+     "trained_ratio": 2.6143015008639954,
+     "random_ratio": 1.1497613057888354,
+     "passes": true
+    },
+    "occlusion": {
+     "trained_ratio": 2.0623107369370044,
+     "random_ratio": 1.0338472117154733,
+     "passes": true
+    },
+    "reproduced": true
+   }
+  },
+  "pose_qc": {
+   "flagged": 63,
+   "n": 95,
+   "reextraction_identical": true
+  },
+  "positive_control": {
+   "passes": false,
+   "share": {
+    "4.0": {
+     "i_controls_below_0.70": 0.95,
+     "ii_movement_above_chance_and_controls": 1.0,
+     "iii_incremental_value": 0.8,
+     "iv_robust_descriptor": 0.8,
+     "v_depth_corroborates": 1.0,
+     "attributable_to_movement": 0.6
+    },
+    "2.0": {
+     "i_controls_below_0.70": 0.95,
+     "ii_movement_above_chance_and_controls": 0.35,
+     "iii_incremental_value": 0.0,
+     "iv_robust_descriptor": 0.1,
+     "v_depth_corroborates": 0.65,
+     "attributable_to_movement": 0.0
+    },
+    "1.0": {
+     "i_controls_below_0.70": 0.95,
+     "ii_movement_above_chance_and_controls": 0.0,
+     "iii_incremental_value": 0.0,
+     "iv_robust_descriptor": 0.05,
+     "v_depth_corroborates": 0.0,
+     "attributable_to_movement": 0.0
+    }
+   },
+   "chosen_gain": 4.0
+  },
+  "mcnemar_holm": [
+   {
+    "event": "1.0",
+    "config": "anneal-M2",
+    "reference": "vs_best_detector",
+    "p": 1.0,
+    "p_holm": 1.0
+   },
+   {
+    "event": "1.0",
+    "config": "anneal-M2",
+    "reference": "vs_motion_gate",
+    "p": 1.0087482138487759e-07,
+    "p_holm": 4.539366962319492e-06
+   },
+   {
+    "event": "1.0",
+    "config": "blocks-M2",
+    "reference": "vs_best_detector",
+    "p": 0.013852965261321515,
+    "p_holm": 0.512559714668896
+   },
+   {
+    "event": "1.0",
+    "config": "blocks-M2",
+    "reference": "vs_motion_gate",
+    "p": 0.007942726509483574,
+    "p_holm": 0.30182360736037583
+   },
+   {
+    "event": "1.0",
+    "config": "blocks-M8",
+    "reference": "vs_best_detector",
+    "p": 0.237884521484375,
+    "p_holm": 1.0
+   },
+   {
+    "event": "1.0",
+    "config": "blocks-M8",
+    "reference": "vs_motion_gate",
+    "p": 2.4647306418046355e-10,
+    "p_holm": 1.4014581495302991e-08
+   },
+   {
+    "event": "1.0",
+    "config": "frames-K30",
+    "reference": "vs_best_detector",
+    "p": 0.26317596435546875,
+    "p_holm": 1.0
+   },
+   {
+    "event": "1.0",
+    "config": "frames-K30",
+    "reference": "vs_motion_gate",
+    "p": 1.3087586125948292e-08,
+    "p_holm": 6.151165479195697e-07
+   },
+   {
+    "event": "1.0",
+    "config": "gumbel-M2",
+    "reference": "vs_best_detector",
+    "p": 0.26493089646101,
+    "p_holm": 1.0
+   },
+   {
+    "event": "1.0",
+    "config": "gumbel-M2",
+    "reference": "vs_motion_gate",
+    "p": 1.5097200957825409e-05,
+    "p_holm": 0.0006189852392708418
+   },
+   {
+    "event": "1.0",
+    "config": "motion-M2",
+    "reference": "vs_best_detector",
+    "p": 1.7716986633331544e-07,
+    "p_holm": 7.79547411866588e-06
+   },
+   {
+    "event": "1.0",
+    "config": "perturbed-M2",
+    "reference": "vs_best_detector",
+    "p": 0.0022214337732293643,
+    "p_holm": 0.08663591715594521
+   },
+   {
+    "event": "1.0",
+    "config": "perturbed-M2",
+    "reference": "vs_motion_gate",
+    "p": 0.027533155829587486,
+    "p_holm": 0.963660454035562
+   },
+   {
+    "event": "1.5",
+    "config": "anneal-M2",
+    "reference": "vs_best_detector",
+    "p": 1.0,
+    "p_holm": 1.0
+   },
+   {
+    "event": "1.5",
+    "config": "anneal-M2",
+    "reference": "vs_motion_gate",
+    "p": 4.461782054931973e-10,
+    "p_holm": 2.4539801302125852e-08
+   },
+   {
+    "event": "1.5",
+    "config": "blocks-M2",
+    "reference": "vs_best_detector",
+    "p": 0.10775214433670044,
+    "p_holm": 1.0
+   },
+   {
+    "event": "1.5",
+    "config": "blocks-M2",
+    "reference": "vs_motion_gate",
+    "p": 9.430375484953402e-07,
+    "p_holm": 3.960757703680429e-05
+   },
+   {
+    "event": "1.5",
+    "config": "blocks-M8",
+    "reference": "vs_best_detector",
+    "p": 0.6072387695312499,
+    "p_holm": 1.0
+   },
+   {
+    "event": "1.5",
+    "config": "blocks-M8",
+    "reference": "vs_motion_gate",
+    "p": 3.708322537931963e-11,
+    "p_holm": 2.410409649655776e-09
+   },
+   {
+    "event": "1.5",
+    "config": "frames-K30",
+    "reference": "vs_best_detector",
+    "p": 0.8145294189453125,
+    "p_holm": 1.0
+   },
+   {
+    "event": "1.5",
+    "config": "frames-K30",
+    "reference": "vs_motion_gate",
+    "p": 2.4163071543625847e-10,
+    "p_holm": 1.4014581495302991e-08
+   },
+   {
+    "event": "1.5",
+    "config": "gumbel-M2",
+    "reference": "vs_best_detector",
+    "p": 0.803619384765625,
+    "p_holm": 1.0
+   },
+   {
+    "event": "1.5",
+    "config": "gumbel-M2",
+    "reference": "vs_motion_gate",
+    "p": 2.4163071543625847e-10,
+    "p_holm": 1.4014581495302991e-08
+   },
+   {
+    "event": "1.5",
+    "config": "motion-M2",
+    "reference": "vs_best_detector",
+    "p": 2.3280151140170346e-09,
+    "p_holm": 1.140727405868347e-07
+   },
+   {
+    "event": "1.5",
+    "config": "perturbed-M2",
+    "reference": "vs_best_detector",
+    "p": 0.454498291015625,
+    "p_holm": 1.0
+   },
+   {
+    "event": "1.5",
+    "config": "perturbed-M2",
+    "reference": "vs_motion_gate",
+    "p": 7.053979622639872e-11,
+    "p_holm": 4.39808189867108e-09
+   },
+   {
+    "event": "2.0",
+    "config": "anneal-M2",
+    "reference": "vs_best_detector",
+    "p": 0.75390625,
+    "p_holm": 1.0
+   },
+   {
+    "event": "2.0",
+    "config": "anneal-M2",
+    "reference": "vs_motion_gate",
+    "p": 3.708322537931963e-11,
+    "p_holm": 2.410409649655776e-09
+   },
+   {
+    "event": "2.0",
+    "config": "blocks-M2",
+    "reference": "vs_best_detector",
+    "p": 1.0,
+    "p_holm": 1.0
+   },
+   {
+    "event": "2.0",
+    "config": "blocks-M2",
+    "reference": "vs_motion_gate",
+    "p": 4.461782054931973e-10,
+    "p_holm": 2.4539801302125852e-08
+   },
+   {
+    "event": "2.0",
+    "config": "blocks-M8",
+    "reference": "vs_best_detector",
+    "p": 1.0,
+    "p_holm": 1.0
+   },
+   {
+    "event": "2.0",
+    "config": "blocks-M8",
+    "reference": "vs_motion_gate",
+    "p": 1.312585595769633e-10,
+    "p_holm": 8.006772134194762e-09
+   },
+   {
+    "event": "2.0",
+    "config": "frames-K30",
+    "reference": "vs_best_detector",
+    "p": 1.0,
+    "p_holm": 1.0
+   },
+   {
+    "event": "2.0",
+    "config": "frames-K30",
+    "reference": "vs_motion_gate",
+    "p": 6.981082378842984e-11,
+    "p_holm": 4.39808189867108e-09
+   },
+   {
+    "event": "2.0",
+    "config": "gumbel-M2",
+    "reference": "vs_best_detector",
+    "p": 1.0,
+    "p_holm": 1.0
+   },
+   {
+    "event": "2.0",
+    "config": "gumbel-M2",
+    "reference": "vs_motion_gate",
+    "p": 1.312585595769633e-10,
+    "p_holm": 8.006772134194762e-09
+   },
+   {
+    "event": "2.0",
+    "config": "motion-M2",
+    "reference": "vs_best_detector",
+    "p": 1.312585595769633e-10,
+    "p_holm": 8.006772134194762e-09
+   },
+   {
+    "event": "2.0",
+    "config": "perturbed-M2",
+    "reference": "vs_best_detector",
+    "p": 1.0,
+    "p_holm": 1.0
+   },
+   {
+    "event": "2.0",
+    "config": "perturbed-M2",
+    "reference": "vs_motion_gate",
+    "p": 4.461782054931973e-10,
+    "p_holm": 2.4539801302125852e-08
+   },
+   {
+    "event": "3.0",
+    "config": "anneal-M2",
+    "reference": "vs_best_detector",
+    "p": 1.0,
+    "p_holm": 1.0
+   },
+   {
+    "event": "3.0",
+    "config": "anneal-M2",
+    "reference": "vs_motion_gate",
+    "p": 8.363087999896379e-12,
+    "p_holm": 5.937792479926429e-10
+   },
+   {
+    "event": "3.0",
+    "config": "blocks-M2",
+    "reference": "vs_best_detector",
+    "p": 0.625,
+    "p_holm": 1.0
+   },
+   {
+    "event": "3.0",
+    "config": "blocks-M2",
+    "reference": "vs_motion_gate",
+    "p": 1.6044054973463062e-11,
+    "p_holm": 1.1230838481424144e-09
+   },
+   {
+    "event": "3.0",
+    "config": "blocks-M8",
+    "reference": "vs_best_detector",
+    "p": 0.625,
+    "p_holm": 1.0
+   },
+   {
+    "event": "3.0",
+    "config": "blocks-M8",
+    "reference": "vs_motion_gate",
+    "p": 1.6044054973463062e-11,
+    "p_holm": 1.1230838481424144e-09
+   },
+   {
+    "event": "3.0",
+    "config": "frames-K30",
+    "reference": "vs_best_detector",
+    "p": 0.375,
+    "p_holm": 1.0
+   },
+   {
+    "event": "3.0",
+    "config": "frames-K30",
+    "reference": "vs_motion_gate",
+    "p": 3.0752289603697136e-11,
+    "p_holm": 2.060403403447708e-09
+   },
+   {
+    "event": "3.0",
+    "config": "gumbel-M2",
+    "reference": "vs_best_detector",
+    "p": 0.625,
+    "p_holm": 1.0
+   },
+   {
+    "event": "3.0",
+    "config": "gumbel-M2",
+    "reference": "vs_motion_gate",
+    "p": 1.6044054973463062e-11,
+    "p_holm": 1.1230838481424144e-09
+   },
+   {
+    "event": "3.0",
+    "config": "motion-M2",
+    "reference": "vs_best_detector",
+    "p": 6.821210263296962e-13,
+    "p_holm": 4.979483492206782e-11
+   },
+   {
+    "event": "3.0",
+    "config": "perturbed-M2",
+    "reference": "vs_best_detector",
+    "p": 1.0,
+    "p_holm": 1.0
+   },
+   {
+    "event": "3.0",
+    "config": "perturbed-M2",
+    "reference": "vs_motion_gate",
+    "p": 1.3358203432289883e-12,
+    "p_holm": 9.617906471248716e-11
+   },
+   {
+    "event": "flap0.6",
+    "config": "anneal-M2",
+    "reference": "vs_best_detector",
+    "p": 0.06391465663909912,
+    "p_holm": 1.0
+   },
+   {
+    "event": "flap0.6",
+    "config": "anneal-M2",
+    "reference": "vs_motion_gate",
+    "p": 4.6219383875722997e-10,
+    "p_holm": 2.4539801302125852e-08
+   },
+   {
+    "event": "flap0.6",
+    "config": "blocks-M2",
+    "reference": "vs_best_detector",
+    "p": 0.720100131817162,
+    "p_holm": 1.0
+   },
+   {
+    "event": "flap0.6",
+    "config": "blocks-M2",
+    "reference": "vs_motion_gate",
+    "p": 0.0001980394513374506,
+    "p_holm": 0.007921578053498024
+   },
+   {
+    "event": "flap0.6",
+    "config": "frames-K30",
+    "reference": "vs_best_detector",
+    "p": 0.01690053939819336,
+    "p_holm": 0.6084194183349609
+   },
+   {
+    "event": "flap0.6",
+    "config": "frames-K30",
+    "reference": "vs_motion_gate",
+    "p": 3.0752289603697136e-11,
+    "p_holm": 2.060403403447708e-09
+   },
+   {
+    "event": "flap0.6",
+    "config": "motion-M2",
+    "reference": "vs_best_detector",
+    "p": 6.038535502739251e-07,
+    "p_holm": 2.5965702661778778e-05
+   },
+   {
+    "event": "flap1.0",
+    "config": "anneal-M2",
+    "reference": "vs_best_detector",
+    "p": 0.79052734375,
+    "p_holm": 1.0
+   },
+   {
+    "event": "flap1.0",
+    "config": "anneal-M2",
+    "reference": "vs_motion_gate",
+    "p": 7.839844329282641e-10,
+    "p_holm": 3.998320607934147e-08
+   },
+   {
+    "event": "flap1.0",
+    "config": "blocks-M2",
+    "reference": "vs_best_detector",
+    "p": 1.0,
+    "p_holm": 1.0
+   },
+   {
+    "event": "flap1.0",
+    "config": "blocks-M2",
+    "reference": "vs_motion_gate",
+    "p": 5.65314621780999e-08,
+    "p_holm": 2.6004472601925954e-06
+   },
+   {
+    "event": "flap1.0",
+    "config": "frames-K30",
+    "reference": "vs_best_detector",
+    "p": 0.79052734375,
+    "p_holm": 1.0
+   },
+   {
+    "event": "flap1.0",
+    "config": "frames-K30",
+    "reference": "vs_motion_gate",
+    "p": 7.839844329282641e-10,
+    "p_holm": 3.998320607934147e-08
+   },
+   {
+    "event": "flap1.0",
+    "config": "motion-M2",
+    "reference": "vs_best_detector",
+    "p": 2.841261448338628e-09,
+    "p_holm": 1.3638054952025414e-07
+   },
+   {
+    "event": "freeze1.0",
+    "config": "anneal-M2",
+    "reference": "vs_best_detector",
+    "p": 0.5327092552361137,
+    "p_holm": 1.0
+   },
+   {
+    "event": "freeze1.0",
+    "config": "anneal-M2",
+    "reference": "vs_motion_gate",
+    "p": 0.5113757815852296,
+    "p_holm": 1.0
+   },
+   {
+    "event": "freeze1.0",
+    "config": "blocks-M2",
+    "reference": "vs_best_detector",
+    "p": 0.3019956131896606,
+    "p_holm": 1.0
+   },
+   {
+    "event": "freeze1.0",
+    "config": "blocks-M2",
+    "reference": "vs_motion_gate",
+    "p": 0.8555355519056321,
+    "p_holm": 1.0
+   },
+   {
+    "event": "freeze1.0",
+    "config": "frames-K30",
+    "reference": "vs_best_detector",
+    "p": 1.0,
+    "p_holm": 1.0
+   },
+   {
+    "event": "freeze1.0",
+    "config": "frames-K30",
+    "reference": "vs_motion_gate",
+    "p": 0.13604594767093658,
+    "p_holm": 1.0
+   },
+   {
+    "event": "freeze1.0",
+    "config": "motion-M2",
+    "reference": "vs_best_detector",
+    "p": 0.1538599441628321,
+    "p_holm": 1.0
+   }
+  ]
  }
 }

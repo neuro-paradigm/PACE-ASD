@@ -1,0 +1,282 @@
+{
+ "video": {
+  "step_rate": {
+   "rho_halves": 0.08652735513048056,
+   "spearman_brown": 0.1592732198078704,
+   "n": 95
+  },
+  "stride_lag": {
+   "rho_halves": 0.36822280914172306,
+   "spearman_brown": 0.5382497743517473,
+   "n": 32
+  },
+  "stride_regularity": {
+   "rho_halves": 0.2562316715542522,
+   "spearman_brown": 0.4079369711117595,
+   "n": 32
+  },
+  "step_amplitude": {
+   "rho_halves": 0.3272956326987682,
+   "spearman_brown": 0.49317668895404027,
+   "n": 95
+  },
+  "step_width": {
+   "rho_halves": 0.31877099664053754,
+   "spearman_brown": 0.48343646842792404,
+   "n": 95
+  },
+  "step_width_var": {
+   "rho_halves": 0.5072928331466965,
+   "spearman_brown": 0.6731178202282667,
+   "n": 95
+  },
+  "arm_swing": {
+   "rho_halves": 0.5221164613661814,
+   "spearman_brown": 0.6860400956409786,
+   "n": 95
+  },
+  "arm_swing_asym": {
+   "rho_halves": 0.20499720044792832,
+   "spearman_brown": 0.3402451065807051,
+   "n": 95
+  },
+  "wrist_height": {
+   "rho_halves": 0.8220744680851065,
+   "spearman_brown": 0.9023500218946141,
+   "n": 95
+  },
+  "wrist_lateral": {
+   "rho_halves": 0.5776175811870101,
+   "spearman_brown": 0.7322656492613461,
+   "n": 95
+  },
+  "elbow_rom": {
+   "rho_halves": 0.6716125419932811,
+   "spearman_brown": 0.8035504940545973,
+   "n": 95
+  },
+  "elbow_flexion": {
+   "rho_halves": 0.713395856662934,
+   "spearman_brown": 0.8327274212654712,
+   "n": 95
+  },
+  "knee_rom": {
+   "rho_halves": 0.5479003359462487,
+   "spearman_brown": 0.7079271490839377,
+   "n": 95
+  },
+  "knee_rom_asym": {
+   "rho_halves": -0.10102183650615902,
+   "spearman_brown": 0.0,
+   "n": 95
+  },
+  "knee_flexion": {
+   "rho_halves": 0.6760358342665174,
+   "spearman_brown": 0.8067080911338278,
+   "n": 95
+  },
+  "trunk_sway": {
+   "rho_halves": 0.5260218365061591,
+   "spearman_brown": 0.6894027646557023,
+   "n": 95
+  },
+  "trunk_lean": {
+   "rho_halves": 0.5043113101903696,
+   "spearman_brown": 0.6704879592064614,
+   "n": 95
+  },
+  "shoulder_tilt_var": {
+   "rho_halves": 0.5086366181410975,
+   "spearman_brown": 0.6742997114412167,
+   "n": 95
+  },
+  "head_sway": {
+   "rho_halves": 0.48192889137737965,
+   "spearman_brown": 0.6504075791780408,
+   "n": 95
+  },
+  "head_bob": {
+   "rho_halves": 0.36728723404255326,
+   "spearman_brown": 0.5372495623419569,
+   "n": 95
+  },
+  "hip_width": {
+   "rho_halves": 0.581620940649496,
+   "spearman_brown": 0.7354745068191271,
+   "n": 95
+  },
+  "speed_wrists": {
+   "rho_halves": 0.5839305711086226,
+   "spearman_brown": 0.7373183923079641,
+   "n": 95
+  },
+  "speed_ankles": {
+   "rho_halves": 0.591419372900336,
+   "spearman_brown": 0.743260240476379,
+   "n": 95
+  },
+  "speed_head": {
+   "rho_halves": 0.4993141097424413,
+   "spearman_brown": 0.666056707527705,
+   "n": 95
+  },
+  "jerk_wrists": {
+   "rho_halves": 0.5499020156774915,
+   "spearman_brown": 0.7095958455633324,
+   "n": 95
+  },
+  "jerk_ankles": {
+   "rho_halves": 0.5436730123180291,
+   "spearman_brown": 0.7043888284367066,
+   "n": 95
+  }
+ },
+ "depth": {
+  "step_width": {
+   "rho_halves": -0.07738232721099425,
+   "spearman_brown": 0.0,
+   "n": 95,
+   "frames_per_half_median": 15.0
+  },
+  "speed_per_leg": {
+   "rho_halves": 0.8253829382974835,
+   "spearman_brown": 0.9043394906137449,
+   "n": 95,
+   "frames_per_half_median": 15.0
+  },
+  "arm_swing": {
+   "rho_halves": 0.6882915545394569,
+   "spearman_brown": 0.8153704882178523,
+   "n": 95,
+   "frames_per_half_median": 15.0
+  },
+  "wrist_height": {
+   "rho_halves": 0.8427646544388403,
+   "spearman_brown": 0.9146742123675901,
+   "n": 95,
+   "frames_per_half_median": 15.0
+  },
+  "knee_rom": {
+   "rho_halves": 0.552019065553457,
+   "spearman_brown": 0.7113560365401884,
+   "n": 95,
+   "frames_per_half_median": 15.0
+  },
+  "elbow_rom": {
+   "rho_halves": 0.6039341669240804,
+   "spearman_brown": 0.7530660289907853,
+   "n": 95,
+   "frames_per_half_median": 15.0
+  },
+  "trunk_sway": {
+   "rho_halves": 0.4201700081565251,
+   "spearman_brown": 0.5917179010165602,
+   "n": 95,
+   "frames_per_half_median": 15.0
+  },
+  "head_bob": {
+   "rho_halves": 0.31895601415413455,
+   "spearman_brown": 0.48364920547966206,
+   "n": 95,
+   "frames_per_half_median": 15.0
+  },
+  "jitter": {
+   "rho_halves": 0.7310000664959321,
+   "spearman_brown": 0.8445985423625053,
+   "n": 95,
+   "frames_per_half_median": 15.0
+  }
+ },
+ "pairs": {
+  "step_width": {
+   "rho": 0.0520095886415814,
+   "r_video": 0.48343646842792404,
+   "r_depth": 0.0,
+   "ceiling": 0.0,
+   "disattenuated": null,
+   "interpretable": false,
+   "robust_in_video": false
+  },
+  "arm_swing": {
+   "rho": 0.020968938537028248,
+   "r_video": 0.6860400956409786,
+   "r_depth": 0.8153704882178523,
+   "ceiling": 0.7479150003307908,
+   "disattenuated": 0.02803652624663768,
+   "interpretable": true,
+   "robust_in_video": true
+  },
+  "wrist_height": {
+   "rho": 0.5846616857992872,
+   "r_video": 0.9023500218946141,
+   "r_depth": 0.9146742123675901,
+   "ceiling": 0.9084912193061273,
+   "disattenuated": 0.6435523793458683,
+   "interpretable": true,
+   "robust_in_video": true
+  },
+  "knee_rom": {
+   "rho": -0.08061423033027082,
+   "r_video": 0.7079271490839377,
+   "r_depth": 0.7113560365401884,
+   "ceiling": 0.7096395218218507,
+   "disattenuated": -0.11359884540155074,
+   "interpretable": true,
+   "robust_in_video": true
+  },
+  "elbow_rom": {
+   "rho": 0.11276714131858824,
+   "r_video": 0.8035504940545973,
+   "r_depth": 0.7530660289907853,
+   "ceiling": 0.7778988235312349,
+   "disattenuated": 0.14496376380502435,
+   "interpretable": true,
+   "robust_in_video": true
+  },
+  "trunk_sway": {
+   "rho": 0.016937527122699723,
+   "r_video": 0.6894027646557023,
+   "r_depth": 0.5917179010165602,
+   "ceiling": 0.6386955118498061,
+   "disattenuated": 0.026518938693720937,
+   "interpretable": true,
+   "robust_in_video": true
+  },
+  "head_bob": {
+   "rho": 0.11193465755096554,
+   "r_video": 0.5372495623419569,
+   "r_depth": 0.48364920547966206,
+   "ceiling": 0.5097453520837474,
+   "disattenuated": 0.21958936377427823,
+   "interpretable": true,
+   "robust_in_video": false
+  }
+ },
+ "denominator": {
+  "robust_video": [
+   "step_width_var",
+   "arm_swing",
+   "wrist_height",
+   "elbow_rom",
+   "elbow_flexion",
+   "knee_rom",
+   "knee_flexion",
+   "trunk_sway",
+   "head_sway"
+  ],
+  "n_robust": 9,
+  "robust_with_depth_counterpart": [
+   "arm_swing",
+   "wrist_height",
+   "elbow_rom",
+   "knee_rom",
+   "trunk_sway"
+  ],
+  "n_with_depth": 5,
+  "agree_rho_ge_0.3": [
+   "wrist_height"
+  ],
+  "n_agree": 1,
+  "n_pairs_measured_in_both": 7
+ }
+}

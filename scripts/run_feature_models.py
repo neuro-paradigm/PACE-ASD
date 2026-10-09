@@ -26,6 +26,15 @@ repeated nested cross-validation partition as the neural networks.
       its own frame dimension) instead of pixel units; measures how much that
       normalisation changes the result.
 
+Third phase (settings fixed in docs/validation_criteria_phase3.md):
+  Time-of-day, All-controls, Tracking-quality, Mean-pose
+      time of day of the depth recording alone; everything that is not
+      movement together; second-difference noise, segment-length variability
+      and MediaPipe visibility; the mean prepared pose (posture only).
+  Gait-LR-torso, Gait-RF-torso, Gait-LR-median, Gait-RF-median
+      the gait descriptors with torso length or a 1-s running median of the
+      shoulder distance as the scale (rotation-robust scales).
+
 Second revision (settings fixed in docs/validation_criteria.md, B4-B5):
   Jitter
       landmark jitter (src/recording_features.py), overall and by region.
@@ -151,15 +160,17 @@ def depth_table(S, raw_dir, cache):
 
 
 def models(seed):
+    # threads per random forest; the fitted forests do not depend on it
+    nj = int(os.environ.get("PACE_RF_JOBS", "4"))
     lr_grid = {"clf__C": [0.001, 0.01, 0.1, 1.0, 10.0]}
     return {
         "Gait-LR": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "gait"),
         "Gait-SVM": (pipeline(SVC(kernel="rbf", probability=True, random_state=seed)),
                      {"clf__C": [0.1, 1.0, 10.0], "clf__gamma": ["scale", 0.01, 0.1]}, "gait"),
-        "Gait-RF": (pipeline(RandomForestClassifier(n_estimators=500, random_state=seed, n_jobs=4)),
+        "Gait-RF": (pipeline(RandomForestClassifier(n_estimators=500, random_state=seed, n_jobs=nj)),
                     {"clf__max_depth": [2, 4, None], "clf__min_samples_leaf": [1, 3, 5]}, "gait"),
         "Gait-XGB": (pipeline(XGBClassifier(learning_rate=0.05, subsample=0.8, colsample_bytree=0.8,
-                                            eval_metric="logloss", random_state=seed, n_jobs=4)),
+                                            eval_metric="logloss", random_state=seed, n_jobs=nj)),
                      {"clf__n_estimators": [100, 300], "clf__max_depth": [2, 3]}, "gait"),
         "Duration": (pipeline(LogisticRegression(max_iter=5000)), {"clf__C": [1.0]}, "duration"),
         "Mask-pattern": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "mask"),
@@ -173,9 +184,20 @@ def models(seed):
         "Gait-LR-adjusted": (pipeline(LogisticRegression(max_iter=5000), confounds=2), lr_grid,
                              "gait_demo"),
         "Depth-LR": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "depth"),
-        "Depth-RF": (pipeline(RandomForestClassifier(n_estimators=500, random_state=seed, n_jobs=4)),
+        "Depth-RF": (pipeline(RandomForestClassifier(n_estimators=500, random_state=seed, n_jobs=nj)),
                      {"clf__max_depth": [2, 4, None], "clf__min_samples_leaf": [1, 3, 5]}, "depth"),
         "Depth-recording": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "depth_recording"),
+        # third phase (docs/validation_criteria_phase3.md, D4, D5, D7, D9)
+        "Time-of-day": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "time_of_day"),
+        "All-controls": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "all_controls"),
+        "Tracking-quality": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "tracking"),
+        "Mean-pose": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "mean_pose"),
+        "Gait-LR-torso": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "gait_torso"),
+        "Gait-RF-torso": (pipeline(RandomForestClassifier(n_estimators=500, random_state=seed, n_jobs=nj)),
+                          {"clf__max_depth": [2, 4, None], "clf__min_samples_leaf": [1, 3, 5]}, "gait_torso"),
+        "Gait-LR-median": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "gait_median"),
+        "Gait-RF-median": (pipeline(RandomForestClassifier(n_estimators=500, random_state=seed, n_jobs=nj)),
+                           {"clf__max_depth": [2, 4, None], "clf__min_samples_leaf": [1, 3, 5]}, "gait_median"),
     }
 
 
@@ -226,6 +248,11 @@ def main():
                           for s in S}
         feats["depth_recording"] = {s: np.array([depth[s]["recording"][k]
                                                  for k in depth_skeleton.RECORDING_NAMES]) for s in S}
+    from feature_sets import FeatureSets
+    FS = FeatureSets(S, prep=prep)
+    for kind in ("time_of_day", "all_controls", "tracking", "mean_pose", "gait_torso", "gait_median"):
+        if need(kind):
+            feats[kind] = FS.get(kind)
     with open(os.path.join(cfg["output"]["cv_dir"], "gait_features.json"), "w") as f:
         json.dump({"names": FEATURE_NAMES,
                    "values": {s: [None if np.isnan(v) else float(v) for v in feats["gait"][s]]

@@ -3,10 +3,14 @@ PACE — apply the pass/fail criteria of docs/validation_criteria.md to the
 stored results and write results/criteria.json.
 
 Reads results/cv/summary.json, results/cv/mechanisms.json, the stored
-out-of-fold predictions (results/cv/runs) and the planted-event results
-(results/synthetic). Every criterion carries its timing: "P" (specified
-before the analysis was run) or "R" (written after the first-revision
-results had been seen).
+out-of-fold predictions (results/cv/runs), the planted-event results
+(results/synthetic) and the third-phase results (results/phase3). Every
+criterion carries its timing: "P" (specified before the analysis was run:
+docs/validation_criteria.md for the second phase, docs/validation_criteria_phase3.md
+for the third) or "R" (written after the first results had been seen).
+
+The parts are named C1-C6 (docs/validation_criteria_phase3.md): C2 = V1-V2,
+C3 and C4 = V3, C5 = V4-V5, C6 = V6 of the second-phase document.
 
 Usage:
     python scripts/evaluate_criteria.py
@@ -240,18 +244,156 @@ def v6(M, Y):
     return out
 
 
+P3 = os.path.join("results", "phase3")
+
+
+def _load(*p):
+    f = os.path.join(*p)
+    return json.load(open(f)) if os.path.isfile(f) else None
+
+
+def control_status(auc, ci):
+    """Interval convention of docs/validation_criteria_phase3.md."""
+    if auc >= 0.70 and ci[0] > 0.5:
+        return "informative"
+    if ci[1] < 0.70:
+        return "uninformative"
+    return "not excluded"
+
+
+def holm(ps):
+    ps = np.asarray(ps, float)
+    order = np.argsort(ps)
+    adj = np.empty_like(ps)
+    run = 0.0
+    for rank, i in enumerate(order):
+        run = max(run, min(1.0, (len(ps) - rank) * ps[i]))
+        adj[i] = run
+    return adj
+
+
+def phase3(S, M, C5):
+    """Criteria of docs/validation_criteria_phase3.md (all P)."""
+    p, Sj, y = part_info()
+    vid = pd.read_csv("processed/video_metadata.csv").set_index("clip_id")
+    crop = np.flatnonzero([not (vid.loc[s, "width"] == 1080 and vid.loc[s, "height"] == 1920) for s in Sj])
+    R = S["n_repeats"]
+    out = {"timing": "P"}
+    # D2 permutation null
+    pn = _load(P3, "permutation_null.json")
+    if pn:
+        rows = {}
+        for m, d in pn.items():
+            tol = 0.07 if m == "PACE" else 0.03
+            ref = d["null_max_all"] if m == "PACE" else d["null_p99_all"]
+            ok = abs(d["null_mean_all"] - 0.5) <= tol and d.get("observed_all", 0) > ref
+            rows[m] = {"null_mean": d["null_mean_all"], "reference": ref, "observed": d.get("observed_all"),
+                       "p": d.get("p_all"), "n": d["n_permutations"], "passes": bool(ok)}
+        out["permutation_null"] = rows
+    # D4 All-controls within the cropped videos; time-of-day corroboration
+    runs = os.path.join("results", "cv", "runs")
+    if os.path.isdir(os.path.join(runs, "All-controls")):
+        allc = mat(oof("All-controls"), Sj, R)
+        me = {}
+        for m in ["PACE", "Gait-LR", "Gait-RF", "CTR-GCN", "Gait-LR-adjusted", "Mean-pose", "Depth-RF"]:
+            if os.path.isdir(os.path.join(runs, m)):
+                d = paired_subset_bootstrap(y, mat(oof(m), Sj, R), allc, crop)
+                d["passes"] = excludes_zero(d["ci95"])
+                me[m] = d
+        out["all_controls_cropped"] = me
+    cf = M.get("confounds", {}).get("models", {})
+    if "Time-of-day" in cf and "Depth-RF" in cf:
+        best = max((m for m in ("Depth-LR", "Depth-RF") if m in cf), key=lambda m: cf[m]["auc_cropped"]["auc"])
+        e, r = cf[best]["auc_cropped"], cf["Time-of-day"]["auc_cropped"]
+        out["depth_vs_time_of_day"] = {"model": best, "auc_cropped": e["auc"], "ci95": e["ci95"],
+                                       "time_of_day_auc_cropped": r["auc"], "time_of_day_ci95": r["ci95"],
+                                       "corroborates": bool(e["ci95"][0] > 0.5 and e["auc"] > r["auc"])}
+    # interval convention for every control, all children and cropped videos
+    ctl = {}
+    for m in ["Duration", "Mask-pattern", "Demographics", "Frame-format", "Covariates", "Scene", "Jitter",
+              "Tracking-quality", "Time-of-day", "Depth-recording", "All-controls", "PACE-maskonly"]:
+        if m in cf:
+            a, c = S["performance"][m]["mean"]["auc"], S["performance"][m]["ci95"]["auc"]
+            e = cf[m]["auc_cropped"]
+            ctl[m] = {"all": control_status(a, c), "cropped": control_status(e["auc"], e["ci95"]),
+                      "auc_cropped": e["auc"], "ci95_cropped": e["ci95"]}
+    out["controls"] = ctl
+    A = lambda name: _load(P3, "analyses", f"{name}.json")
+    iv = A("incremental")
+    if iv:
+        out["incremental_value"] = {sub: {m: {"adds": d["adds"], "lr_p": d["lr_p"], "diff": d["loo_auc_diff"],
+                                              "ci95": d["loo_auc_diff_ci95"]} for m, d in iv[sub].items()}
+                                    for sub in ("all", "cropped")}
+    rel = A("reliability")
+    if rel:
+        pairs = rel["pairs"]
+        out["reliability_bounded_agreement"] = {
+            "interpretable": [k for k, v in pairs.items() if v["interpretable"]],
+            "indeterminate": [k for k, v in pairs.items() if not v["interpretable"]],
+            "robust_with_depth": rel["denominator"]["robust_with_depth_counterpart"],
+            "robust_with_depth_disagree_interpretable": [k for k in rel["denominator"]["robust_with_depth_counterpart"]
+                                                         if pairs[k]["interpretable"] and pairs[k]["rho"] < 0.3],
+            "agree": rel["denominator"]["agree_rho_ge_0.3"]}
+    sc = A("scale")
+    if sc:
+        out["scale_robust"] = {"robust": sc["robust_standard"], "scale_robust": sc["scale_robust"]}
+    vp = A("viewpoint")
+    if vp:
+        out["viewpoint"] = {"robust_after_size_adjustment": vp["robust_after_size_adjustment"]}
+    sh = A("shuffle")
+    if sh:
+        out["frame_order"] = {arm: {"drop": d["all"]["drop"], "ci95": d["all"]["drop_ci95"],
+                                    "uses_order": d["all"]["uses_order"],
+                                    "drop_cropped": d["cropped"]["drop"]} for arm, d in sh.items()}
+    wc = A("within_cropped")
+    if wc:
+        out["within_cropped"] = {m: {"auc": d["auc"], "ci95": d["ci95"],
+                                     "beats_all_controls": bool(d.get("minus_all_controls", {}).get("ci95", [0, 0])[0] > 0)
+                                     if "minus_all_controls" in d else None}
+                                 for m, d in wc["models"].items()}
+        out["within_cropped_controls"] = {m: control_status(d["auc"], d["ci95"]) for m, d in wc["models"].items()
+                                          if m in ("Scene", "Time-of-day", "Demographics", "Tracking-quality",
+                                                   "All-controls-noformat")}
+    ig = A("ig")
+    if ig:
+        out["ig_real"] = ig["criterion"]
+    ap = _load(P3, "attribution_planted.json")
+    if ap:
+        out["attribution_planted"] = {k: {**v["criterion"], "reproduced": v["all_reproduced"]} for k, v in ap.items()}
+    qc = _load(P3, "pose_qc.json")
+    if qc:
+        out["pose_qc"] = {"flagged": qc["summary"]["all"]["flagged_recordings"], "n": qc["summary"]["all"]["n"],
+                          "reextraction_identical": bool(qc["reextraction"]["max_abs_diff"] == 0.0)}
+    pc = _load(P3, "positive_control.json")
+    if pc:
+        out["positive_control"] = {"passes": pc.get("passes"),
+                                   "share": {g: d["share_met"] for g, d in pc["by_gain"].items()},
+                                   "chosen_gain": pc["gain_rule"]["chosen"]}
+    # D15: Holm over the McNemar comparisons of learned selection against heuristics
+    tests = []
+    for key, d in C5.items():
+        if not isinstance(d, dict) or "configs" not in d:
+            continue
+        for arm, c in d["configs"].items():
+            for ref in ("vs_best_detector", "vs_motion_gate"):
+                if ref in c:
+                    tests.append((key, arm, ref, c[ref]["p"]))
+    if tests:
+        adj = holm([q[3] for q in tests])
+        out["mcnemar_holm"] = [{"event": k, "config": a, "reference": r, "p": p_, "p_holm": float(h)}
+                               for (k, a, r, p_), h in zip(tests, adj)]
+    return out
+
+
 def main():
     S = json.load(open("results/cv/summary.json"))
     M = json.load(open("results/cv/mechanisms.json"))
     Y = json.load(open(os.path.join(SYN, "summary.json")))
-    res = {"V1_V2": v1_v2(S), "V3": v3(S, M), "V4": v4(Y), "V5": v5(M), "V6": v6(M, Y)}
+    c5 = v4(Y)
+    res = {"C2": v1_v2(S), "C3_C4": v3(S, M), "C5": c5, "C5_selection": v5(M), "C6": v6(M, Y)}
+    res["phase3"] = phase3(S, M, c5)
     json.dump(res, open(OUT, "w"), indent=1)
-    print(json.dumps({k: (v if k != "V4" else {kk: {a: {x: y for x, y in c.items() if x in
-                                                        ("auc_mean", "passes", "beats_frames", "fold_dependent")}
-                                                    for a, c in vv["configs"].items()}
-                                               if isinstance(vv, dict) and "configs" in vv else vv
-                                               for kk, vv in v.items()})
-                      for k, v in res.items()}, indent=1, default=str)[:6000])
+    print(json.dumps(res["phase3"], indent=1, default=str)[:8000])
 
 
 if __name__ == "__main__":

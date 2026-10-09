@@ -1,0 +1,2583 @@
+[
+ {
+  "key": "adebayo2018sanity",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Sanity checks for saliency maps",
+   "year": "2018",
+   "volume": "31",
+   "pages": "9505--9515",
+   "doi": null,
+   "journal": null,
+   "booktitle": "Advances in Neural Information Processing Systems"
+  },
+  "bib_first_author": "Adebayo",
+  "bib_n_authors": 6,
+  "ref": {
+   "title": "More Sanity Checks for\u00a0Saliency Maps",
+   "year": "2022",
+   "first_author": "Holmberg",
+   "n_authors": 3,
+   "container": "Lecture Notes in Computer Science",
+   "volume": null,
+   "pages": "175-184",
+   "doi": "10.1007/978-3-031-16564-1_17",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "aljubouri2020dataset",
+  "type": "misc",
+  "bib": {
+   "title": "Three dimensional dataset combining gait and full body movement of children with autism spectrum disorders collected by {Kinect} v2 camera",
+   "year": "2020",
+   "volume": null,
+   "pages": null,
+   "doi": "10.5061/dryad.s7h44j150",
+   "journal": null,
+   "booktitle": null
+  },
+  "bib_first_author": "Al-Jubouri",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "Three dimensional dataset combining gait and full body movement of children with autism spectrum disorders collected by Kinect v2 camera",
+   "year": "2020",
+   "first_author": "A. \u0650Al-Jubouri",
+   "n_authors": 3
+  },
+  "checks": {
+   "title": true,
+   "first_author": false,
+   "year": true
+  }
+ },
+ {
+  "key": "aljubouri2021gait",
+  "type": "article",
+  "bib": {
+   "title": "Gait and full body movement dataset of autistic children classified by rough set classifier",
+   "year": "2021",
+   "volume": "1818",
+   "pages": "012201",
+   "doi": "10.1088/1742-6596/1818/1/012201",
+   "journal": "Journal of Physics: Conference Series",
+   "booktitle": null
+  },
+  "bib_first_author": "Al-Jubouri",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "Gait and Full Body Movement Dataset of Autistic Children Classified by Rough Set Classifier",
+   "year": "2021",
+   "first_author": "Al-Jubouri",
+   "n_authors": 3,
+   "container": "Journal of Physics: Conference Series",
+   "volume": "1818",
+   "pages": "012201",
+   "doi": "10.1088/1742-6596/1818/1/012201"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "ancona2018towards",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Towards better understanding of gradient-based attribution methods for deep neural networks",
+   "year": "2018",
+   "volume": null,
+   "pages": null,
+   "doi": null,
+   "journal": null,
+   "booktitle": "International Conference on Learning Representations"
+  },
+  "bib_first_author": "Ancona",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "Towards a Better Understanding of Deep Neural Networks Representations using Deep Generative Networks",
+   "year": "2017",
+   "first_author": "Despraz",
+   "n_authors": 4,
+   "container": "Proceedings of the 9th International Joint Conference on Computational Intelligence",
+   "volume": null,
+   "pages": "215-222",
+   "doi": "10.5220/0006495102150222",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "ardalan2019whole",
+  "type": "article",
+  "bib": {
+   "title": "Whole-body movement during videogame play distinguishes youth with autism from youth with typical development",
+   "year": "2019",
+   "volume": "9",
+   "pages": "20094",
+   "doi": "10.1038/s41598-019-56362-6",
+   "journal": "Scientific Reports",
+   "booktitle": null
+  },
+  "bib_first_author": "Ardalan",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "Whole-Body Movement during Videogame Play Distinguishes Youth with Autism from Youth with Typical Development",
+   "year": "2019",
+   "first_author": "Ardalan",
+   "n_authors": 4,
+   "container": "Scientific Reports",
+   "volume": "9",
+   "pages": "20094",
+   "doi": "10.1038/s41598-019-56362-6"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "ba2016layer",
+  "type": "article",
+  "bib": {
+   "title": "Layer normalization",
+   "year": "2016",
+   "volume": null,
+   "pages": null,
+   "doi": null,
+   "journal": "arXiv [Preprint]",
+   "booktitle": null
+  },
+  "bib_first_author": "Ba",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "Algorithm 1 : Global response normalization layer.",
+   "year": "None",
+   "first_author": "",
+   "n_authors": 0,
+   "container": "",
+   "volume": null,
+   "pages": null,
+   "doi": "10.7717/peerj-cs.3198/table-101",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "bai2018empirical",
+  "type": "article",
+  "bib": {
+   "title": "An empirical evaluation of generic convolutional and recurrent networks for sequence modeling",
+   "year": "2018",
+   "volume": null,
+   "pages": null,
+   "doi": null,
+   "journal": "arXiv [Preprint]",
+   "booktitle": null
+  },
+  "bib_first_author": "Bai",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "Modeling chromatin state from sequence across angiosperms using recurrent convolutional neural networks",
+   "year": "2021",
+   "first_author": "Wrightsman",
+   "n_authors": 5,
+   "container": "",
+   "volume": null,
+   "pages": null,
+   "doi": "10.1101/2021.11.11.468292",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "bates2024cross",
+  "type": "article",
+  "bib": {
+   "title": "Cross-validation: what does it estimate and how well does it do it?",
+   "year": "2024",
+   "volume": "119",
+   "pages": "1434--1445",
+   "doi": "10.1080/01621459.2023.2197686",
+   "journal": "Journal of the American Statistical Association",
+   "booktitle": null
+  },
+  "bib_first_author": "Bates",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "Cross-Validation: What Does It Estimate and How Well Does It Do It?",
+   "year": "2024",
+   "first_author": "Bates",
+   "n_authors": 3,
+   "container": "Journal of the American Statistical Association",
+   "volume": "119",
+   "pages": "1434-1445",
+   "doi": "10.1080/01621459.2023.2197686"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "bazarevsky2020blazepose",
+  "type": "article",
+  "bib": {
+   "title": "{BlazePose}: on-device real-time body pose tracking",
+   "year": "2020",
+   "volume": null,
+   "pages": null,
+   "doi": null,
+   "journal": "arXiv [Preprint]",
+   "booktitle": null
+  },
+  "bib_first_author": "Bazarevsky",
+  "bib_n_authors": 6,
+  "ref": {
+   "title": "Real-time pose detection for physical education using BlazePose and OpenCV in angle tracking",
+   "year": "2023",
+   "first_author": "Opi\u00f1a",
+   "n_authors": 2,
+   "container": "AIP Conference Proceedings",
+   "volume": "2868",
+   "pages": "020016",
+   "doi": "10.1063/5.0162482",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "benjamini1995controlling",
+  "type": "article",
+  "bib": {
+   "title": "Controlling the false discovery rate: a practical and powerful approach to multiple testing",
+   "year": "1995",
+   "volume": "57",
+   "pages": "289--300",
+   "doi": "10.1111/j.2517-6161.1995.tb02031.x",
+   "journal": "Journal of the Royal Statistical Society: Series B (Methodological)",
+   "booktitle": null
+  },
+  "bib_first_author": "Benjamini",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing",
+   "year": "1995",
+   "first_author": "Benjamini",
+   "n_authors": 2,
+   "container": "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+   "volume": "57",
+   "pages": "289-300",
+   "doi": "10.1111/j.2517-6161.1995.tb02031.x"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "bhat2021motor",
+  "type": "article",
+  "bib": {
+   "title": "Motor impairment increases in children with autism spectrum disorder as a function of social communication, cognitive and functional impairment, repetitive behavior severity, and comorbid diagnoses: a {SPARK} study report",
+   "year": "2021",
+   "volume": "14",
+   "pages": "202--219",
+   "doi": "10.1002/aur.2453",
+   "journal": "Autism Research",
+   "booktitle": null
+  },
+  "bib_first_author": "Bhat",
+  "bib_n_authors": 1,
+  "ref": {
+   "title": "Motor Impairment Increases in Children With Autism Spectrum Disorder as a Function of Social Communication, Cognitive and Functional Impairment, Repetitive Behavior Severity, and Comorbid Diagnoses: A\n                    <scp>SPARK</scp>\n                    Study Report",
+   "year": "2021",
+   "first_author": "Bhat",
+   "n_authors": 1,
+   "container": "Autism Research",
+   "volume": "14",
+   "pages": "202-219",
+   "doi": "10.1002/aur.2453"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "bouthillier2021accounting",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Accounting for variance in machine learning benchmarks",
+   "year": "2021",
+   "volume": "3",
+   "pages": null,
+   "doi": null,
+   "journal": null,
+   "booktitle": "Proceedings of Machine Learning and Systems"
+  },
+  "bib_first_author": "Bouthillier",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "MF-PCBA: Multifidelity High-Throughput Screening Benchmarks for Drug Discovery and Machine Learning",
+   "year": "None",
+   "first_author": "",
+   "n_authors": 0,
+   "container": "",
+   "volume": null,
+   "pages": null,
+   "doi": "10.1021/acs.jcim.2c01569.s001",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "breiman2001random",
+  "type": "article",
+  "bib": {
+   "title": "Random forests",
+   "year": "2001",
+   "volume": "45",
+   "pages": "5--32",
+   "doi": "10.1023/A:1010933404324",
+   "journal": "Machine Learning",
+   "booktitle": null
+  },
+  "bib_first_author": "Breiman",
+  "bib_n_authors": 1,
+  "ref": {
+   "title": "Random Forests",
+   "year": "2001",
+   "first_author": "Breiman",
+   "n_authors": 1,
+   "container": "Machine Learning",
+   "volume": "45",
+   "pages": "5-32",
+   "doi": "10.1023/a:1010933404324"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "cao2021openpose",
+  "type": "article",
+  "bib": {
+   "title": "{OpenPose}: realtime multi-person {2D} pose estimation using part affinity fields",
+   "year": "2021",
+   "volume": "43",
+   "pages": "172--186",
+   "doi": "10.1109/TPAMI.2019.2929257",
+   "journal": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+   "booktitle": null
+  },
+  "bib_first_author": "Cao",
+  "bib_n_authors": 5,
+  "ref": {
+   "title": "OpenPose: Realtime Multi-Person 2D Pose Estimation Using Part Affinity Fields",
+   "year": "2021",
+   "first_author": "Cao",
+   "n_authors": 5,
+   "container": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+   "volume": "43",
+   "pages": "172-186",
+   "doi": "10.1109/tpami.2019.2929257"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "cawley2010over",
+  "type": "article",
+  "bib": {
+   "title": "On over-fitting in model selection and subsequent selection bias in performance evaluation",
+   "year": "2010",
+   "volume": "11",
+   "pages": "2079--2107",
+   "doi": null,
+   "journal": "Journal of Machine Learning Research",
+   "booktitle": null
+  },
+  "bib_first_author": "Cawley",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "Over-Fitting in Model Selection and Its Avoidance",
+   "year": "2012",
+   "first_author": "Cawley",
+   "n_authors": 1,
+   "container": "Lecture Notes in Computer Science",
+   "volume": null,
+   "pages": "1-1",
+   "doi": "10.1007/978-3-642-34156-4_1",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": true,
+   "year": false
+  }
+ },
+ {
+  "key": "chen2016xgboost",
+  "type": "inproceedings",
+  "bib": {
+   "title": "{XGBoost}: a scalable tree boosting system",
+   "year": "2016",
+   "volume": null,
+   "pages": "785--794",
+   "doi": "10.1145/2939672.2939785",
+   "journal": null,
+   "booktitle": "Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining"
+  },
+  "bib_first_author": "Chen",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "XGBoost",
+   "year": "2016",
+   "first_author": "Chen",
+   "n_authors": 2,
+   "container": "Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining",
+   "volume": null,
+   "pages": "785-794",
+   "doi": "10.1145/2939672.2939785"
+  },
+  "checks": {
+   "title": false,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "chen2021channel",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Channel-wise topology refinement graph convolution for skeleton-based action recognition",
+   "year": "2021",
+   "volume": null,
+   "pages": "13339--13348",
+   "doi": "10.1109/ICCV48922.2021.01311",
+   "journal": null,
+   "booktitle": "Proceedings of the IEEE/CVF International Conference on Computer Vision"
+  },
+  "bib_first_author": "Chen",
+  "bib_n_authors": 6,
+  "ref": {
+   "title": "Channel-wise Topology Refinement Graph Convolution for Skeleton-Based Action Recognition",
+   "year": "2021",
+   "first_author": "Chen",
+   "n_authors": 6,
+   "container": "2021 IEEE/CVF International Conference on Computer Vision (ICCV)",
+   "volume": null,
+   "pages": "13339-13348",
+   "doi": "10.1109/iccv48922.2021.01311"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "cho2014learning",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Learning phrase representations using {RNN} encoder--decoder for statistical machine translation",
+   "year": "2014",
+   "volume": null,
+   "pages": "1724--1734",
+   "doi": "10.3115/v1/D14-1179",
+   "journal": null,
+   "booktitle": "Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing"
+  },
+  "bib_first_author": "Cho",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "Learning Phrase Representations using RNN Encoder\u2013Decoder for Statistical Machine Translation",
+   "year": "2014",
+   "first_author": "Cho",
+   "n_authors": 7,
+   "container": "Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+   "volume": null,
+   "pages": "1724-1734",
+   "doi": "10.3115/v1/d14-1179"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "collins2024tripod",
+  "type": "article",
+  "bib": {
+   "title": "{TRIPOD+AI} statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods",
+   "year": "2024",
+   "volume": "385",
+   "pages": "e078378",
+   "doi": "10.1136/bmj-2023-078378",
+   "journal": "BMJ",
+   "booktitle": null
+  },
+  "bib_first_author": "Collins",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods",
+   "year": "2024",
+   "first_author": "Collins",
+   "n_authors": 34,
+   "container": "BMJ",
+   "volume": "385",
+   "pages": "e078378",
+   "doi": "10.1136/bmj-2023-078378"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": false,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "cook2013atypical",
+  "type": "article",
+  "bib": {
+   "title": "Atypical basic movement kinematics in autism spectrum conditions",
+   "year": "2013",
+   "volume": "136",
+   "pages": "2816--2824",
+   "doi": "10.1093/brain/awt208",
+   "journal": "Brain",
+   "booktitle": null
+  },
+  "bib_first_author": "Cook",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "Atypical basic movement kinematics in autism spectrum conditions",
+   "year": "2013",
+   "first_author": "Cook",
+   "n_authors": 3,
+   "container": "Brain",
+   "volume": "136",
+   "pages": "2816-2824",
+   "doi": "10.1093/brain/awt208"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "debelen2020computer",
+  "type": "article",
+  "bib": {
+   "title": "Computer vision in autism spectrum disorder research: a systematic review of published studies from 2009 to 2019",
+   "year": "2020",
+   "volume": "10",
+   "pages": "333",
+   "doi": "10.1038/s41398-020-01015-w",
+   "journal": "Translational Psychiatry",
+   "booktitle": null
+  },
+  "bib_first_author": "de Belen",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "Computer vision in autism spectrum disorder research: a systematic review of published studies from 2009 to 2019",
+   "year": "2020",
+   "first_author": "de Belen",
+   "n_authors": 4,
+   "container": "Translational Psychiatry",
+   "volume": "10",
+   "pages": "333",
+   "doi": "10.1038/s41398-020-01015-w"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "duan2022pyskl",
+  "type": "inproceedings",
+  "bib": {
+   "title": "{PYSKL}: towards good practices for skeleton action recognition",
+   "year": "2022",
+   "volume": null,
+   "pages": "7351--7354",
+   "doi": "10.1145/3503161.3548546",
+   "journal": null,
+   "booktitle": "Proceedings of the 30th ACM International Conference on Multimedia"
+  },
+  "bib_first_author": "Duan",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "PYSKL: Towards Good Practices for Skeleton Action Recognition",
+   "year": "2022",
+   "first_author": "Duan",
+   "n_authors": 4,
+   "container": "Proceedings of the 30th ACM International Conference on Multimedia",
+   "volume": null,
+   "pages": "7351-7354",
+   "doi": "10.1145/3503161.3548546"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "firat2026shap",
+  "type": "article",
+  "bib": {
+   "title": "{SHAP}-based explainable {AI} framework for autism severity classification using {3D} motor biomarkers",
+   "year": "2026",
+   "volume": "17",
+   "pages": "1751654",
+   "doi": "10.3389/fpsyt.2026.1751654",
+   "journal": "Frontiers in Psychiatry",
+   "booktitle": null
+  },
+  "bib_first_author": "F{\\i}rat",
+  "bib_n_authors": 1,
+  "ref": {
+   "title": "SHAP-based explainable AI framework for autism severity classification using 3D motor biomarkers",
+   "year": "2026",
+   "first_author": "F\u0131rat",
+   "n_authors": 1,
+   "container": "Frontiers in Psychiatry",
+   "volume": "17",
+   "pages": "1751654",
+   "doi": "10.3389/fpsyt.2026.1751654"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "fournier2010motor",
+  "type": "article",
+  "bib": {
+   "title": "Motor coordination in autism spectrum disorders: a synthesis and meta-analysis",
+   "year": "2010",
+   "volume": "40",
+   "pages": "1227--1240",
+   "doi": "10.1007/s10803-010-0981-3",
+   "journal": "Journal of Autism and Developmental Disorders",
+   "booktitle": null
+  },
+  "bib_first_author": "Fournier",
+  "bib_n_authors": 5,
+  "ref": {
+   "title": "Motor Coordination in Autism Spectrum Disorders: A Synthesis and Meta-Analysis",
+   "year": "2010",
+   "first_author": "Fournier",
+   "n_authors": 5,
+   "container": "Journal of Autism and Developmental Disorders",
+   "volume": "40",
+   "pages": "1227-1240",
+   "doi": "10.1007/s10803-010-0981-3"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "ganai2025early",
+  "type": "article",
+  "bib": {
+   "title": "Early detection of autism spectrum disorder: gait deviations and machine learning",
+   "year": "2025",
+   "volume": "15",
+   "pages": "873",
+   "doi": "10.1038/s41598-025-85348-w",
+   "journal": "Scientific Reports",
+   "booktitle": null
+  },
+  "bib_first_author": "Ganai",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "Early detection of autism spectrum disorder: gait deviations and machine learning",
+   "year": "2025",
+   "first_author": "Ganai",
+   "n_authors": 4,
+   "container": "Scientific Reports",
+   "volume": "15",
+   "pages": "873",
+   "doi": "10.1038/s41598-025-85348-w"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "geirhos2020shortcut",
+  "type": "article",
+  "bib": {
+   "title": "Shortcut learning in deep neural networks",
+   "year": "2020",
+   "volume": "2",
+   "pages": "665--673",
+   "doi": "10.1038/s42256-020-00257-z",
+   "journal": "Nature Machine Intelligence",
+   "booktitle": null
+  },
+  "bib_first_author": "Geirhos",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "Shortcut learning in deep neural networks",
+   "year": "2020",
+   "first_author": "Geirhos",
+   "n_authors": 7,
+   "container": "Nature Machine Intelligence",
+   "volume": "2",
+   "pages": "665-673",
+   "doi": "10.1038/s42256-020-00257-z"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "guo2017calibration",
+  "type": "inproceedings",
+  "bib": {
+   "title": "On calibration of modern neural networks",
+   "year": "2017",
+   "volume": null,
+   "pages": "1321--1330",
+   "doi": null,
+   "journal": null,
+   "booktitle": "Proceedings of the 34th International Conference on Machine Learning"
+  },
+  "bib_first_author": "Guo",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "C3Net: A cross-modal collaborative calibration of features for object detection using frames and events",
+   "year": "2026",
+   "first_author": "Chen",
+   "n_authors": 6,
+   "container": "Neural Networks",
+   "volume": "199",
+   "pages": "108651",
+   "doi": "10.1016/j.neunet.2026.108651",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "jain2019attention",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Attention is not explanation",
+   "year": "2019",
+   "volume": null,
+   "pages": "3543--3556",
+   "doi": "10.18653/v1/N19-1357",
+   "journal": null,
+   "booktitle": "Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies"
+  },
+  "bib_first_author": "Jain",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "Attention is not Explanation",
+   "year": "2019",
+   "first_author": "Jain",
+   "n_authors": 2,
+   "container": "Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)",
+   "volume": null,
+   "pages": "3543-3556",
+   "doi": "10.18653/v1/n19-1357"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "kapoor2023leakage",
+  "type": "article",
+  "bib": {
+   "title": "Leakage and the reproducibility crisis in machine-learning-based science",
+   "year": "2023",
+   "volume": "4",
+   "pages": "100804",
+   "doi": "10.1016/j.patter.2023.100804",
+   "journal": "Patterns",
+   "booktitle": null
+  },
+  "bib_first_author": "Kapoor",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "Leakage and the reproducibility crisis in machine-learning-based science",
+   "year": "2023",
+   "first_author": "Kapoor",
+   "n_authors": 2,
+   "container": "Patterns",
+   "volume": "4",
+   "pages": "100804",
+   "doi": "10.1016/j.patter.2023.100804"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "kojovic2021using",
+  "type": "article",
+  "bib": {
+   "title": "Using {2D} video-based pose estimation for automated prediction of autism spectrum disorders in young children",
+   "year": "2021",
+   "volume": "11",
+   "pages": "15069",
+   "doi": "10.1038/s41598-021-94378-z",
+   "journal": "Scientific Reports",
+   "booktitle": null
+  },
+  "bib_first_author": "Kojovic",
+  "bib_n_authors": 5,
+  "ref": {
+   "title": "Using 2D video-based pose estimation for automated prediction of autism spectrum disorders in young children",
+   "year": "2021",
+   "first_author": "Kojovic",
+   "n_authors": 5,
+   "container": "Scientific Reports",
+   "volume": "11",
+   "pages": "15069",
+   "doi": "10.1038/s41598-021-94378-z"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "korbar2019scsampler",
+  "type": "inproceedings",
+  "bib": {
+   "title": "{SCSampler}: sampling salient clips from video for efficient action recognition",
+   "year": "2019",
+   "volume": null,
+   "pages": "6231--6241",
+   "doi": "10.1109/ICCV.2019.00633",
+   "journal": null,
+   "booktitle": "Proceedings of the IEEE/CVF International Conference on Computer Vision"
+  },
+  "bib_first_author": "Korbar",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "SCSampler: Sampling Salient Clips From Video for Efficient Action Recognition",
+   "year": "2019",
+   "first_author": "Korbar",
+   "n_authors": 3,
+   "container": "2019 IEEE/CVF International Conference on Computer Vision (ICCV)",
+   "volume": null,
+   "pages": "6231-6241",
+   "doi": "10.1109/iccv.2019.00633"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "lakkapragada2022classification",
+  "type": "article",
+  "bib": {
+   "title": "The classification of abnormal hand movement to aid in autism detection: machine learning study",
+   "year": "2022",
+   "volume": "7",
+   "pages": "e33771",
+   "doi": "10.2196/33771",
+   "journal": "JMIR Biomedical Engineering",
+   "booktitle": null
+  },
+  "bib_first_author": "Lakkapragada",
+  "bib_n_authors": 8,
+  "ref": {
+   "title": "The Classification of Abnormal Hand Movement to Aid in Autism Detection: Machine Learning Study",
+   "year": "2022",
+   "first_author": "Lakkapragada",
+   "n_authors": 8,
+   "container": "JMIR Biomedical Engineering",
+   "volume": "7",
+   "pages": "e33771",
+   "doi": "10.2196/33771"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "loshchilov2019decoupled",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Decoupled weight decay regularization",
+   "year": "2019",
+   "volume": null,
+   "pages": null,
+   "doi": null,
+   "journal": null,
+   "booktitle": "International Conference on Learning Representations"
+  },
+  "bib_first_author": "Loshchilov",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "Toward principled regularization of deep networks\u2014From weight decay to feature contraction",
+   "year": "2019",
+   "first_author": "Maki",
+   "n_authors": 1,
+   "container": "Science Robotics",
+   "volume": "4",
+   "pages": "eaaw1329",
+   "doi": "10.1126/scirobotics.aaw1329",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": true
+  }
+ },
+ {
+  "key": "lugaresi2019mediapipe",
+  "type": "article",
+  "bib": {
+   "title": "{MediaPipe}: a framework for building perception pipelines",
+   "year": "2019",
+   "volume": null,
+   "pages": null,
+   "doi": null,
+   "journal": "arXiv [Preprint]",
+   "booktitle": null
+  },
+  "bib_first_author": "Lugaresi",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "Peer Review #1 of \"EPypes: a framework for building event-driven data processing pipelines (v0.2)\"",
+   "year": "2019",
+   "first_author": "",
+   "n_authors": 0,
+   "container": "",
+   "volume": null,
+   "pages": null,
+   "doi": "10.7287/peerj-cs.176v0.2/reviews/1",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": true
+  }
+ },
+ {
+  "key": "lum2021gait",
+  "type": "article",
+  "bib": {
+   "title": "Meta-analysis reveals gait anomalies in autism",
+   "year": "2021",
+   "volume": "14",
+   "pages": "733--747",
+   "doi": "10.1002/aur.2443",
+   "journal": "Autism Research",
+   "booktitle": null
+  },
+  "bib_first_author": "Lum",
+  "bib_n_authors": 8,
+  "ref": {
+   "title": "Meta\u2010Analysis Reveals Gait Anomalies in Autism",
+   "year": "2021",
+   "first_author": "Lum",
+   "n_authors": 8,
+   "container": "Autism Research",
+   "volume": "14",
+   "pages": "733-747",
+   "doi": "10.1002/aur.2443"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "mathis2018deeplabcut",
+  "type": "article",
+  "bib": {
+   "title": "{DeepLabCut}: markerless pose estimation of user-defined body parts with deep learning",
+   "year": "2018",
+   "volume": "21",
+   "pages": "1281--1289",
+   "doi": "10.1038/s41593-018-0209-y",
+   "journal": "Nature Neuroscience",
+   "booktitle": null
+  },
+  "bib_first_author": "Mathis",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "DeepLabCut: markerless pose estimation of user-defined body parts with deep learning",
+   "year": "2018",
+   "first_author": "Mathis",
+   "n_authors": 7,
+   "container": "Nature Neuroscience",
+   "volume": "21",
+   "pages": "1281-1289",
+   "doi": "10.1038/s41593-018-0209-y"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "mmaction2020",
+  "type": "misc",
+  "bib": {
+   "title": "{OpenMMLab}'s next generation video understanding toolbox and benchmark",
+   "year": "2020",
+   "volume": null,
+   "pages": null,
+   "doi": null,
+   "journal": null,
+   "booktitle": null
+  },
+  "bib_first_author": "{MMAction2 Contributors}",
+  "bib_n_authors": 1,
+  "ref": {
+   "title": "Contributors",
+   "year": "2014",
+   "first_author": "",
+   "n_authors": 0,
+   "container": "Job One 2.0",
+   "volume": null,
+   "pages": "203-208",
+   "doi": "10.5040/9780761892199.0008",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "moenilssen2004estimation",
+  "type": "article",
+  "bib": {
+   "title": "Estimation of gait cycle characteristics by trunk accelerometry",
+   "year": "2004",
+   "volume": "37",
+   "pages": "121--126",
+   "doi": "10.1016/S0021-9290(03)00233-1",
+   "journal": "Journal of Biomechanics",
+   "booktitle": null
+  },
+  "bib_first_author": "Moe-Nilssen",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "Estimation of gait cycle characteristics by trunk accelerometry",
+   "year": "2004",
+   "first_author": "Moe-Nilssen",
+   "n_authors": 2,
+   "container": "Journal of Biomechanics",
+   "volume": "37",
+   "pages": "121-126",
+   "doi": "10.1016/s0021-9290(03)00233-1"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "nadeau2003inference",
+  "type": "article",
+  "bib": {
+   "title": "Inference for the generalization error",
+   "year": "2003",
+   "volume": "52",
+   "pages": "239--281",
+   "doi": "10.1023/A:1024068626366",
+   "journal": "Machine Learning",
+   "booktitle": null
+  },
+  "bib_first_author": "Nadeau",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "Inference for the Generalization Error",
+   "year": "2003",
+   "first_author": "Nadeau",
+   "n_authors": 2,
+   "container": "Machine Learning",
+   "volume": "52",
+   "pages": "239-281",
+   "doi": "10.1023/a:1024068626366"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "pagnon2022pose2sim",
+  "type": "article",
+  "bib": {
+   "title": "{Pose2Sim}: an open-source {Python} package for multiview markerless kinematics",
+   "year": "2022",
+   "volume": "7",
+   "pages": "4362",
+   "doi": "10.21105/joss.04362",
+   "journal": "Journal of Open Source Software",
+   "booktitle": null
+  },
+  "bib_first_author": "Pagnon",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "Pose2Sim: An open-source Python package for multiview\nmarkerless kinematics",
+   "year": "2022",
+   "first_author": "Pagnon",
+   "n_authors": 3,
+   "container": "Journal of Open Source Software",
+   "volume": "7",
+   "pages": "4362",
+   "doi": "10.21105/joss.04362"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "paszke2019pytorch",
+  "type": "inproceedings",
+  "bib": {
+   "title": "{PyTorch}: an imperative style, high-performance deep learning library",
+   "year": "2019",
+   "volume": "32",
+   "pages": "8024--8035",
+   "doi": null,
+   "journal": null,
+   "booktitle": "Advances in Neural Information Processing Systems"
+  },
+  "bib_first_author": "Paszke",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "torch-projectors: A High-Performance Differentiable Projection Library for PyTorch",
+   "year": "2026",
+   "first_author": "Tegunov",
+   "n_authors": 1,
+   "container": "",
+   "volume": null,
+   "pages": null,
+   "doi": "10.64898/2026.03.10.710885",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "pedregosa2011scikit",
+  "type": "article",
+  "bib": {
+   "title": "Scikit-learn: machine learning in {Python}",
+   "year": "2011",
+   "volume": "12",
+   "pages": "2825--2830",
+   "doi": null,
+   "journal": "Journal of Machine Learning Research",
+   "booktitle": null
+  },
+  "bib_first_author": "Pedregosa",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "Introduction to Machine Learning with Scikit-learn",
+   "year": "2022",
+   "first_author": "Pajankar",
+   "n_authors": 2,
+   "container": "Hands-on Machine Learning with Python",
+   "volume": null,
+   "pages": "65-77",
+   "doi": "10.1007/978-1-4842-7921-2_5",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "platt1999probabilistic",
+  "type": "incollection",
+  "bib": {
+   "title": "Probabilistic outputs for support vector machines and comparisons to regularized likelihood methods",
+   "year": "1999",
+   "volume": null,
+   "pages": "61--74",
+   "doi": null,
+   "journal": null,
+   "booktitle": "Advances in Large Margin Classifiers"
+  },
+  "bib_first_author": "Platt",
+  "bib_n_authors": 1,
+  "ref": {
+   "title": "Fast Training of Support Vector Machines Using Sequential Minimal Optimization",
+   "year": "1998",
+   "first_author": "Platt",
+   "n_authors": 1,
+   "container": "Advances in Kernel Methods",
+   "volume": null,
+   "pages": null,
+   "doi": "10.7551/mitpress/1130.003.0016",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": true,
+   "year": false
+  }
+ },
+ {
+  "key": "plizzari2021skeleton",
+  "type": "article",
+  "bib": {
+   "title": "Skeleton-based action recognition via spatial and temporal transformer networks",
+   "year": "2021",
+   "volume": "208--209",
+   "pages": "103219",
+   "doi": "10.1016/j.cviu.2021.103219",
+   "journal": "Computer Vision and Image Understanding",
+   "booktitle": null
+  },
+  "bib_first_author": "Plizzari",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "Skeleton-based action recognition via spatial and temporal transformer networks",
+   "year": "2021",
+   "first_author": "Plizzari",
+   "n_authors": 3,
+   "container": "Computer Vision and Image Understanding",
+   "volume": "208-209",
+   "pages": "103219",
+   "doi": "10.1016/j.cviu.2021.103219"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": false,
+   "pages": true
+  }
+ },
+ {
+  "key": "rinehart2006gait",
+  "type": "article",
+  "bib": {
+   "title": "Gait function in newly diagnosed children with autism: cerebellar and basal ganglia related motor disorder",
+   "year": "2006",
+   "volume": "48",
+   "pages": "819--824",
+   "doi": "10.1017/S0012162206001769",
+   "journal": "Developmental Medicine and Child Neurology",
+   "booktitle": null
+  },
+  "bib_first_author": "Rinehart",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "Gait function in newly diagnosed children with autism: cerebellar and basal ganglia related motor disorder",
+   "year": "2006",
+   "first_author": "Rinehart",
+   "n_authors": 7,
+   "container": "Developmental Medicine &amp; Child Neurology",
+   "volume": "48",
+   "pages": "819",
+   "doi": "10.1017/s0012162206001769"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": false
+  }
+ },
+ {
+  "key": "shin2025autism",
+  "type": "article",
+  "bib": {
+   "title": "Autism spectrum disorder detection using skeleton-based body movement analysis via dual-stream deep learning",
+   "year": "2025",
+   "volume": "14",
+   "pages": "2231",
+   "doi": "10.3390/electronics14112231",
+   "journal": "Electronics",
+   "booktitle": null
+  },
+  "bib_first_author": "Shin",
+  "bib_n_authors": 5,
+  "ref": {
+   "title": "Autism Spectrum Disorder Detection Using Skeleton-Based Body Movement Analysis via Dual-Stream Deep Learning",
+   "year": "2025",
+   "first_author": "Shin",
+   "n_authors": 5,
+   "container": "Electronics",
+   "volume": "14",
+   "pages": "2231",
+   "doi": "10.3390/electronics14112231"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "stenum2021applications",
+  "type": "article",
+  "bib": {
+   "title": "Applications of pose estimation in human health and performance across the lifespan",
+   "year": "2021",
+   "volume": "21",
+   "pages": "7315",
+   "doi": "10.3390/s21217315",
+   "journal": "Sensors",
+   "booktitle": null
+  },
+  "bib_first_author": "Stenum",
+  "bib_n_authors": 6,
+  "ref": {
+   "title": "Applications of Pose Estimation in Human Health and Performance across the Lifespan",
+   "year": "2021",
+   "first_author": "Stenum",
+   "n_authors": 6,
+   "container": "Sensors",
+   "volume": "21",
+   "pages": "7315",
+   "doi": "10.3390/s21217315"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "stenum2021two",
+  "type": "article",
+  "bib": {
+   "title": "Two-dimensional video-based analysis of human gait using pose estimation",
+   "year": "2021",
+   "volume": "17",
+   "pages": "e1008935",
+   "doi": "10.1371/journal.pcbi.1008935",
+   "journal": "PLOS Computational Biology",
+   "booktitle": null
+  },
+  "bib_first_author": "Stenum",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "Two-dimensional video-based analysis of human gait using pose estimation",
+   "year": "2021",
+   "first_author": "Stenum",
+   "n_authors": 3,
+   "container": "PLOS Computational Biology",
+   "volume": "17",
+   "pages": "e1008935",
+   "doi": "10.1371/journal.pcbi.1008935"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "szegedy2016rethinking",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Rethinking the inception architecture for computer vision",
+   "year": "2016",
+   "volume": null,
+   "pages": "2818--2826",
+   "doi": "10.1109/CVPR.2016.308",
+   "journal": null,
+   "booktitle": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition"
+  },
+  "bib_first_author": "Szegedy",
+  "bib_n_authors": 5,
+  "ref": {
+   "title": "Rethinking the Inception Architecture for Computer Vision",
+   "year": "2016",
+   "first_author": "Szegedy",
+   "n_authors": 5,
+   "container": "2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)",
+   "volume": null,
+   "pages": "2818-2826",
+   "doi": "10.1109/cvpr.2016.308"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "torres2013autism",
+  "type": "article",
+  "bib": {
+   "title": "Autism: the micro-movement perspective",
+   "year": "2013",
+   "volume": "7",
+   "pages": "32",
+   "doi": "10.3389/fnint.2013.00032",
+   "journal": "Frontiers in Integrative Neuroscience",
+   "booktitle": null
+  },
+  "bib_first_author": "Torres",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "Autism: the micro-movement perspective",
+   "year": "2013",
+   "first_author": "Torres",
+   "n_authors": 8,
+   "container": "Frontiers in Integrative Neuroscience",
+   "volume": "7",
+   "pages": null,
+   "doi": "10.3389/fnint.2013.00032"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": false,
+   "volume": true,
+   "pages": false
+  }
+ },
+ {
+  "key": "uhlrich2023opencap",
+  "type": "article",
+  "bib": {
+   "title": "{OpenCap}: human movement dynamics from smartphone videos",
+   "year": "2023",
+   "volume": "19",
+   "pages": "e1011462",
+   "doi": "10.1371/journal.pcbi.1011462",
+   "journal": "PLOS Computational Biology",
+   "booktitle": null
+  },
+  "bib_first_author": "Uhlrich",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "OpenCap: Human movement dynamics from smartphone videos",
+   "year": "2023",
+   "first_author": "Uhlrich",
+   "n_authors": 8,
+   "container": "PLOS Computational Biology",
+   "volume": "19",
+   "pages": "e1011462",
+   "doi": "10.1371/journal.pcbi.1011462"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": false,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "vancalster2019calibration",
+  "type": "article",
+  "bib": {
+   "title": "Calibration: the {Achilles} heel of predictive analytics",
+   "year": "2019",
+   "volume": "17",
+   "pages": "230",
+   "doi": "10.1186/s12916-019-1466-7",
+   "journal": "BMC Medicine",
+   "booktitle": null
+  },
+  "bib_first_author": "Van Calster",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "Calibration: the Achilles heel of predictive analytics",
+   "year": "2019",
+   "first_author": "",
+   "n_authors": 6,
+   "container": "BMC Medicine",
+   "volume": "17",
+   "pages": "230",
+   "doi": "10.1186/s12916-019-1466-7"
+  },
+  "checks": {
+   "title": true,
+   "first_author": false,
+   "year": true,
+   "n_authors": false,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "varma2006bias",
+  "type": "article",
+  "bib": {
+   "title": "Bias in error estimation when using cross-validation for model selection",
+   "year": "2006",
+   "volume": "7",
+   "pages": "91",
+   "doi": "10.1186/1471-2105-7-91",
+   "journal": "BMC Bioinformatics",
+   "booktitle": null
+  },
+  "bib_first_author": "Varma",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "Bias in error estimation when using cross-validation for model selection",
+   "year": "2006",
+   "first_author": "Varma",
+   "n_authors": 2,
+   "container": "BMC Bioinformatics",
+   "volume": "7",
+   "pages": "91",
+   "doi": "10.1186/1471-2105-7-91"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "varoquaux2018cross",
+  "type": "article",
+  "bib": {
+   "title": "Cross-validation failure: small sample sizes lead to large error bars",
+   "year": "2018",
+   "volume": "180",
+   "pages": "68--77",
+   "doi": "10.1016/j.neuroimage.2017.06.061",
+   "journal": "NeuroImage",
+   "booktitle": null
+  },
+  "bib_first_author": "Varoquaux",
+  "bib_n_authors": 1,
+  "ref": {
+   "title": "Cross-validation failure: Small sample sizes lead to large error bars",
+   "year": "2018",
+   "first_author": "Varoquaux",
+   "n_authors": 1,
+   "container": "NeuroImage",
+   "volume": "180",
+   "pages": "68-77",
+   "doi": "10.1016/j.neuroimage.2017.06.061"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "vaswani2017attention",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Attention is all you need",
+   "year": "2017",
+   "volume": "30",
+   "pages": "5998--6008",
+   "doi": null,
+   "journal": null,
+   "booktitle": "Advances in Neural Information Processing Systems"
+  },
+  "bib_first_author": "Vaswani",
+  "bib_n_authors": 7,
+  "ref": {
+   "title": "Attention Is All You Need",
+   "year": "2025",
+   "first_author": "Vaswani",
+   "n_authors": 8,
+   "container": "",
+   "volume": null,
+   "pages": null,
+   "doi": "10.65215/r5bs2d54",
+   "search": true
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": false
+  }
+ },
+ {
+  "key": "wade2022applications",
+  "type": "article",
+  "bib": {
+   "title": "Applications and limitations of current markerless motion capture methods for clinical gait biomechanics",
+   "year": "2022",
+   "volume": "10",
+   "pages": "e12995",
+   "doi": "10.7717/peerj.12995",
+   "journal": "PeerJ",
+   "booktitle": null
+  },
+  "bib_first_author": "Wade",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "Applications and limitations of current markerless motion capture methods for clinical gait biomechanics",
+   "year": "2022",
+   "first_author": "Wade",
+   "n_authors": 4,
+   "container": "PeerJ",
+   "volume": "10",
+   "pages": "e12995",
+   "doi": "10.7717/peerj.12995"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "wang2022efficient",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Efficient video transformers with spatial-temporal token selection",
+   "year": "2022",
+   "volume": null,
+   "pages": "69--86",
+   "doi": "10.1007/978-3-031-19833-5_5",
+   "journal": null,
+   "booktitle": "Computer Vision -- ECCV 2022"
+  },
+  "bib_first_author": "Wang",
+  "bib_n_authors": 6,
+  "ref": {
+   "title": "Efficient Video Transformers with\u00a0Spatial-Temporal Token Selection",
+   "year": "2022",
+   "first_author": "Wang",
+   "n_authors": 6,
+   "container": "Lecture Notes in Computer Science",
+   "volume": null,
+   "pages": "69-86",
+   "doi": "10.1007/978-3-031-19833-5_5"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "wu2018group",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Group normalization",
+   "year": "2018",
+   "volume": null,
+   "pages": "3--19",
+   "doi": "10.1007/978-3-030-01261-8_1",
+   "journal": null,
+   "booktitle": "Computer Vision -- ECCV 2018"
+  },
+  "bib_first_author": "Wu",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "Group Normalization",
+   "year": "2018",
+   "first_author": "Wu",
+   "n_authors": 2,
+   "container": "Lecture Notes in Computer Science",
+   "volume": null,
+   "pages": "3-19",
+   "doi": "10.1007/978-3-030-01261-8_1"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "wu2019adaframe",
+  "type": "inproceedings",
+  "bib": {
+   "title": "{AdaFrame}: adaptive frame selection for fast video recognition",
+   "year": "2019",
+   "volume": null,
+   "pages": "1278--1287",
+   "doi": "10.1109/CVPR.2019.00137",
+   "journal": null,
+   "booktitle": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition"
+  },
+  "bib_first_author": "Wu",
+  "bib_n_authors": 5,
+  "ref": {
+   "title": "AdaFrame: Adaptive Frame Selection for Fast Video Recognition",
+   "year": "2019",
+   "first_author": "Wu",
+   "n_authors": 5,
+   "container": "2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)",
+   "volume": null,
+   "pages": "1278-1287",
+   "doi": "10.1109/cvpr.2019.00137"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "yan2018spatial",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Spatial temporal graph convolutional networks for skeleton-based action recognition",
+   "year": "2018",
+   "volume": "32",
+   "pages": null,
+   "doi": "10.1609/aaai.v32i1.12328",
+   "journal": null,
+   "booktitle": "Proceedings of the AAAI Conference on Artificial Intelligence"
+  },
+  "bib_first_author": "Yan",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "Spatial Temporal Graph Convolutional Networks for Skeleton-Based Action Recognition",
+   "year": "2018",
+   "first_author": "Yan",
+   "n_authors": 3,
+   "container": "Proceedings of the AAAI Conference on Artificial Intelligence",
+   "volume": "32",
+   "pages": null,
+   "doi": "10.1609/aaai.v32i1.12328"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true
+  }
+ },
+ {
+  "key": "zhang2018mixup",
+  "type": "inproceedings",
+  "bib": {
+   "title": "mixup: beyond empirical risk minimization",
+   "year": "2018",
+   "volume": null,
+   "pages": null,
+   "doi": null,
+   "journal": null,
+   "booktitle": "International Conference on Learning Representations"
+  },
+  "bib_first_author": "Zhang",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "Empirical Risk Minimization",
+   "year": "None",
+   "first_author": "",
+   "n_authors": 0,
+   "container": "SpringerReference",
+   "volume": null,
+   "pages": null,
+   "doi": "10.1007/springerreference_178963",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "snoek2019control",
+  "type": "article",
+  "bib": {
+   "title": "How to control for confounds in decoding analyses of neuroimaging data",
+   "year": "2019",
+   "volume": "184",
+   "pages": "741--760",
+   "doi": "10.1016/j.neuroimage.2018.09.074",
+   "journal": "NeuroImage",
+   "booktitle": null
+  },
+  "bib_first_author": "Snoek",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "How to control for confounds in decoding analyses of neuroimaging data",
+   "year": "2019",
+   "first_author": "Snoek",
+   "n_authors": 3,
+   "container": "NeuroImage",
+   "volume": "184",
+   "pages": "741-760",
+   "doi": "10.1016/j.neuroimage.2018.09.074"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "chyzhyk2022remove",
+  "type": "article",
+  "bib": {
+   "title": "How to remove or control confounds in predictive models, with applications to brain biomarkers",
+   "year": "2022",
+   "volume": "11",
+   "pages": "giac014",
+   "doi": "10.1093/gigascience/giac014",
+   "journal": "GigaScience",
+   "booktitle": null
+  },
+  "bib_first_author": "Chyzhyk",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "How to remove or control confounds in predictive models, with applications to brain biomarkers",
+   "year": "2022",
+   "first_author": "Chyzhyk",
+   "n_authors": 4,
+   "container": "GigaScience",
+   "volume": "11",
+   "pages": "giac014",
+   "doi": "10.1093/gigascience/giac014"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "che2018recurrent",
+  "type": "article",
+  "bib": {
+   "title": "Recurrent neural networks for multivariate time series with missing values",
+   "year": "2018",
+   "volume": "8",
+   "pages": "6085",
+   "doi": "10.1038/s41598-018-24271-9",
+   "journal": "Scientific Reports",
+   "booktitle": null
+  },
+  "bib_first_author": "Che",
+  "bib_n_authors": 5,
+  "ref": {
+   "title": "Recurrent Neural Networks for Multivariate Time Series with Missing Values",
+   "year": "2018",
+   "first_author": "Che",
+   "n_authors": 5,
+   "container": "Scientific Reports",
+   "volume": "8",
+   "pages": "6085",
+   "doi": "10.1038/s41598-018-24271-9"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "degrave2021ai",
+  "type": "article",
+  "bib": {
+   "title": "{AI} for radiographic {COVID-19} detection selects shortcuts over signal",
+   "year": "2021",
+   "volume": "3",
+   "pages": "610--619",
+   "doi": "10.1038/s42256-021-00338-7",
+   "journal": "Nature Machine Intelligence",
+   "booktitle": null
+  },
+  "bib_first_author": "DeGrave",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "AI for radiographic COVID-19 detection selects shortcuts over signal",
+   "year": "2021",
+   "first_author": "DeGrave",
+   "n_authors": 3,
+   "container": "Nature Machine Intelligence",
+   "volume": "3",
+   "pages": "610-619",
+   "doi": "10.1038/s42256-021-00338-7"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "zech2018variable",
+  "type": "article",
+  "bib": {
+   "title": "Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: a cross-sectional study",
+   "year": "2018",
+   "volume": "15",
+   "pages": "e1002683",
+   "doi": "10.1371/journal.pmed.1002683",
+   "journal": "PLoS Medicine",
+   "booktitle": null
+  },
+  "bib_first_author": "Zech",
+  "bib_n_authors": 6,
+  "ref": {
+   "title": "Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: A cross-sectional study",
+   "year": "2018",
+   "first_author": "Zech",
+   "n_authors": 6,
+   "container": "PLOS Medicine",
+   "volume": "15",
+   "pages": "e1002683",
+   "doi": "10.1371/journal.pmed.1002683"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "nosek2018preregistration",
+  "type": "article",
+  "bib": {
+   "title": "The preregistration revolution",
+   "year": "2018",
+   "volume": "115",
+   "pages": "2600--2606",
+   "doi": "10.1073/pnas.1708274114",
+   "journal": "Proceedings of the National Academy of Sciences",
+   "booktitle": null
+  },
+  "bib_first_author": "Nosek",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "The preregistration revolution",
+   "year": "2018",
+   "first_author": "Nosek",
+   "n_authors": 4,
+   "container": "Proceedings of the National Academy of Sciences",
+   "volume": "115",
+   "pages": "2600-2606",
+   "doi": "10.1073/pnas.1708274114"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "cordonnier2021differentiable",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Differentiable patch selection for image recognition",
+   "year": "2021",
+   "volume": null,
+   "pages": "2351--2360",
+   "doi": "10.1109/CVPR46437.2021.00238",
+   "journal": null,
+   "booktitle": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition"
+  },
+  "bib_first_author": "Cordonnier",
+  "bib_n_authors": 6,
+  "ref": {
+   "title": "Differentiable Patch Selection for Image Recognition",
+   "year": "2021",
+   "first_author": "Cordonnier",
+   "n_authors": 6,
+   "container": "2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)",
+   "volume": null,
+   "pages": "2351-2360",
+   "doi": "10.1109/cvpr46437.2021.00238"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "hausdorff2005gait",
+  "type": "article",
+  "bib": {
+   "title": "Gait variability: methods, modeling and meaning",
+   "year": "2005",
+   "volume": "2",
+   "pages": "19",
+   "doi": "10.1186/1743-0003-2-19",
+   "journal": "Journal of NeuroEngineering and Rehabilitation",
+   "booktitle": null
+  },
+  "bib_first_author": "Hausdorff",
+  "bib_n_authors": 1,
+  "ref": {
+   "title": "Gait variability: methods, modeling and meaning",
+   "year": "2005",
+   "first_author": "Hausdorff",
+   "n_authors": 1,
+   "container": "Journal of NeuroEngineering and Rehabilitation",
+   "volume": "2",
+   "pages": "19",
+   "doi": "10.1186/1743-0003-2-19"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "morton2007mechanisms",
+  "type": "article",
+  "bib": {
+   "title": "Mechanisms of cerebellar gait ataxia",
+   "year": "2007",
+   "volume": "6",
+   "pages": "79--86",
+   "doi": "10.1080/14734220601187741",
+   "journal": "The Cerebellum",
+   "booktitle": null
+  },
+  "bib_first_author": "Morton",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "Mechanisms of cerebellar gait ataxia",
+   "year": "2007",
+   "first_author": "Morton",
+   "n_authors": 2,
+   "container": "The Cerebellum",
+   "volume": "6",
+   "pages": "79",
+   "doi": "10.1080/14734220601187741"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": false
+  }
+ },
+ {
+  "key": "mosconi2015sensorimotor",
+  "type": "article",
+  "bib": {
+   "title": "Sensorimotor dysfunctions as primary features of autism spectrum disorders",
+   "year": "2015",
+   "volume": "58",
+   "pages": "1016--1023",
+   "doi": "10.1007/s11427-015-4894-4",
+   "journal": "Science China Life Sciences",
+   "booktitle": null
+  },
+  "bib_first_author": "Mosconi",
+  "bib_n_authors": 2,
+  "ref": {
+   "title": "Sensorimotor dysfunctions as primary features of autism spectrum disorders",
+   "year": "2015",
+   "first_author": "Mosconi",
+   "n_authors": 2,
+   "container": "Science China Life Sciences",
+   "volume": "58",
+   "pages": "1016-1023",
+   "doi": "10.1007/s11427-015-4894-4"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "goldman2009motor",
+  "type": "article",
+  "bib": {
+   "title": "Motor stereotypies in children with autism and other developmental disorders",
+   "year": "2009",
+   "volume": "51",
+   "pages": "30--38",
+   "doi": "10.1111/j.1469-8749.2008.03178.x",
+   "journal": "Developmental Medicine \\& Child Neurology",
+   "booktitle": null
+  },
+  "bib_first_author": "Goldman",
+  "bib_n_authors": 6,
+  "ref": {
+   "title": "Motor stereotypies in children with autism and other developmental disorders",
+   "year": "2009",
+   "first_author": "GOLDMAN",
+   "n_authors": 6,
+   "container": "Developmental Medicine &amp; Child Neurology",
+   "volume": "51",
+   "pages": "30-38",
+   "doi": "10.1111/j.1469-8749.2008.03178.x"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "nutt2011freezing",
+  "type": "article",
+  "bib": {
+   "title": "Freezing of gait: moving forward on a mysterious clinical phenomenon",
+   "year": "2011",
+   "volume": "10",
+   "pages": "734--744",
+   "doi": "10.1016/S1474-4422(11)70143-0",
+   "journal": "The Lancet Neurology",
+   "booktitle": null
+  },
+  "bib_first_author": "Nutt",
+  "bib_n_authors": 6,
+  "ref": {
+   "title": "Freezing of gait: moving forward on a mysterious clinical phenomenon",
+   "year": "2011",
+   "first_author": "Nutt",
+   "n_authors": 6,
+   "container": "The Lancet Neurology",
+   "volume": "10",
+   "pages": "734-744",
+   "doi": "10.1016/s1474-4422(11)70143-0"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "washabaugh2022comparing",
+  "type": "article",
+  "bib": {
+   "title": "Comparing the accuracy of open-source pose estimation methods for measuring gait kinematics",
+   "year": "2022",
+   "volume": "97",
+   "pages": "188--195",
+   "doi": "10.1016/j.gaitpost.2022.08.008",
+   "journal": "Gait \\& Posture",
+   "booktitle": null
+  },
+  "bib_first_author": "Washabaugh",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "Comparing the accuracy of open-source pose estimation methods for measuring gait kinematics",
+   "year": "2022",
+   "first_author": "Washabaugh",
+   "n_authors": 4,
+   "container": "Gait &amp; Posture",
+   "volume": "97",
+   "pages": "188-195",
+   "doi": "10.1016/j.gaitpost.2022.08.008"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "clark2013concurrent",
+  "type": "article",
+  "bib": {
+   "title": "Concurrent validity of the {Microsoft Kinect} for assessment of spatiotemporal gait variables",
+   "year": "2013",
+   "volume": "46",
+   "pages": "2722--2725",
+   "doi": "10.1016/j.jbiomech.2013.08.011",
+   "journal": "Journal of Biomechanics",
+   "booktitle": null
+  },
+  "bib_first_author": "Clark",
+  "bib_n_authors": 5,
+  "ref": {
+   "title": "Concurrent validity of the Microsoft Kinect for assessment of spatiotemporal gait variables",
+   "year": "2013",
+   "first_author": "Clark",
+   "n_authors": 5,
+   "container": "Journal of Biomechanics",
+   "volume": "46",
+   "pages": "2722-2725",
+   "doi": "10.1016/j.jbiomech.2013.08.011"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ },
+ {
+  "key": "ismail2020benchmarking",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Benchmarking deep learning interpretability in time series predictions",
+   "year": "2020",
+   "volume": "33",
+   "pages": "6441--6452",
+   "doi": null,
+   "journal": null,
+   "booktitle": "Advances in Neural Information Processing Systems"
+  },
+  "bib_first_author": "Ismail",
+  "bib_n_authors": 4,
+  "ref": {
+   "title": "Benchmarking Attention-Based Interpretability of Deep Learning in Multivariate Time Series Predictions",
+   "year": "2021",
+   "first_author": "Bari\u0107",
+   "n_authors": 4,
+   "container": "Entropy",
+   "volume": "23",
+   "pages": "143",
+   "doi": "10.3390/e23020143",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "xie2020differentiable",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Differentiable top-k with optimal transport",
+   "year": "2020",
+   "volume": "33",
+   "pages": "20520--20531",
+   "doi": null,
+   "journal": null,
+   "booktitle": "Advances in Neural Information Processing Systems"
+  },
+  "bib_first_author": "Xie",
+  "bib_n_authors": 8,
+  "ref": {
+   "title": "DiffRayFlow: A Differentiable Freeform Optical Design Engine Based on Discrete Optimal Transport",
+   "year": "2025",
+   "first_author": "Wang",
+   "n_authors": 5,
+   "container": "Photonics",
+   "volume": "12",
+   "pages": "1243",
+   "doi": "10.3390/photonics12121243",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "berthet2020learning",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Learning with differentiable perturbed optimizers",
+   "year": "2020",
+   "volume": "33",
+   "pages": "9508--9519",
+   "doi": null,
+   "journal": null,
+   "booktitle": "Advances in Neural Information Processing Systems"
+  },
+  "bib_first_author": "Berthet",
+  "bib_n_authors": 6,
+  "ref": {
+   "title": "Differentiable Clustering with Perturbed Spanning Forests",
+   "year": "2023",
+   "first_author": "Stewart",
+   "n_authors": 4,
+   "container": "Advances in Neural Information Processing Systems 36",
+   "volume": null,
+   "pages": "31158-31176",
+   "doi": "10.52202/075280-1358",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "kool2019stochastic",
+  "type": "inproceedings",
+  "bib": {
+   "title": "Stochastic beams and where to find them: the {Gumbel}-top-k trick for sampling sequences without replacement",
+   "year": "2019",
+   "volume": "97",
+   "pages": "3499--3508",
+   "doi": null,
+   "journal": null,
+   "booktitle": "Proceedings of the 36th International Conference on Machine Learning"
+  },
+  "bib_first_author": "Kool",
+  "bib_n_authors": 3,
+  "ref": {
+   "title": "Stochastic First Order Oracles and Where to Find Them",
+   "year": "2021",
+   "first_author": "",
+   "n_authors": 0,
+   "container": "ORMS News Group",
+   "volume": null,
+   "pages": null,
+   "doi": "10.1287/orms.2021.05.48n",
+   "search": true
+  },
+  "checks": {
+   "title": false,
+   "first_author": false,
+   "year": false
+  }
+ },
+ {
+  "key": "goldsack2020verification",
+  "type": "article",
+  "bib": {
+   "title": "Verification, analytical validation, and clinical validation ({V3}): the foundation of determining fit-for-purpose for Biometric Monitoring Technologies ({BioMeTs})",
+   "year": "2020",
+   "volume": "3",
+   "pages": "55",
+   "doi": "10.1038/s41746-020-0260-4",
+   "journal": "npj Digital Medicine",
+   "booktitle": null
+  },
+  "bib_first_author": "Goldsack",
+  "bib_n_authors": 16,
+  "ref": {
+   "title": "Verification, analytical validation, and clinical validation (V3): the foundation of determining fit-for-purpose for Biometric Monitoring Technologies (BioMeTs)",
+   "year": "2020",
+   "first_author": "Goldsack",
+   "n_authors": 16,
+   "container": "npj Digital Medicine",
+   "volume": "3",
+   "pages": "55",
+   "doi": "10.1038/s41746-020-0260-4"
+  },
+  "checks": {
+   "title": true,
+   "first_author": true,
+   "year": true,
+   "n_authors": true,
+   "volume": true,
+   "pages": true
+  }
+ }
+]

@@ -5,6 +5,32 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [1.2.0] — 2026-10
 
+### Third phase (October 2026)
+- **Pre-specified criteria** for the third-phase analyses in
+  `docs/validation_criteria_phase3.md`, committed before they were run, with one
+  amendment (extended gain grid of the positive control) committed before any of
+  its models was trained. The protocol's parts are renamed C1-C6 (Tier 1:
+  recording audit, performance, recording controls, measurement checks; Tier 2:
+  planted events and selection, attribution).
+- **Calibration of the protocol**: semi-synthetic positive control
+  (`scripts/positive_control.py`) and label-permutation null of the whole
+  pipeline (`scripts/permutation_null.py`).
+- **New controls and checks**: time of day, all controls together, tracking
+  quality (second-difference noise, segment-length variability, MediaPipe
+  visibility; `src/recording_features.py`), mean-pose classifier, alternative
+  body scales (torso length, 1-s running median of the shoulder distance;
+  `src/preprocess.normalise_scale_variant`), incremental value of movement
+  scores, split-half reliability, viewpoint covariate, ages as in the original
+  article, training within the cropped videos, frame-order shuffle, integrated
+  gradients and temporal occlusion (`scripts/phase3_analyses.py`,
+  `scripts/attribution_planted.py`), file and container metadata.
+- **Pose quality control** (`scripts/pose_qc.py`, `scripts/overlay_sheets.py`)
+  and independent code checks (`scripts/verify_analysis.py`).
+- `scripts/feature_sets.py` holds the feature sets and one nested run of a
+  feature classifier, shared by every script; `PACE_RF_JOBS` sets the threads
+  of the random forests (results unchanged).
+- Tests in `tests/test_phase3.py`.
+
 ### Second revision (October 2026)
 - **Name.** The software is now called PACE (pose-aware contiguous-event
   modeling); the repository URL is unchanged. `PACEPredictor` replaces

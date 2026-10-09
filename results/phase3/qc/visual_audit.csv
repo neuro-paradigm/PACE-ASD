@@ -1,0 +1,96 @@
+child,setting,walks_toward_camera,other_person_visible,gross_tracking_error,note
+asd_1,mat room,yes,no,no,
+asd_2,mat room,yes,no,no,
+asd_3,mat room,yes,no,no,
+asd_4,mat room,yes,no,no,
+asd_5,mat room,yes,no,no,
+asd_6,mat room,yes,no,no,
+asd_7,mat room,no,no,no,stands in place with arms raised
+asd_8,mat room,yes,no,no,
+asd_9,lawn (outdoors),no,yes,no,led by an adult; walks sideways
+asd_10,mat room,yes,no,no,
+asd_11,mat room,yes,no,no,walks with arms abducted
+asd_12,mat room,yes,no,no,
+asd_13,mat room,yes,no,no,
+asd_14,mat room,yes,no,no,
+asd_15,mat room,yes,no,no,
+asd_16,mat room,yes,no,no,
+asd_17,classroom with toys,no,yes,no,moves among furniture; partly occluded
+asd_18,classroom with toys,no,no,no,moves among furniture; partly occluded
+asd_19,mat room,no,no,no,stands among desks
+asd_20,playground (outdoors),yes,no,no,
+asd_21,lawn (outdoors),no,no,no,walks sideways and turns
+asd_22,playground (outdoors),no,yes,no,turns and spins; other children and adults
+asd_23,room with red table,no,yes,yes,several people; skeleton jumps between people
+asd_24,classroom with desks,no,no,yes,seated behind a desk; partly occluded
+asd_25,classroom with desks,no,yes,no,seated on a chair throughout
+asd_26,purple-carpet room,no,no,no,stands close to the camera
+asd_27,purple-carpet room,yes,no,no,close to the camera
+asd_28,purple-carpet room,yes,no,no,
+asd_29,purple-carpet room,yes,no,no,
+asd_30,purple-carpet room,yes,no,no,
+asd_31,purple-carpet room,no,no,no,mostly stands; walks only at the end
+asd_32,purple-carpet room,yes,no,yes,legs lost and skeleton collapsed onto the trunk
+asd_33,purple-carpet room,yes,no,no,
+asd_34,room with mural,yes,yes,no,another child at the edge
+asd_35,room with sofa,yes,no,no,walks diagonally
+asd_36,room with mural,no,no,no,close to the camera; moves sideways
+asd_37,room with sofa,no,no,yes,approaches until the face fills the frame
+asd_38,carpeted corridor,yes,yes,no,person in the background
+asd_39,room with sofa,no,no,no,moves next to the sofa
+asd_40,room with mural,no,no,no,stands close to the camera
+asd_41,room with sofa,no,yes,no,crouches and sits on the sofa; person on the sofa
+asd_42,red-carpet room,no,no,no,stands at the wall
+asd_43,red-carpet room with balloons,yes,no,no,
+asd_44,red-carpet hall,no,yes,yes,other child present; skeleton switches
+asd_45,playroom with cones,no,no,no,stands among cones
+asd_46,red-carpet room,no,no,yes,close to the camera and turning; skeleton misplaced
+asd_47,red-carpet room,yes,yes,no,adults in the background
+asd_48,room with shelves,no,no,no,stands in place
+asd_49,room with shelves,yes,no,no,
+asd_50,terrazzo hallway,no,no,no,walks away from the camera
+td_1,room with carved door,yes,no,no,
+td_2,room with carved door,yes,no,no,rug on the floor
+td_3,room with carved door,yes,no,no,
+td_6,room with carved door,yes,no,no,
+td_8,room with carved door,yes,no,no,
+td_9,room with carved door,yes,no,no,
+td_10,room with carved door,yes,no,no,
+td_11,room with carved door,yes,no,no,
+td_12,room with carved door,yes,no,no,
+td_13,room with carved door,yes,no,no,
+td_14,room with cabinet,yes,no,no,
+td_15,room with cabinet,yes,no,no,
+td_16,room with cabinet,yes,no,no,
+td_17,room with cabinet,yes,no,no,
+td_18,room with cabinet,yes,no,no,
+td_19,room with cabinet,yes,no,no,
+td_20,room with cabinet,yes,no,no,
+td_21,room with cabinet,yes,no,no,
+td_22,room with carved door,yes,no,no,
+td_23,room with carved door,yes,no,no,
+td_24,room with cabinet,yes,no,no,
+td_25,room with cabinet,yes,no,no,
+td_26,room with cabinet,yes,no,no,
+td_27,room with cabinet,yes,no,no,
+td_28,room with cabinet,yes,no,no,
+td_29,room with cabinet,yes,no,no,
+td_30,room with cabinet,yes,no,no,
+td_31,room with cabinet,yes,no,no,
+td_32,room with cabinet,yes,no,no,
+td_33,room with cabinet,yes,no,no,
+td_34,room with cabinet,yes,no,no,
+td_35,room with cabinet,yes,no,no,
+td_36,room with cabinet,yes,no,no,
+td_37,room with cabinet,yes,no,no,
+td_38,room with cabinet,yes,no,no,
+td_40,room with cabinet,yes,no,no,
+td_41,room with cabinet,yes,no,no,
+td_42,room with cabinet,yes,no,no,
+td_43,room with cabinet,yes,no,no,
+td_44,room with cabinet,yes,no,no,
+td_45,room with cabinet,yes,no,no,
+td_46,room with cabinet,yes,no,no,
+td_47,room with cabinet,yes,no,no,
+td_48,room with cabinet,yes,no,no,
+td_49,room with cabinet,yes,no,no,

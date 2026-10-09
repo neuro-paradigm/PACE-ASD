@@ -105,17 +105,25 @@ Out-of-fold AUC (95% interval over children), 3 x 5-fold nested cross-validation
 | controls: validity pattern | 0.634 (0.52-0.74) | 0.566 (0.41-0.73) |
 | controls: age and sex | 0.701 (0.58-0.81) | 0.655 (0.51-0.79) |
 | controls: frame format | 0.901 (0.84-0.95) | 0.671 (0.54-0.80) |
-| controls: all of the above | 0.891 (0.83-0.94) | 0.661 (0.52-0.79) |
+| controls: format, validity and demographics | 0.891 (0.83-0.94) | 0.661 (0.52-0.79) |
 | controls: scene and camera (image properties) | 0.967 (0.94-0.99) | 0.941 (0.86-1.00) |
-| controls: landmark jitter | 0.590 (0.49-0.69) | 0.605 (0.44-0.75) |
+| controls: high-frequency landmark motion | 0.590 (0.49-0.69) | 0.605 (0.44-0.75) |
+| controls: tracking quality | 0.569 (0.47-0.67) | 0.601 (0.46-0.72) |
+| controls: time of day | 0.397 (0.32-0.48) | 0.257 (0.16-0.36) |
+| controls: depth-recording properties | 0.671 (0.56-0.78) | 0.681 (0.54-0.80) |
+| controls: all controls together | 0.980 (0.96-1.00) | 0.948 (0.88-0.99) |
 | controls: validity-only network | 0.626 (0.52-0.72) | 0.522 (0.37-0.67) |
-| gait-descriptor classifiers: logistic regression | 0.858 (0.78-0.92) | 0.962 (0.92-0.99) |
-| gait-descriptor classifiers: support vector machine | 0.872 (0.80-0.93) | 0.944 (0.89-0.98) |
-| gait-descriptor classifiers: random forest | 0.886 (0.81-0.95) | 0.973 (0.93-1.00) |
-| gait-descriptor classifiers: gradient-boosted trees | 0.872 (0.80-0.93) | 0.950 (0.90-0.99) |
-| gait-descriptor classifiers: logistic regression, age and sex removed | 0.802 (0.72-0.88) | 0.939 (0.88-0.98) |
-| gait-descriptor classifiers: logistic regression, image-normalized | 0.837 (0.76-0.91) | 0.951 (0.90-0.99) |
-| depth-camera skeletons of the same walks: recording properties (control) | 0.671 (0.56-0.78) | 0.681 (0.54-0.80) |
+| posture and gait descriptors: mean pose (posture only) | 0.819 (0.74-0.89) | 0.834 (0.64-0.97) |
+| posture and gait descriptors: logistic regression | 0.858 (0.78-0.92) | 0.962 (0.92-0.99) |
+| posture and gait descriptors: support vector machine | 0.872 (0.80-0.93) | 0.944 (0.89-0.98) |
+| posture and gait descriptors: random forest | 0.886 (0.81-0.95) | 0.973 (0.93-1.00) |
+| posture and gait descriptors: gradient-boosted trees | 0.872 (0.80-0.93) | 0.950 (0.90-0.99) |
+| posture and gait descriptors: logistic regression, age and sex removed | 0.802 (0.72-0.88) | 0.939 (0.88-0.98) |
+| posture and gait descriptors: logistic regression, image-normalized | 0.837 (0.76-0.91) | 0.951 (0.90-0.99) |
+| posture and gait descriptors: logistic regression, torso scale | 0.901 (0.83-0.95) | 0.972 (0.94-0.99) |
+| posture and gait descriptors: random forest, torso scale | 0.878 (0.80-0.94) | 0.957 (0.91-0.99) |
+| posture and gait descriptors: logistic regression, 1-s median scale | 0.873 (0.80-0.93) | 0.967 (0.93-0.99) |
+| posture and gait descriptors: random forest, 1-s median scale | 0.893 (0.82-0.95) | 0.964 (0.92-1.00) |
 | depth-camera skeletons of the same walks: descriptors, logistic regression | 0.697 (0.60-0.79) | 0.720 (0.55-0.86) |
 | depth-camera skeletons of the same walks: descriptors, random forest | 0.833 (0.75-0.91) | 0.849 (0.72-0.94) |
 | comparison networks: BiGRU | 0.891 (0.82-0.94) | 0.932 (0.88-0.98) |
@@ -123,17 +131,17 @@ Out-of-fold AUC (95% interval over children), 3 x 5-fold nested cross-validation
 | comparison networks: ST-GCN | 0.855 (0.78-0.92) | 0.970 (0.94-0.99) |
 | comparison networks: CTR-GCN | 0.885 (0.81-0.94) | 0.969 (0.93-0.99) |
 | comparison networks: ST-Transformer | 0.884 (0.81-0.95) | 0.909 (0.82-0.98) |
-| pace network and ablations: PACE network (w=15, M=8) | 0.900 (0.83-0.96) | 0.957 (0.91-0.99) |
-| pace network and ablations: no gate | 0.892 (0.82-0.95) | 0.952 (0.91-0.99) |
-| pace network and ablations: frame selection (w=1, M=120) | 0.902 (0.83-0.96) | 0.956 (0.91-0.99) |
-| pace network and ablations: budget M=4 | 0.907 (0.84-0.96) | 0.962 (0.92-0.99) |
-| pace network and ablations: averaging instead of attention | 0.879 (0.80-0.94) | 0.953 (0.90-0.99) |
-| pace network and ablations: no validity masking | 0.894 (0.83-0.95) | 0.948 (0.90-0.98) |
-| pace network and ablations: no onset alignment | 0.897 (0.83-0.96) | 0.950 (0.90-0.99) |
-| pace network and ablations: image-normalized coordinates | 0.871 (0.80-0.93) | 0.905 (0.83-0.96) |
-| pace network and ablations: epoch selection by validation loss | 0.905 (0.84-0.96) | 0.965 (0.93-0.99) |
+| test-case network and ablations: test-case network (w=15, M=8) | 0.900 (0.83-0.96) | 0.957 (0.91-0.99) |
+| test-case network and ablations: no gate | 0.892 (0.82-0.95) | 0.952 (0.91-0.99) |
+| test-case network and ablations: frame selection (w=1, M=120) | 0.902 (0.83-0.96) | 0.956 (0.91-0.99) |
+| test-case network and ablations: budget M=4 | 0.907 (0.84-0.96) | 0.962 (0.92-0.99) |
+| test-case network and ablations: averaging instead of attention | 0.879 (0.80-0.94) | 0.953 (0.90-0.99) |
+| test-case network and ablations: no validity masking | 0.894 (0.83-0.95) | 0.948 (0.90-0.98) |
+| test-case network and ablations: no onset alignment | 0.897 (0.83-0.96) | 0.950 (0.90-0.99) |
+| test-case network and ablations: image-normalized coordinates | 0.871 (0.80-0.93) | 0.905 (0.83-0.96) |
+| test-case network and ablations: epoch selection by validation loss | 0.905 (0.84-0.96) | 0.965 (0.93-0.99) |
 
-Frame format alone separates the groups in this dataset, and within the cropped videos image properties (scene and camera) still do; the depth-camera time stamps show that the groups were recorded in different sessions. None of the discrimination above can therefore be attributed to movement. Nothing here establishes clinical validity.
+Frame format alone separates the groups in this dataset; within the cropped videos image properties still do; the two groups were filmed in different settings (no setting shared) and, according to the file dates in the deposit, months apart, and many autistic children's videos do not show the walking task. None of the discrimination above can therefore be attributed to movement; movement differences are neither established nor excluded. Nothing here establishes clinical validity.
 <!-- /RESULTS_TABLE -->
 
 ---

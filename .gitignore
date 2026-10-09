@@ -97,3 +97,12 @@ models/cv/
 results/cv/logs/
 results/cv/*_queue.log
 results/repro/
+
+# Third-phase working files: cached landmarks with visibility and depth
+# skeletons, pose overlays (they show children; never committed), logs
+results/phase3/cache/
+results/phase3/qc/overlays/
+results/phase3/qc/sheets/
+results/phase3/qc/all_sheets/
+results/phase3/qc/*.jpg
+results/phase3/logs/

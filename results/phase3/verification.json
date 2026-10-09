@@ -1,0 +1,93 @@
+{
+ "auc": {
+  "n_auc_values": 117,
+  "max_abs_difference_pairs_vs_implementations": 2.220446049250313e-16,
+  "max_abs_difference_vs_summary": 0.0,
+  "agree": true
+ },
+ "bootstrap": {
+  "reimplemented": [
+   0.8305148148148148,
+   0.9598629629629628
+  ],
+  "reported": [
+   0.8305148148148148,
+   0.9598629629629628
+  ],
+  "max_abs_difference": 0.0,
+  "agree": true,
+  "n_models_in_summary": 39
+ },
+ "partition": {
+  "n_children": 95,
+  "n_repeats_in_file": 10,
+  "problems": [],
+  "regenerated_identical": true,
+  "agree": true
+ },
+ "duplicates": {
+  "n_videos": 110,
+  "identical_groups": [
+   [
+    "td_23",
+    "td_4"
+   ],
+   [
+    "td_22",
+    "td_5"
+   ],
+   [
+    "td_24",
+    "td_7"
+   ],
+   [
+    "td_17",
+    "td_39"
+   ],
+   [
+    "td_26",
+    "td_50"
+   ]
+  ],
+  "removed": [
+   "td_39",
+   "td_4",
+   "td_5",
+   "td_50",
+   "td_7"
+  ],
+  "each_group_keeps_one": true,
+  "agree": true
+ },
+ "arrays": {
+  "n": 95,
+  "max_abs_difference": 0.0,
+  "agree": true
+ },
+ "runs": {
+  "n_records": 585,
+  "problems": [],
+  "agree": true
+ },
+ "rerun_one_fold": {
+  "arm": "PACE",
+  "repeat": 0,
+  "fold": 0,
+  "n_children": 19,
+  "identical": true,
+  "max_abs_prob_diff": 0.0,
+  "max_abs_logit_diff": 0.0,
+  "best_epochs_stored": [
+   36,
+   28,
+   11
+  ],
+  "best_epochs_rerun": [
+   36,
+   28,
+   11
+  ],
+  "minutes": 14.809675168991088
+ },
+ "all_agree": true
+}

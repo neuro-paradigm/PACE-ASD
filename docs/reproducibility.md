@@ -34,6 +34,36 @@ article (Intel Core i5-13450HX, RTX 4050 Laptop GPU, Windows 11).
     reruns one outer fold into `results/repro/` and compares its predictions
     with the stored ones (`results/cv/reproducibility.json`).
 
+## Third phase (`docs/validation_criteria_phase3.md`)
+
+Settings and criteria were committed before these analyses were run (commit
+7b5171c; amendment 47eebd7). Raw deposit in `Dataset-2/Dataset` (or set
+`PACE_RAW_DIR`). `PACE_RF_JOBS=1` makes the random forests single-threaded, which is faster
+when several processes run in parallel and does not change any forest.
+
+12. **Pose quality control** (about 20 min with five workers; re-extracts the
+    landmarks with visibility and draws overlays of 30 random recordings, which
+    are not committed): `python scripts/pose_qc.py --workers 5`; overlays of every
+    recording for the visual audit: `python scripts/overlay_sheets.py`
+    (annotations in `results/phase3/qc/visual_audit.csv`)
+13. **New feature rows** (time of day, all controls, tracking quality, mean pose,
+    alternative scales): `python scripts/run_feature_models.py --models Time-of-day
+    All-controls Tracking-quality Mean-pose Gait-LR-torso Gait-RF-torso
+    Gait-LR-median Gait-RF-median`, then `python scripts/analyze_cv.py` and
+    `python scripts/analyze_mechanisms.py --sections confounds`
+14. **Permutation null**: `python scripts/permutation_null.py --network --workers 3
+    --worker_id <0..2>` (GPU), `python scripts/permutation_null.py --fast`, then
+    `--summarize`
+15. **Positive control**: `python scripts/positive_control.py --gain-rule`, then
+    `--fast` (optionally `--gains`, `--splits` to split the work), `--network
+    --workers 3 --worker_id <0..2>`, and `--summarize`
+16. **Measurement checks and the rest**: `python scripts/phase3_analyses.py`
+    (sections metadata, tracking, incremental, reliability, scale, scale_noise,
+    viewpoint, age_subset, within_cropped, shuffle, ig, visual) and
+    `python scripts/attribution_planted.py`
+17. **Code verification**: `python scripts/verify_analysis.py`; then
+    `python scripts/evaluate_criteria.py`
+
 The partition (`splits/cv_partition.json`) is part of the repository; deleting
 it makes `run_cv.py` generate it again from `cv.seed` in `configs/config.yaml`,
 which gives the same partition.

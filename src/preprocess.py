@@ -189,6 +189,39 @@ def normalise(keypoints: np.ndarray, width: float | None = None,
     return kp.astype(np.float32)
 
 
+def normalise_scale_variant(keypoints: np.ndarray, width: float, height: float,
+                            scale: str = "torso", window: int = 61) -> np.ndarray:
+    """Pixel units and mid-hip centering as in `normalise`, but divided by a
+    scale that trunk rotation modulates less than the per-frame shoulder
+    distance (sensitivity analysis, docs/validation_criteria_phase3.md, D7):
+
+      torso            distance between the shoulder and hip midpoints of the
+                       same frame
+      shoulder_median  shoulder distance smoothed by a running median over
+                       `window` detected frames (about 1 s at 60 frames/s)
+    """
+    kp = keypoints.astype(np.float64).copy()
+    kp[..., 0] *= width
+    kp[..., 1] *= height
+    valid = np.any(keypoints != 0, axis=(1, 2))
+    mid_hip = (kp[:, LEFT_HIP] + kp[:, RIGHT_HIP]) / 2.0
+    if scale == "torso":
+        mid_sh = (kp[:, LEFT_SHOULDER] + kp[:, RIGHT_SHOULDER]) / 2.0
+        sd = np.linalg.norm(mid_sh - mid_hip, axis=-1)
+    elif scale == "shoulder_median":
+        raw = np.linalg.norm(kp[:, LEFT_SHOULDER] - kp[:, RIGHT_SHOULDER], axis=-1)
+        sd = raw.copy()
+        idx = np.flatnonzero(valid)
+        h = window // 2
+        for n, t in enumerate(idx):
+            sd[t] = np.median(raw[idx[max(0, n - h): n + h + 1]])
+    else:
+        raise ValueError(scale)
+    kp = (kp - mid_hip[:, None, :]) / np.maximum(sd, 1e-5)[:, None, None]
+    kp[~valid] = 0.0
+    return kp.astype(np.float32)
+
+
 def pad_or_truncate(keypoints: np.ndarray, target_len: int = T_MAX) -> np.ndarray:
     """Zero-pad at the end or truncate to exactly target_len frames."""
     T = keypoints.shape[0]

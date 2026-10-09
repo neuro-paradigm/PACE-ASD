@@ -1,0 +1,125 @@
+{
+ "by_group": {
+  "autistic": {
+   "n": 50,
+   "n_settings": 16,
+   "settings": [
+    "carpeted corridor",
+    "classroom with desks",
+    "classroom with toys",
+    "lawn (outdoors)",
+    "mat room",
+    "playground (outdoors)",
+    "playroom with cones",
+    "purple-carpet room",
+    "red-carpet hall",
+    "red-carpet room",
+    "red-carpet room with balloons",
+    "room with mural",
+    "room with red table",
+    "room with shelves",
+    "room with sofa",
+    "terrazzo hallway"
+   ],
+   "walks_toward_camera": 27,
+   "other_person_visible": 10,
+   "gross_tracking_error": 6
+  },
+  "td": {
+   "n": 45,
+   "n_settings": 2,
+   "settings": [
+    "room with cabinet",
+    "room with carved door"
+   ],
+   "walks_toward_camera": 45,
+   "other_person_visible": 0,
+   "gross_tracking_error": 0
+  },
+  "autistic_cropped": {
+   "n": 15,
+   "n_settings": 10,
+   "settings": [
+    "classroom with desks",
+    "classroom with toys",
+    "lawn (outdoors)",
+    "playground (outdoors)",
+    "playroom with cones",
+    "red-carpet hall",
+    "red-carpet room",
+    "room with mural",
+    "room with red table",
+    "room with sofa"
+   ],
+   "walks_toward_camera": 3,
+   "other_person_visible": 7,
+   "gross_tracking_error": 3
+  },
+  "autistic_uncropped": {
+   "n": 35,
+   "n_settings": 10,
+   "settings": [
+    "carpeted corridor",
+    "classroom with toys",
+    "mat room",
+    "purple-carpet room",
+    "red-carpet room",
+    "red-carpet room with balloons",
+    "room with mural",
+    "room with shelves",
+    "room with sofa",
+    "terrazzo hallway"
+   ],
+   "walks_toward_camera": 24,
+   "other_person_visible": 3,
+   "gross_tracking_error": 3
+  }
+ },
+ "shared_settings": [],
+ "n_walk": {
+  "autistic": 27,
+  "td": 45,
+  "autistic_cropped": 3
+ },
+ "auc_walking_subset": {
+  "All-controls": 0.9923182441700961,
+  "BiGRU": 0.8466392318244171,
+  "CTR-GCN": 0.8139917695473251,
+  "Covariates": 0.9662551440329219,
+  "Demographics": 0.6994513031550068,
+  "Depth-LR": 0.6098765432098765,
+  "Depth-RF": 0.7582990397805213,
+  "Depth-recording": 0.6866941015089164,
+  "Duration": 0.6502057613168725,
+  "Frame-format": 0.9909465020576133,
+  "Gait-LR": 0.8027434842249658,
+  "Gait-LR-adjusted": 0.7039780521262003,
+  "Gait-LR-imagenorm": 0.7657064471879287,
+  "Gait-LR-median": 0.8126200274348423,
+  "Gait-LR-torso": 0.8499314128943758,
+  "Gait-RF": 0.8257887517146777,
+  "Gait-RF-median": 0.8417009602194788,
+  "Gait-RF-torso": 0.8305898491083675,
+  "Gait-SVM": 0.8148148148148149,
+  "Gait-XGB": 0.8087791495198903,
+  "Jitter": 0.5270233196159122,
+  "Mask-pattern": 0.6334705075445816,
+  "Mean-pose": 0.7909465020576132,
+  "PACE": 0.8375857338820302,
+  "PACE-M4": 0.8480109739369,
+  "PACE-frames": 0.8375857338820302,
+  "PACE-imagenorm": 0.8150891632373113,
+  "PACE-maskonly": 0.6392318244170095,
+  "PACE-noalign": 0.8375857338820302,
+  "PACE-noattn": 0.8005486968449932,
+  "PACE-nogate": 0.8315500685871055,
+  "PACE-nomask": 0.833196159122085,
+  "PACE-valloss": 0.8436213991769548,
+  "ST-GCN": 0.7668038408779149,
+  "ST-Transformer": 0.8153635116598079,
+  "Scene": 0.9750342935528121,
+  "TCN": 0.7989026063100138,
+  "Time-of-day": 0.38655692729766805,
+  "Tracking-quality": 0.4880658436213992
+ }
+}
