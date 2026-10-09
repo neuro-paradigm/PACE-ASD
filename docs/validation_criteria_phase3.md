@@ -90,6 +90,16 @@ not reject every dataset.
   conclusion "attributable to movement" is reached in at most 10% of the
   splits at g = 1.
 
+**Amendment 1 (before any model of D1 was trained).** Applied as written,
+the gain rule gave mean reference AUCs of 0.500, 0.518, 0.530, 0.572 and
+0.654 for g = 1.1, 1.2, 1.3, 1.5 and 2.0: the grid did not contain a value
+near the target, because the 5th-95th percentile range of the wrist height
+in these frontal videos is dominated by content above about 4 Hz, which the
+plant leaves unchanged. The grid is therefore extended by g in {2.5, 3, 4,
+5, 6}, and the rule (closest to 0.80, ties: smaller g) is applied to the
+extended grid. The fast pipeline is also run at g = 2.0, the value chosen
+from the original grid, and reported alongside. Nothing else changes.
+
 ## D2. Label-permutation null
 
 * Fast pipeline: for permutation i = 0..199 (rng 20261201 + i), the labels of
