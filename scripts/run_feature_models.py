@@ -112,10 +112,33 @@ class ConfoundRegression(BaseEstimator, TransformerMixin):
         return F - C @ self.beta_
 
 
-def pipeline(clf, confounds=0):
+class SplineLast(BaseEstimator, TransformerMixin):
+    """Replace the last column (the time of day of the depth recording) by a
+    cubic B-spline basis with knots spread evenly over the range of the
+    training data and constant extrapolation, so that a control can represent
+    a group recorded both earlier and later in the day than the other
+    (docs/validation_criteria_phase4.md, E1)."""
+
+    def __init__(self, n_knots=5, degree=3):
+        self.n_knots = n_knots
+        self.degree = degree
+
+    def fit(self, X, y=None):
+        from sklearn.preprocessing import SplineTransformer
+        self.spline_ = SplineTransformer(n_knots=self.n_knots, degree=self.degree, knots="uniform",
+                                         extrapolation="constant").fit(X[:, -1:])
+        return self
+
+    def transform(self, X):
+        return np.c_[X[:, :-1], self.spline_.transform(X[:, -1:])]
+
+
+def pipeline(clf, confounds=0, spline_last=False):
     steps = [("impute", SimpleImputer(strategy="median"))]
     if confounds:
         steps.append(("confounds", ConfoundRegression(confounds)))
+    if spline_last:
+        steps.append(("spline", SplineLast()))
     return Pipeline(steps + [("scale", StandardScaler()), ("clf", clf)])
 
 
@@ -186,10 +209,17 @@ def models(seed):
         "Depth-LR": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "depth"),
         "Depth-RF": (pipeline(RandomForestClassifier(n_estimators=500, random_state=seed, n_jobs=nj)),
                      {"clf__max_depth": [2, 4, None], "clf__min_samples_leaf": [1, 3, 5]}, "depth"),
-        "Depth-recording": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "depth_recording"),
+        # fourth phase (docs/validation_criteria_phase4.md, E1): the time of day
+        # (last column) enters as a cubic spline; the "-linear" rows are the
+        # second- and third-phase definitions, kept for comparison
+        "Depth-recording": (pipeline(LogisticRegression(max_iter=5000), spline_last=True), lr_grid,
+                            "depth_recording"),
+        "Depth-recording-linear": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "depth_recording"),
         # third phase (docs/validation_criteria_phase3.md, D4, D5, D7, D9)
-        "Time-of-day": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "time_of_day"),
-        "All-controls": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "all_controls"),
+        "Time-of-day": (pipeline(LogisticRegression(max_iter=5000), spline_last=True), lr_grid, "time_of_day"),
+        "Time-of-day-linear": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "time_of_day"),
+        "All-controls": (pipeline(LogisticRegression(max_iter=5000), spline_last=True), lr_grid, "all_controls"),
+        "All-controls-linear": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "all_controls"),
         "Tracking-quality": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "tracking"),
         "Mean-pose": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "mean_pose"),
         "Gait-LR-torso": (pipeline(LogisticRegression(max_iter=5000)), lr_grid, "gait_torso"),

@@ -106,3 +106,9 @@ results/phase3/qc/sheets/
 results/phase3/qc/all_sheets/
 results/phase3/qc/*.jpg
 results/phase3/logs/
+
+# Fourth-phase working files: cached features and landmarks of transformed
+# videos, logs, and the annotation material (it shows children; never committed)
+results/phase4/cache/
+results/phase4/logs/
+results/phase4/annotation/
