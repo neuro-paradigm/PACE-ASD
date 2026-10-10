@@ -23,11 +23,14 @@ graded outcome.
 
   --variants        per-child features of every variant, cached
   --run             the splits (--scenarios, --sizes, --workers/--worker_id)
-  --summarize       results/phase4/calibration.json
+  --run --phase5    the further splits 20-99 of the cells listed in EXTENDED
+                    (docs/validation_criteria_phase5.md, F1)
+  --summarize       results/phase4/calibration.json (the 20 fourth-phase splits)
 
 Usage:
     python scripts/phase4_calibration.py --variants
     python scripts/phase4_calibration.py --run --workers 5 --worker_id 0
+    python scripts/phase4_calibration.py --run --phase5 --workers 4 --worker_id 0
     python scripts/phase4_calibration.py --summarize
 """
 
@@ -56,6 +59,9 @@ CACHE = os.path.join(OUT4, "cache")
 GAINS = [1.0, 2.0, 3.0, 4.0, 6.0]
 SIZES = [20, 30, 45]
 N_SPLITS = 20
+# fifth phase (F1): 100 splits in these cells; n3 is assembled from pc_g4 and pc_g1 at n = 45
+N_SPLITS_EXT = 100
+EXTENDED = [("pc_g1", 45), ("pc_g4", 45), ("n1", 45), ("n2", 45), ("pc_g1", 30), ("pc_g1", 20)]
 G_STAR = 4.0
 MOVEMENT = ["Gait-LR", "Gait-RF", "Mean-pose"]
 CONTROLS = ["Frame-format", "Scene", "Time-of-day", "Demographics", "Tracking-quality", "All-controls"]
@@ -221,10 +227,23 @@ def jobs(scns, sizes):
     return out
 
 
-def run(scns, sizes, workers, worker_id):
+def jobs_phase5():
+    """Splits 20-99 of the EXTENDED cells, cell by cell, so that the null
+    splits at n = 45 (whose depth-side classifiers n1 and n2 reuse) come first."""
+    return [(scn, n, j) for scn, n in EXTENDED for j in range(N_SPLITS, N_SPLITS_EXT)]
+
+
+def n_splits(scn, n):
+    """Number of splits of a cell including the fifth-phase extension."""
+    if scn == "n3":
+        return N_SPLITS_EXT if ("pc_g4", 45) in EXTENDED and n == 45 else N_SPLITS
+    return N_SPLITS_EXT if (scn, n) in EXTENDED else N_SPLITS
+
+
+def run(scns, sizes, workers, worker_id, job_list=None):
     td = td_children()
     variants = {}
-    for scn, n, j in jobs(scns, sizes)[worker_id::workers]:
+    for scn, n, j in (job_list or jobs(scns, sizes))[worker_id::workers]:
         path = os.path.join(CAL, scn, f"n{n}", f"split{j:02d}.json")
         if os.path.isfile(path):
             continue
@@ -336,40 +355,51 @@ def _n3_record(n45_g4, n45_g1):
     return rec
 
 
+def all_variants():
+    return {v: load_variant(v) for v in
+            ["base"] + [f"video_g{g:g}" for g in GAINS[1:]] + [f"depth_g{g:g}" for g in GAINS[1:]] +
+            [v for v in ("n1", "n2") if os.path.isfile(os.path.join(CACHE, f"variant_{v}.pkl"))]}
+
+
+def evaluated(scn, n, j, variants, td):
+    """Evaluation of one split, or None if its record is missing. Evaluations
+    are cached in results/phase4/calibration_eval and recomputed if a split
+    record is newer."""
+    if scn == "n3":
+        a = os.path.join(CAL, "pc_g4", "n45", f"split{j:02d}.json")
+        b = os.path.join(CAL, "pc_g1", "n45", f"split{j:02d}.json")
+        if not (os.path.isfile(a) and os.path.isfile(b)):
+            return None
+        srcs = [a, b]
+    else:
+        f = os.path.join(CAL, scn, f"n{n}", f"split{j:02d}.json")
+        if not os.path.isfile(f):
+            return None
+        srcs = [f]
+    if any(v not in variants for v in set(scenario_sources(scn).values())):
+        return None
+    ecache = os.path.join(OUT4, "calibration_eval", scn, f"n{n}", f"split{j:02d}.json")
+    if os.path.isfile(ecache) and os.path.getmtime(ecache) > max(os.path.getmtime(f) for f in srcs):
+        return json.load(open(ecache))
+    rec = _n3_record(json.load(open(srcs[0])), json.load(open(srcs[1]))) if scn == "n3" else json.load(open(srcs[0]))
+    ev = evaluate(rec, variants, td)
+    os.makedirs(os.path.dirname(ecache), exist_ok=True)
+    json.dump(ev, open(ecache, "w"))
+    return ev
+
+
 def summarize():
     td = td_children()
-    variants = {v: load_variant(v) for v in
-                ["base"] + [f"video_g{g:g}" for g in GAINS[1:]] + [f"depth_g{g:g}" for g in GAINS[1:]] +
-                [v for v in ("n1", "n2") if os.path.isfile(os.path.join(CACHE, f"variant_{v}.pkl"))]}
+    variants = all_variants()
     res = {"cells": {}}
     keys = ["i", "ii", "iii", "iv", "iv_arm_swing", "v"]
     cells = [(scn, n) for scn in scenarios() for n in (SIZES if scn.startswith("pc_") else [45])] + [("n3", 45)]
     for scn, n in cells:
         rows = []
         for j in range(N_SPLITS):
-            if scn == "n3":
-                a = os.path.join(CAL, "pc_g4", "n45", f"split{j:02d}.json")
-                b = os.path.join(CAL, "pc_g1", "n45", f"split{j:02d}.json")
-                if not (os.path.isfile(a) and os.path.isfile(b)):
-                    continue
-                rec = _n3_record(json.load(open(a)), json.load(open(b)))
-            else:
-                f = os.path.join(CAL, scn, f"n{n}", f"split{j:02d}.json")
-                if not os.path.isfile(f):
-                    continue
-                rec = json.load(open(f))
-            if any(v not in variants for v in set(scenario_sources(rec["scenario"]).values())):
+            ev = evaluated(scn, n, j, variants, td)
+            if ev is None:
                 continue
-            # evaluations are cached next to the summary; recomputed if the split record is newer
-            ecache = os.path.join(OUT4, "calibration_eval", scn, f"n{n}", f"split{j:02d}.json")
-            srcs = [os.path.join(CAL, s, f"n{n}", f"split{j:02d}.json") for s in
-                    (["pc_g4", "pc_g1"] if scn == "n3" else [scn])]
-            if os.path.isfile(ecache) and os.path.getmtime(ecache) > max(os.path.getmtime(f) for f in srcs):
-                ev = json.load(open(ecache))
-            else:
-                ev = evaluate(rec, variants, td)
-                os.makedirs(os.path.dirname(ecache), exist_ok=True)
-                json.dump(ev, open(ecache, "w"))
             rows.append({"split": j, **ev})
             print(f"[summary] {scn} n={n} split {j}: grade {ev['grade']} {ev['criteria']}", flush=True)
         if not rows:
@@ -395,6 +425,7 @@ if __name__ == "__main__":
     ap.add_argument("--variants", action="store_true")
     ap.add_argument("--run", action="store_true")
     ap.add_argument("--summarize", action="store_true")
+    ap.add_argument("--phase5", action="store_true", help="with --run: the fifth-phase splits (F1)")
     ap.add_argument("--scenarios", nargs="*", default=None)
     ap.add_argument("--sizes", type=int, nargs="*", default=None)
     ap.add_argument("--workers", type=int, default=1)
@@ -403,6 +434,7 @@ if __name__ == "__main__":
     if a.variants:
         build_variants()
     if a.run:
-        run(a.scenarios or scenarios(), a.sizes or SIZES, a.workers, a.worker_id)
+        run(a.scenarios or scenarios(), a.sizes or SIZES, a.workers, a.worker_id,
+            job_list=jobs_phase5() if a.phase5 else None)
     if a.summarize:
         summarize()

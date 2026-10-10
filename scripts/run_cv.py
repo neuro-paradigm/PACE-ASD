@@ -84,12 +84,22 @@ def stored_array(config: dict, subject: str) -> np.ndarray:
     """The (300, 33, 2) array of one recording. With data.coordinates = "image"
     the array is rebuilt from the raw keypoints without conversion to pixel
     units (each axis normalised by its own frame dimension), which is used
-    only to measure the effect of that normalisation."""
+    only to measure the effect of that normalisation. With data.scale =
+    "shoulder_median" or "torso" the array is rebuilt in pixel units with that
+    body scale instead of the per-frame shoulder distance
+    (docs/validation_criteria_phase5.md, F3)."""
     pdir = config["data"]["processed_dir"]
     if config["data"].get("coordinates", "pixel") == "image":
         from preprocess import normalise, pad_or_truncate
         raw = np.load(os.path.join(pdir, "keypoints", f"{subject}.npy"))
         return pad_or_truncate(normalise(raw))
+    scale = config["data"].get("scale", "shoulder")
+    if scale != "shoulder":
+        from preprocess import normalise_scale_variant, pad_or_truncate
+        vid = pd.read_csv(os.path.join(pdir, "video_metadata.csv")).set_index("clip_id")
+        raw = np.load(os.path.join(pdir, "keypoints", f"{subject}.npy"))
+        return pad_or_truncate(normalise_scale_variant(raw, float(vid.loc[subject, "width"]),
+                                                       float(vid.loc[subject, "height"]), scale))
     return np.load(os.path.join(pdir, "features", f"{subject}.npy")).astype(np.float32)
 
 
