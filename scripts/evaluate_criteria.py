@@ -433,6 +433,76 @@ def phase4():
     return out
 
 
+P5 = os.path.join("results", "phase5")
+CONTROLS_REAL = ["Duration", "Mask-pattern", "Demographics", "Frame-format", "Covariates", "Scene", "Jitter",
+                 "Tracking-quality", "Time-of-day", "Depth-recording", "All-controls", "PACE-maskonly"]
+
+
+def phase5(S, res):
+    """Decision criteria (i)-(v) and the outcome on the real data, the Tier 0
+    stop rule (written after its results: R5) and the fifth-phase criteria
+    (docs/validation_criteria_phase5.md: P5)."""
+    P3, R4 = res["phase3"], res["phase4"]
+    perf = S["performance"]
+    out = {"timing": "P5"}
+    # (i) every control below 0.70, over all children and within the cropped videos
+    hi_all = {m: perf[m]["mean"]["auc"] for m in CONTROLS_REAL if m in perf and perf[m]["mean"]["auc"] >= 0.70}
+    hi_crop = {m: d["auc_cropped"] for m, d in P3["controls"].items() if d["auc_cropped"] >= 0.70}
+    wcc = _load("results", "phase3", "analyses", "within_cropped.json").get("models", {})
+    hi_wc = {m: wcc[m]["auc"] for m in ("Scene", "Time-of-day", "Demographics", "Tracking-quality",
+                                         "All-controls-noformat") if m in wcc and wcc[m]["auc"] >= 0.70}
+    dec = {"i": {"met": not (hi_all or hi_crop or hi_wc), "controls_ge_0.70_all": hi_all,
+                 "controls_ge_0.70_cropped": hi_crop, "controls_ge_0.70_within_cropped": hi_wc}}
+    # (ii) a movement model above chance and above all controls (paired interval above 0)
+    beats = [m for m, d in P3["all_controls_cropped"].items() if d["passes"]]
+    beats_wc = [m for m, d in P3["within_cropped"].items() if d.get("beats_all_controls")]
+    mv = ["PACE", "Gait-LR", "Gait-RF", "Mean-pose"]
+    best = max(mv, key=lambda m: perf[m]["mean"]["auc"])
+    dec["ii"] = {"met": bool(beats or beats_wc), "best_all": best, "best_all_auc": perf[best]["mean"]["auc"],
+                 "all_controls_auc": perf["All-controls"]["mean"]["auc"], "beats_cropped": beats,
+                 "beats_within_cropped": beats_wc}
+    # (iii) nested incremental value
+    iv = R4.get("incremental_value_nested", {})
+    adds = {sub: [m for m, d in iv.get(sub, {}).items() if d["adds"]] for sub in ("all", "cropped")}
+    dec["iii"] = {"met": bool(adds["all"] or adds["cropped"]), "adds": adds}
+    # (iv) a robust descriptor difference
+    rb = res["C3_C4"]["robust_descriptors"]["names"]
+    dec["iv"] = {"met": bool(rb), "n_robust": len(rb)}
+    # (v) depth classifiers corroborate within the cropped-video children
+    dc = res["C3_C4"]["depth_corroboration"]
+    tod = wcc.get("Time-of-day", {}).get("auc")
+    dwc = wcc.get("Depth-RF", {})
+    v_tod = bool(dwc and dwc["ci95"][0] > 0.5 and dwc["auc"] > tod)
+    dec["v"] = {"met": bool(dc["corroborates"] and v_tod), "vs_recording_control": dc["corroborates"],
+                "vs_time_of_day_within": v_tod}
+    m = {k: d["met"] for k, d in dec.items()}
+    grade = "A" if all(m.values()) else ("B" if m["i"] and m["ii"] and m["v"] else "C")
+    single = "S" if (m["i"] and m["ii"] and m["iii"] and m["iv"]) else "C"
+    out["decision"] = {"criteria": dec, "met": m, "grade": grade, "single_channel": single}
+    # Tier 0 stop rule (R5): group confounded with session, setting or task, no subset shared
+    meta = _load("results", "phase3", "analyses", "metadata.json")
+    vis = _load("results", "phase3", "analyses", "visual.json")
+    ap = _load(P4, "approach_index.json")
+    sess = meta is not None and not meta["tvideo_ranges_overlap"]
+    sett = vis is not None and len(vis.get("shared_settings", [])) == 0
+    out["tier0"] = {"timing": "R5", "sessions_disjoint": bool(sess), "no_setting_shared": bool(sett),
+                    "approach_td": ap["by_group"]["td"]["n_approaching"] if ap else None,
+                    "approach_autistic": ap["by_group"]["autistic"]["n_approaching"] if ap else None,
+                    "stop": bool(sess or sett)}
+    cal = _load(P5, "calibration.json")
+    if cal:
+        out["calibration"] = {"specificity": cal["specificity"],
+                              "sensitivity_g4_n45": cal["cells"].get("pc_g4|n45", {}).get("sens_A"),
+                              "single_channel_n3_equals_g4": cal.get("single_channel_n3_equals_g4")}
+    sc = _load(P5, "scale.json")
+    if sc:
+        out["scale"] = sc["rule"]
+    dm = _load(P5, "depth_matched.json")
+    if dm:
+        out["depth_matched"] = dm["summary"]
+    return out
+
+
 def main():
     S = json.load(open("results/cv/summary.json"))
     M = json.load(open("results/cv/mechanisms.json"))
@@ -441,6 +511,7 @@ def main():
     res = {"C2": v1_v2(S), "C3_C4": v3(S, M), "C5": c5, "C5_selection": v5(M), "C6": v6(M, Y)}
     res["phase3"] = phase3(S, M, c5)
     res["phase4"] = phase4()
+    res["phase5"] = phase5(S, res)
     json.dump(res, open(OUT, "w"), indent=1)
     print(json.dumps(res["phase3"], indent=1, default=str)[:8000])
 

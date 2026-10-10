@@ -1,6 +1,6 @@
 {
  "auc": {
-  "n_auc_values": 126,
+  "n_auc_values": 129,
   "max_abs_difference_pairs_vs_implementations": 2.220446049250313e-16,
   "max_abs_difference_vs_summary": 0.0,
   "agree": true
@@ -16,7 +16,7 @@
   ],
   "max_abs_difference": 0.0,
   "agree": true,
-  "n_models_in_summary": 42
+  "n_models_in_summary": 43
  },
  "partition": {
   "n_children": 95,
@@ -65,7 +65,7 @@
   "agree": true
  },
  "runs": {
-  "n_records": 630,
+  "n_records": 645,
   "problems": [],
   "agree": true
  },
@@ -76,8 +76,8 @@
   "agree": true
  },
  "firth_convergence": {
-  "n_fits": 3400,
-  "max_abs_gradient": 1.0401457473108167e-05,
+  "n_fits": 8200,
+  "max_abs_gradient": 1.5170975586897839e-05,
   "n_not_converged": 0,
   "agree": true
  },
@@ -88,6 +88,14 @@
    "refit_max_abs_difference": 0.0,
    "reused": true
   },
+  "agree": true
+ },
+ "calibration5": {
+  "n_splits": 920,
+  "n_auc_values": 11040,
+  "count_mismatches": 0,
+  "max_abs_auc_difference": 0.0,
+  "max_abs_interval_difference": 3.3384406350478457e-13,
   "agree": true
  },
  "rerun_one_fold": {

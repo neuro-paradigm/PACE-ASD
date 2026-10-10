@@ -339,6 +339,56 @@ def check_calibration():
     return {"n_auc_values": n, "max_abs_difference": worst, "depth_reuse": reuse, "agree": bool(ok)}
 
 
+def check_calibration5():
+    """The fifth-phase summary (results/phase5/calibration.json): every count
+    of splits meeting a criterion or reaching an outcome, recounted from the
+    per-split evaluations; every AUC of every split recounted from the split
+    records by pair counting; every exact interval recomputed with
+    scipy.stats.binomtest instead of the beta quantiles."""
+    from scipy.stats import binomtest
+    cal = "results/phase5/calibration.json"
+    if not os.path.isfile(cal):
+        return {"agree": True, "skipped": "no fifth-phase results"}
+    C = json.load(open(cal))
+    base = os.path.join("results", "phase4", "calibration")
+    count_bad, auc_worst, ci_worst, n_splits, n_auc = 0, 0.0, 0.0, 0, 0
+    for name, cell in C["cells"].items():
+        scn, nn = name.split("|")
+        k = {g: 0 for g in ("A", "AB", "S", "i", "ii", "iii", "iv", "v")}
+        N = 0
+        for j in range(cell["n_splits"]):
+            ev = json.load(open(os.path.join("results", "phase4", "calibration_eval", scn, nn, f"split{j:02d}.json")))
+            c, g = ev["criteria"], ev["grade"]
+            k["A"] += g == "A"
+            k["AB"] += g in ("A", "B")
+            k["S"] += bool(c["i"] and c["ii"] and c["iii"] and c["iv"])
+            for q in ("i", "ii", "iii", "iv", "v"):
+                k[q] += bool(c[q])
+            if scn == "n3":
+                rv = json.load(open(os.path.join(base, "pc_g4", nn, f"split{j:02d}.json")))
+                rd = json.load(open(os.path.join(base, "pc_g1", nn, f"split{j:02d}.json")))
+                probs = {**rv["probs"], **{m: rd["probs"][m] for m in ("Depth-LR", "Depth-RF", "Depth-recording")}}
+                labels = rv["labels"]
+            else:
+                rec = json.load(open(os.path.join(base, scn, nn, f"split{j:02d}.json")))
+                probs, labels = rec["probs"], rec["labels"]
+            for m, v in ev["auc"].items():
+                S = sorted(probs[m])
+                auc_worst = max(auc_worst, abs(auc_by_pairs([labels[s] for s in S], [probs[m][s] for s in S]) - v))
+                n_auc += 1
+            N += 1
+        n_splits += N
+        stored = {g: cell[g]["k"] for g in ("A", "AB", "S")}
+        stored.update({q: cell["criteria"][q]["k"] for q in ("i", "ii", "iii", "iv", "v")})
+        count_bad += sum(stored[g] != k[g] for g in k) + (N != cell["n_splits"])
+        for g in ("A", "AB", "S"):
+            ci = binomtest(cell[g]["k"], cell[g]["n"]).proportion_ci(confidence_level=0.95, method="exact")
+            ci_worst = max(ci_worst, abs(ci.low - cell[g]["ci95"][0]), abs(ci.high - cell[g]["ci95"][1]))
+    return {"n_splits": n_splits, "n_auc_values": n_auc, "count_mismatches": int(count_bad),
+            "max_abs_auc_difference": auc_worst, "max_abs_interval_difference": ci_worst,
+            "agree": bool(count_bad == 0 and auc_worst < 1e-12 and ci_worst < 1e-9)}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw_dir", default=os.environ.get("PACE_RAW_DIR", os.path.join("Dataset-2", "Dataset")))
@@ -347,7 +397,7 @@ def main():
     for name, fn in (("auc", check_auc), ("bootstrap", check_bootstrap), ("partition", check_partition),
                      ("duplicates", lambda: check_duplicates(a.raw_dir)), ("arrays", check_arrays),
                      ("runs", check_runs), ("firth", check_firth), ("firth_convergence", check_firth_convergence),
-                     ("calibration", check_calibration)):
+                     ("calibration", check_calibration), ("calibration5", check_calibration5)):
         res[name] = fn()
         print(name, {k: v for k, v in res[name].items() if k not in ("identical_groups",)}, flush=True)
     rep = "results/cv/reproducibility.json"

@@ -96,6 +96,26 @@ several processes in parallel then share the processor without oversubscribing i
 23. **Cross-checks and criteria**: `python scripts/verify_analysis.py`, then
     `python scripts/evaluate_criteria.py`
 
+## Fifth phase (`docs/validation_criteria_phase5.md`)
+
+Settings and criteria were committed before these analyses were run (commit
+aa1f7e1); no earlier threshold was changed. Same single-threaded settings as
+the fourth phase.
+
+24. **100 calibration splits** in the null and planted-recording cells and at
+    the pre-specified gain: `python scripts/phase4_calibration.py --run --phase5
+    --workers <W> --worker_id <0..W-1>` (480 further splits; about 2 min of one
+    core each with four workers)
+25. **Corrected body scale**: `python scripts/run_cv.py --arm PACE --tag
+    PACE-median --set data.scale=shoulder_median --save_checkpoints` (about
+    20 min on the laptop GPU)
+26. **Summaries**: `python scripts/phase5_analyses.py --sections calibration
+    scale depth` (exact intervals and the outcome without a second sensor;
+    mean pose, frame order and channel zeroing on the corrected scale;
+    second-sensor comparison matched for projection, frame rate and duration)
+27. **Cross-checks and criteria**: `python scripts/verify_analysis.py`, then
+    `python scripts/evaluate_criteria.py`
+
 The partition (`splits/cv_partition.json`) is part of the repository; deleting
 it makes `run_cv.py` generate it again from `cv.seed` in `configs/config.yaml`,
 which gives the same partition.

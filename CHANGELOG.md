@@ -5,6 +5,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [1.2.0] — 2026-10
 
+### Fifth phase (October 2026)
+- **Criteria** for the fifth-phase analyses in
+  `docs/validation_criteria_phase5.md`, written after a fourth critique of the
+  draft and committed before the analyses were run; no earlier threshold changed.
+- **100 calibration splits** in the null and planted-recording cells and at the
+  pre-specified gain (`scripts/phase4_calibration.py --run --phase5`), with
+  exact (Clopper-Pearson) intervals and an outcome for data without a second
+  sensor (`scripts/phase5_analyses.py --sections calibration`).
+- **Corrected body scale** for the network (`data.scale` in
+  `scripts/run_cv.py`; tag `PACE-median`), the mean-pose classifier, the
+  frame-order test and channel zeroing (`--sections scale`).
+- **Second-sensor comparison matched for projection, frame rate and duration**:
+  depth joints projected onto the image plane, resampled to 60 frames per
+  second and passed through the video descriptor code; video descriptors in
+  windows as long as the depth recording (`--sections depth`).
+- Decision criteria (i)-(v), the outcome and the Tier 0 stop rule on the real
+  data in `scripts/evaluate_criteria.py`; a cross-check of the 100-split
+  summary in `scripts/verify_analysis.py`; tests in `tests/test_phase5.py`.
+
 ### Fourth phase (October 2026)
 - **Criteria** for the fourth-phase analyses in
   `docs/validation_criteria_phase4.md`, written after the third review and

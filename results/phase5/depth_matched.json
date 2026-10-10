@@ -1,0 +1,718 @@
+{
+ "n_children": 95,
+ "depth_frames_60fps": {
+  "median": 62.0,
+  "min": 40,
+  "max": 99
+ },
+ "video_detected_frames": {
+  "median": 111.0
+ },
+ "robust_video": [
+  "step_width_var",
+  "arm_swing",
+  "wrist_height",
+  "elbow_rom",
+  "elbow_flexion",
+  "knee_rom",
+  "knee_flexion",
+  "trunk_sway",
+  "head_sway"
+ ],
+ "descriptors": {
+  "step_rate": {
+   "r_depth": 0.7861353605051841,
+   "r_video": 0.6844198550314571,
+   "ceiling": 0.7335166320350619,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.07920373080306906,
+    "n": 95,
+    "rho_whole_clip": 0.1347196296525867
+   },
+   "autistic": {
+    "rho_matched": -0.149399059353374,
+    "n": 50,
+    "rho_whole_clip": 0.09129800280403208
+   },
+   "td": {
+    "rho_matched": 0.24461002186307385,
+    "n": 45,
+    "rho_whole_clip": 0.1151069756606258
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.4157777777777778
+  },
+  "stride_lag": {
+   "r_depth": 0.3902439024390243,
+   "r_video": 0.0,
+   "ceiling": 0.0,
+   "n_rel_depth": 6,
+   "n_rel_video": 49,
+   "all": {
+    "rho_matched": -0.39999999999999997,
+    "n": 4,
+    "rho_whole_clip": 1.0
+   },
+   "autistic": {
+    "rho_matched": -0.9999999999999999,
+    "n": 2,
+    "rho_whole_clip": 0.9999999999999999
+   },
+   "td": {
+    "rho_matched": -0.9999999999999999,
+    "n": 2,
+    "rho_whole_clip": 0.9999999999999999
+   },
+   "agrees": false,
+   "interpretable": false,
+   "robust_in_video": false,
+   "depth_auc_all": 1.0
+  },
+  "stride_regularity": {
+   "r_depth": 0.0,
+   "r_video": 0.6763017491726885,
+   "ceiling": 0.0,
+   "n_rel_depth": 6,
+   "n_rel_video": 49,
+   "all": {
+    "rho_matched": 0.7999999999999999,
+    "n": 4,
+    "rho_whole_clip": 0.0
+   },
+   "autistic": {
+    "rho_matched": -0.9999999999999999,
+    "n": 2,
+    "rho_whole_clip": 0.9999999999999999
+   },
+   "td": {
+    "rho_matched": 0.9999999999999999,
+    "n": 2,
+    "rho_whole_clip": 0.9999999999999999
+   },
+   "agrees": true,
+   "interpretable": false,
+   "robust_in_video": false,
+   "depth_auc_all": 0.0
+  },
+  "step_amplitude": {
+   "r_depth": 0.7037818323174725,
+   "r_video": 0.706530900476093,
+   "ceiling": 0.7051550267324048,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.024713391847211864,
+    "n": 95,
+    "rho_whole_clip": -0.06624532818857556
+   },
+   "autistic": {
+    "rho_matched": -0.025738913306657975,
+    "n": 50,
+    "rho_whole_clip": -0.16994405632884807
+   },
+   "td": {
+    "rho_matched": 0.07886154796884144,
+    "n": 45,
+    "rho_whole_clip": 0.11147346630182098
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.4582222222222222
+  },
+  "step_width": {
+   "r_depth": 0.0,
+   "r_video": 0.8764160557221019,
+   "ceiling": 0.0,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": -0.008972689988140927,
+    "n": 95,
+    "rho_whole_clip": 0.010428477443315117
+   },
+   "autistic": {
+    "rho_matched": -0.20322216625704576,
+    "n": 50,
+    "rho_whole_clip": -0.19337799232446204
+   },
+   "td": {
+    "rho_matched": 0.35675462176380657,
+    "n": 45,
+    "rho_whole_clip": 0.3786935486423564
+   },
+   "agrees": false,
+   "interpretable": false,
+   "robust_in_video": false,
+   "depth_auc_all": 0.45466666666666666
+  },
+  "step_width_var": {
+   "r_depth": 0.4659279517447958,
+   "r_video": 0.8410535876475932,
+   "ceiling": 0.6259955074920707,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.27669060319904465,
+    "n": 95,
+    "rho_whole_clip": 0.20903848040234405
+   },
+   "autistic": {
+    "rho_matched": 0.19616317324197355,
+    "n": 50,
+    "rho_whole_clip": 0.015606617210193734
+   },
+   "td": {
+    "rho_matched": 0.4388444202342965,
+    "n": 45,
+    "rho_whole_clip": 0.4291596687293511
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": true,
+   "depth_auc_all": 0.5977777777777777
+  },
+  "arm_swing": {
+   "r_depth": 0.769676242289149,
+   "r_video": 0.8448025064339265,
+   "ceiling": 0.8063649413438801,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.05009868559681182,
+    "n": 95,
+    "rho_whole_clip": 0.1860888310489009
+   },
+   "autistic": {
+    "rho_matched": -0.02026459219292848,
+    "n": 50,
+    "rho_whole_clip": 0.0970971692277284
+   },
+   "td": {
+    "rho_matched": 0.06140264219462007,
+    "n": 45,
+    "rho_whole_clip": 0.20509273084962693
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": true,
+   "depth_auc_all": 0.6457777777777778
+  },
+  "arm_swing_asym": {
+   "r_depth": 0.48513570086128455,
+   "r_video": 0.6805776626273659,
+   "ceiling": 0.5746064055936568,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.08653536584506585,
+    "n": 95,
+    "rho_whole_clip": 0.16735956551983291
+   },
+   "autistic": {
+    "rho_matched": 0.06583591444669419,
+    "n": 50,
+    "rho_whole_clip": 0.22516747107261054
+   },
+   "td": {
+    "rho_matched": 0.20403860823684375,
+    "n": 45,
+    "rho_whole_clip": 0.19059854492385822
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.40444444444444444
+  },
+  "wrist_height": {
+   "r_depth": 0.9403108772620491,
+   "r_video": 0.9701185283261842,
+   "ceiling": 0.9550984265606148,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.6163720097469725,
+    "n": 95,
+    "rho_whole_clip": 0.6043197693728862
+   },
+   "autistic": {
+    "rho_matched": 0.5466637856026014,
+    "n": 50,
+    "rho_whole_clip": 0.5212610148204707
+   },
+   "td": {
+    "rho_matched": 0.3108344054444394,
+    "n": 45,
+    "rho_whole_clip": 0.23829759315229698
+   },
+   "agrees": true,
+   "interpretable": true,
+   "robust_in_video": true,
+   "depth_auc_all": 0.7724444444444445
+  },
+  "wrist_lateral": {
+   "r_depth": 0.6962775276572314,
+   "r_video": 0.8822990994537672,
+   "ceiling": 0.7837888973581284,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.06900268410252988,
+    "n": 95,
+    "rho_whole_clip": 0.12597416686899637
+   },
+   "autistic": {
+    "rho_matched": 0.09536843624444541,
+    "n": 50,
+    "rho_whole_clip": 0.16101226924855255
+   },
+   "td": {
+    "rho_matched": -0.01996178935750354,
+    "n": 45,
+    "rho_whole_clip": -0.0129125766140947
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.6195555555555555
+  },
+  "elbow_rom": {
+   "r_depth": 0.8163507894290147,
+   "r_video": 0.889143214876114,
+   "ceiling": 0.8519699322039292,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.24113495033821503,
+    "n": 95,
+    "rho_whole_clip": 0.27204932864036274
+   },
+   "autistic": {
+    "rho_matched": 0.1990924152414253,
+    "n": 50,
+    "rho_whole_clip": 0.22771255018688827
+   },
+   "td": {
+    "rho_matched": 0.0031622636605946196,
+    "n": 45,
+    "rho_whole_clip": -0.01765597210498663
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": true,
+   "depth_auc_all": 0.6928888888888889
+  },
+  "elbow_flexion": {
+   "r_depth": 0.8977672483333928,
+   "r_video": 0.9428826749078454,
+   "ceiling": 0.9200484685891528,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.6029969625025597,
+    "n": 95,
+    "rho_whole_clip": 0.5780526043764019
+   },
+   "autistic": {
+    "rho_matched": 0.6144205144751657,
+    "n": 50,
+    "rho_whole_clip": 0.545991500553547
+   },
+   "td": {
+    "rho_matched": 0.2554929682733226,
+    "n": 45,
+    "rho_whole_clip": 0.23091873486281472
+   },
+   "agrees": true,
+   "interpretable": true,
+   "robust_in_video": true,
+   "depth_auc_all": 0.7337777777777778
+  },
+  "knee_rom": {
+   "r_depth": 0.48593939294734745,
+   "r_video": 0.837065937554402,
+   "ceiling": 0.6377799883596916,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": -0.009217654223386584,
+    "n": 95,
+    "rho_whole_clip": -0.0884110919892326
+   },
+   "autistic": {
+    "rho_matched": -0.1388268626297541,
+    "n": 50,
+    "rho_whole_clip": -0.23664433726718379
+   },
+   "td": {
+    "rho_matched": 0.2225516366238483,
+    "n": 45,
+    "rho_whole_clip": 0.23948348109167802
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": true,
+   "depth_auc_all": 0.4017777777777778
+  },
+  "knee_rom_asym": {
+   "r_depth": 0.32610634586316906,
+   "r_video": 0.5359804047956684,
+   "ceiling": 0.4180748871460442,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": -0.06637130979527332,
+    "n": 95,
+    "rho_whole_clip": -0.04535337841119595
+   },
+   "autistic": {
+    "rho_matched": 0.1513121563979091,
+    "n": 50,
+    "rho_whole_clip": 0.1864150400306833
+   },
+   "td": {
+    "rho_matched": -0.26359653585909326,
+    "n": 45,
+    "rho_whole_clip": -0.30378496047145187
+   },
+   "agrees": false,
+   "interpretable": false,
+   "robust_in_video": false,
+   "depth_auc_all": 0.5937777777777777
+  },
+  "knee_flexion": {
+   "r_depth": 0.32866423551573404,
+   "r_video": 0.9035895653517156,
+   "ceiling": 0.5449564879110221,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": -0.09327570822585864,
+    "n": 95,
+    "rho_whole_clip": -0.04791517209531239
+   },
+   "autistic": {
+    "rho_matched": 0.02645921871635922,
+    "n": 50,
+    "rho_whole_clip": 0.02170520301233098
+   },
+   "td": {
+    "rho_matched": 0.02207141935092526,
+    "n": 45,
+    "rho_whole_clip": 0.16952167758188266
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": true,
+   "depth_auc_all": 0.29644444444444445
+  },
+  "trunk_sway": {
+   "r_depth": 0.6153515254765282,
+   "r_video": 0.8202000893441517,
+   "ceiling": 0.7104304161379271,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": -0.02455241534976472,
+    "n": 95,
+    "rho_whole_clip": -0.005837147776996515
+   },
+   "autistic": {
+    "rho_matched": -0.08734903601643816,
+    "n": 50,
+    "rho_whole_clip": -0.03202958055138222
+   },
+   "td": {
+    "rho_matched": 0.024640116073806766,
+    "n": 45,
+    "rho_whole_clip": -0.02035774295937511
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": true,
+   "depth_auc_all": 0.5253333333333333
+  },
+  "trunk_lean": {
+   "r_depth": 0.7852467828846408,
+   "r_video": 0.8293215953487894,
+   "ceiling": 0.8069833422843341,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": -0.01662957208410518,
+    "n": 95,
+    "rho_whole_clip": -0.023131622785339905
+   },
+   "autistic": {
+    "rho_matched": -0.1957309899961528,
+    "n": 50,
+    "rho_whole_clip": -0.17210497255795182
+   },
+   "td": {
+    "rho_matched": 0.133214745190474,
+    "n": 45,
+    "rho_whole_clip": 0.07009915375008129
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.7671111111111111
+  },
+  "shoulder_tilt_var": {
+   "r_depth": 0.41301936279290274,
+   "r_video": 0.8696500378229883,
+   "ceiling": 0.5993181996856715,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.042392810653798435,
+    "n": 95,
+    "rho_whole_clip": 0.02415347359522179
+   },
+   "autistic": {
+    "rho_matched": 0.07745684172320767,
+    "n": 50,
+    "rho_whole_clip": 0.0912386852288249
+   },
+   "td": {
+    "rho_matched": -0.02411305476741518,
+    "n": 45,
+    "rho_whole_clip": -0.04862140551462405
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.4657777777777778
+  },
+  "head_sway": {
+   "r_depth": 0.6375410663118494,
+   "r_video": 0.8331946285279824,
+   "ceiling": 0.7288317994688728,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": -0.07470009379362567,
+    "n": 95,
+    "rho_whole_clip": -0.12326600317561466
+   },
+   "autistic": {
+    "rho_matched": -0.20744795799395976,
+    "n": 50,
+    "rho_whole_clip": -0.22977742569469853
+   },
+   "td": {
+    "rho_matched": 0.13334651051707191,
+    "n": 45,
+    "rho_whole_clip": 0.08663570223811738
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": true,
+   "depth_auc_all": 0.4328888888888889
+  },
+  "head_bob": {
+   "r_depth": 0.6046449499113908,
+   "r_video": 0.7952814376339296,
+   "ceiling": 0.6934427914569639,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.14357703776655456,
+    "n": 95,
+    "rho_whole_clip": 0.1965523033829654
+   },
+   "autistic": {
+    "rho_matched": 0.02645921871635922,
+    "n": 50,
+    "rho_whole_clip": 0.0936397032611624
+   },
+   "td": {
+    "rho_matched": 0.35583226447762123,
+    "n": 45,
+    "rho_whole_clip": 0.3584016883462802
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.5946666666666667
+  },
+  "hip_width": {
+   "r_depth": 0.7434504828618441,
+   "r_video": 0.8887627695800228,
+   "ceiling": 0.8128659853837519,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.13154579432691788,
+    "n": 95,
+    "rho_whole_clip": 0.08845308585813184
+   },
+   "autistic": {
+    "rho_matched": 0.17431390914770234,
+    "n": 50,
+    "rho_whole_clip": 0.13344858223731812
+   },
+   "td": {
+    "rho_matched": 0.05573673315091049,
+    "n": 45,
+    "rho_whole_clip": -0.023256580144528846
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.3982222222222222
+  },
+  "speed_wrists": {
+   "r_depth": 0.8734479601308588,
+   "r_video": 0.892577134610134,
+   "ceiling": 0.8829607451549976,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.19233824544290737,
+    "n": 95,
+    "rho_whole_clip": 0.25138141849179085
+   },
+   "autistic": {
+    "rho_matched": 0.24298302487255477,
+    "n": 50,
+    "rho_whole_clip": 0.2695863046708542
+   },
+   "td": {
+    "rho_matched": 0.20014493751846782,
+    "n": 45,
+    "rho_whole_clip": 0.27544634093637727
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.6173333333333333
+  },
+  "speed_ankles": {
+   "r_depth": 0.7048491951568241,
+   "r_video": 0.8741883358282196,
+   "ceiling": 0.784965569260209,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.25948711490664966,
+    "n": 95,
+    "rho_whole_clip": 0.28009210657988437
+   },
+   "autistic": {
+    "rho_matched": 0.25354750421483974,
+    "n": 50,
+    "rho_whole_clip": 0.23650027618524352
+   },
+   "td": {
+    "rho_matched": 0.21464571702797447,
+    "n": 45,
+    "rho_whole_clip": 0.28823665193290005
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.38266666666666665
+  },
+  "speed_head": {
+   "r_depth": 0.34644389954162025,
+   "r_video": 0.872433377020533,
+   "ceiling": 0.5497719720259101,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.2505424208311082,
+    "n": 95,
+    "rho_whole_clip": 0.2597250801637454
+   },
+   "autistic": {
+    "rho_matched": 0.24821724418305047,
+    "n": 50,
+    "rho_whole_clip": 0.283464188897765
+   },
+   "td": {
+    "rho_matched": 0.23335639340487585,
+    "n": 45,
+    "rho_whole_clip": 0.22419870320632201
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.40044444444444444
+  },
+  "jerk_wrists": {
+   "r_depth": 0.8097568106895174,
+   "r_video": 0.8871511445594232,
+   "ceiling": 0.8475710480060026,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.12034000917526107,
+    "n": 95,
+    "rho_whole_clip": 0.16910171930228465
+   },
+   "autistic": {
+    "rho_matched": 0.19669139720908782,
+    "n": 50,
+    "rho_whole_clip": 0.1983240894710773
+   },
+   "td": {
+    "rho_matched": 0.11944133368037595,
+    "n": 45,
+    "rho_whole_clip": 0.1971144348437313
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.6093333333333333
+  },
+  "jerk_ankles": {
+   "r_depth": 0.6150813603019548,
+   "r_video": 0.8548783930948252,
+   "ceiling": 0.7251343081922923,
+   "n_rel_depth": 94,
+   "n_rel_video": 88,
+   "all": {
+    "rho_matched": 0.15101695153987268,
+    "n": 95,
+    "rho_whole_clip": 0.17202788394580018
+   },
+   "autistic": {
+    "rho_matched": 0.08907776899972115,
+    "n": 50,
+    "rho_whole_clip": 0.09858580040777765
+   },
+   "td": {
+    "rho_matched": 0.16549725020695882,
+    "n": 45,
+    "rho_whole_clip": 0.19428797406859938
+   },
+   "agrees": false,
+   "interpretable": true,
+   "robust_in_video": false,
+   "depth_auc_all": 0.4182222222222222
+  }
+ },
+ "summary": {
+  "n_robust": 9,
+  "agree": [
+   "wrist_height",
+   "elbow_flexion"
+  ],
+  "disagree_interpretable": [
+   "step_width_var",
+   "arm_swing",
+   "elbow_rom",
+   "knee_rom",
+   "knee_flexion",
+   "trunk_sway",
+   "head_sway"
+  ],
+  "disagree_not_interpretable": [],
+  "n_all_agree": 3
+ }
+}

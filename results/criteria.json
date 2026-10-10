@@ -3186,5 +3186,125 @@
     "v": 0.0
    }
   }
+ },
+ "phase5": {
+  "timing": "P5",
+  "decision": {
+   "criteria": {
+    "i": {
+     "met": false,
+     "controls_ge_0.70_all": {
+      "Demographics": 0.7005925925925925,
+      "Frame-format": 0.9013333333333334,
+      "Covariates": 0.8908148148148148,
+      "Scene": 0.967111111111111,
+      "Time-of-day": 0.8525925925925927,
+      "Depth-recording": 0.8965925925925925,
+      "All-controls": 0.969925925925926
+     },
+     "controls_ge_0.70_cropped": {
+      "Scene": 0.9412345679012345,
+      "Time-of-day": 0.9506172839506174,
+      "Depth-recording": 0.9614814814814815,
+      "All-controls": 0.9219753086419753
+     },
+     "controls_ge_0.70_within_cropped": {
+      "Scene": 0.8819753086419753,
+      "Time-of-day": 0.9419753086419753,
+      "All-controls-noformat": 0.9669135802469135
+     }
+    },
+    "ii": {
+     "met": false,
+     "best_all": "PACE",
+     "best_all_auc": 0.9001481481481481,
+     "all_controls_auc": 0.969925925925926,
+     "beats_cropped": [],
+     "beats_within_cropped": []
+    },
+    "iii": {
+     "met": true,
+     "adds": {
+      "all": [
+       "PACE",
+       "Gait-RF",
+       "Depth-RF"
+      ],
+      "cropped": [
+       "PACE",
+       "Depth-RF"
+      ]
+     }
+    },
+    "iv": {
+     "met": true,
+     "n_robust": 9
+    },
+    "v": {
+     "met": false,
+     "vs_recording_control": false,
+     "vs_time_of_day_within": false
+    }
+   },
+   "met": {
+    "i": false,
+    "ii": false,
+    "iii": true,
+    "iv": true,
+    "v": false
+   },
+   "grade": "C",
+   "single_channel": "C"
+  },
+  "tier0": {
+   "timing": "R5",
+   "sessions_disjoint": true,
+   "no_setting_shared": true,
+   "approach_td": 42,
+   "approach_autistic": 28,
+   "stop": true
+  },
+  "calibration": {
+   "specificity": {
+    "A": {
+     "met_point": true,
+     "met_interval": true
+    },
+    "AB": {
+     "met_point": true,
+     "met_interval": false
+    }
+   },
+   "sensitivity_g4_n45": {
+    "met_point": false,
+    "met_interval": false
+   },
+   "single_channel_n3_equals_g4": true
+  },
+  "scale": {
+   "best_movement_model": "PACE-median",
+   "uses_order": true,
+   "uses_velocity_or_acceleration": false,
+   "posture_suffices": false,
+   "wording": "movement over time"
+  },
+  "depth_matched": {
+   "n_robust": 9,
+   "agree": [
+    "wrist_height",
+    "elbow_flexion"
+   ],
+   "disagree_interpretable": [
+    "step_width_var",
+    "arm_swing",
+    "elbow_rom",
+    "knee_rom",
+    "knee_flexion",
+    "trunk_sway",
+    "head_sway"
+   ],
+   "disagree_not_interpretable": [],
+   "n_all_agree": 3
+  }
  }
 }

@@ -30,12 +30,14 @@ contains:
   with three event types and reference detectors for the selection mechanism
   and attributions; invariance tests;
 * **calibration of the checks**: planted movement differences of graded size
-  at several sample sizes, planted recording differences (image, framing,
-  video only) and a label-permutation null (`scripts/phase4_calibration.py`,
+  at several sample sizes, sanity checks with planted recording differences
+  (image, framing, video only) and a label-permutation null, with exact
+  intervals (`scripts/phase4_calibration.py`, `scripts/phase5_analyses.py`,
   `scripts/permutation_null.py`); incremental value of a movement score by
   nested stacking with a Firth second level (`scripts/phase4_common.py`);
-* **pass/fail criteria written before their analyses**
-  (`docs/validation_criteria.md`, `_phase3.md`, `_phase4.md`; commits, not
+  second-sensor comparison matched for projection, frame rate and duration;
+* **pass/fail criteria, most written before their analyses**
+  (`docs/validation_criteria.md`, `_phase3.md` to `_phase5.md`; commits, not
   independent time stamps), applied to the stored results by
   `scripts/evaluate_criteria.py`;
 * **inference** for research: applying trained models to a video or array with
