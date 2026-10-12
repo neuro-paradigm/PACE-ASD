@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use PACE in your research, please cite it using the metadata below."
 title: "PACE: cross-validated modeling of whole-body movement in short videos"
 version: "1.2.0"
-date-released: "2026-10-08"
+date-released: "2026-10-12"
 repository-code: "https://github.com/neuro-paradigm/PACE-ASD"
 license: "Apache-2.0"
 keywords:

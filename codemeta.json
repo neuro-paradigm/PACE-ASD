@@ -5,7 +5,7 @@
   "description": "Research software for cross-validated modeling of whole-body movement in short videos: MediaPipe landmark extraction in pixel units, shared sequence preparation (plausibility check, onset alignment), a contiguous-event network with frame-validity masking, five comparison architectures, gait-descriptor classifiers, repeated nested subject-level cross-validation with stored out-of-fold predictions, recording-artifact controls, a planted-event benchmark, and inference with checkpoint ensembles. Not a medical device.",
   "version": "1.2.0",
   "softwareVersion": "1.2.0",
-  "dateModified": "2026-10-09",
+  "dateModified": "2026-10-12",
   "license": "https://spdx.org/licenses/Apache-2.0",
   "codeRepository": "https://github.com/neuro-paradigm/PACE-ASD",
   "identifier": "https://github.com/neuro-paradigm/PACE-ASD/releases/tag/v1.2.0",

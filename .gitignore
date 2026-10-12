@@ -116,3 +116,6 @@ results/phase4/calibration_eval/
 
 # Fifth-phase run logs
 results/phase5/logs/
+
+# Files attached to GitHub releases (e.g. the cross-validation checkpoints), not committed
+release_assets/

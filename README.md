@@ -150,7 +150,7 @@ Out-of-fold AUC (95% interval over children), 3 x 5-fold nested cross-validation
 | test-case network and ablations: image-normalized coordinates | 0.871 (0.80-0.93) | 0.905 (0.83-0.96) |
 | test-case network and ablations: epoch selection by validation loss | 0.905 (0.84-0.96) | 0.965 (0.93-0.99) |
 
-Frame format alone separates the groups in this dataset; within the cropped videos image properties still do; the two groups were filmed in different settings (no setting shared) and, according to the file dates in the deposit, months apart, and many autistic children's videos do not show the walking task. None of the discrimination above can therefore be attributed to movement; movement differences are neither established nor excluded. Nothing here establishes clinical validity.
+Frame format alone separates the groups in this dataset; within the cropped videos image properties still do; according to the file dates in the deposit the two groups were recorded months apart, and many autistic children's videos do not show the walking task (an unblinded, AI-assisted annotation also found no setting shared). None of the discrimination above can therefore be attributed to movement; movement differences are neither established nor excluded. Nothing here establishes clinical validity.
 <!-- /RESULTS_TABLE -->
 
 ---
